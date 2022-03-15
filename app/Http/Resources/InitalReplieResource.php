@@ -4,10 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
-use App\Http\Resources\UserResource;
-use App\Http\Resources\LastReplieResource;
 
-class ConversationResource extends JsonResource
+class InitalReplieResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,21 +18,14 @@ class ConversationResource extends JsonResource
         return
             [
                 'id' => $this->id,
-                'title' => $this->title,
                 'body' => $this->body,
                 'slug' => $this->slug,
                 'body_in_markdown' => $this->body_in_markdown,
-                'chanel_id' => $this->chanel_id,
+                'conversation_id' => $this->conversation_id,
                 'owner' => new UserResource($this->user),
-                'chanel' => $this->chanel,
-                'count_reply' => count($this->all_replies),
-                'size' => $this->size,
-                'created_at' => $this->created_at,
-                'now' => Carbon::now(),
                 'time_ago' => Carbon::parse($this->created_at)->diffForHumans(),
                 'solved' => $this->solved,
-                // 'lastReplie' => $this->lastReplie
-                'lastReplie' => new LastReplieResource($this->lastReplie)
+                'replies' =>  ReplieResource::collection($this->user->replies)
 
             ];
     }

@@ -20,6 +20,6 @@ class Replies extends Model
     }
     public function users()
     {
-        return $this->belongsToMany(User::class, 'project_user', 'project_id');
+        return $this->belongsToMany(User::class,  'replie_user', 'replie_id', 'user_id');
     }
 }

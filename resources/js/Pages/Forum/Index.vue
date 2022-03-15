@@ -53,7 +53,8 @@
 
                 <div class="w-full md:pr-10 lg:pr-0 lg:w-5/6 md:mb-0">
                     <div class="lg:pr-10">
-                        <h4
+                        <Link
+                            :href="route('question.getDetail',post.slug)"
                             class="mb-3 md:mb-1 text-base md:text-lg font-bold md:font-semibold tracking-tight text-gray-900 hover:text-gray-900"
                             style="word-break: break-word;"
                         >
@@ -62,7 +63,7 @@
                                 class="hidden md:inline-flex text-white rounded-full h-4 px-3 justify-center items-center text-xs lowercase"
                                 :style="`background-color: ${post.chanel.color}`"
                             >{{ post.chanel.title }}</span>
-                        </h4>
+                        </Link>
 
                         <div v-if="post.lastReplie" class="text-gray-800 text-xs">
                             <span
@@ -74,6 +75,7 @@
                             >{{ post.lastReplie.time_ago }}</span>
                         </div>
                         <div
+                            v-if="post.solved == 1"
                             class="ml-2 inline-flex h-5 items-center rounded-full border border-solid border-blue-500 px-2 text-xs font-medium text-blue-500"
                             style="line-height: 1.1;"
                         >
@@ -146,6 +148,7 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/inertia-vue'
 import Pagination from "@/Components/Pagination";
 import LayoutForum from '@/Pages/Forum/Layout'
 export default {
@@ -154,7 +157,8 @@ export default {
         conversations: Object
     },
     components: {
-        Pagination
+        Pagination,
+        Link
     }
 
 }

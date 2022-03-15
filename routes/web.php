@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ReplieController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,10 +16,12 @@ use App\Http\Controllers\ForumController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return redirect('/forum');
+});
 Route::get('/forum', [ForumController::class, 'index'])->name('forum');
+Route::get('/question/{name}', [ReplieController::class, 'getDetail'])->name('question.getDetail');
+// Route::get('/')
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

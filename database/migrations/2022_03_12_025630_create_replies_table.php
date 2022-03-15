@@ -17,6 +17,7 @@ class CreateRepliesTable extends Migration
             $table->bigIncrements('id');
             $table->longText('body')->nullable();
             $table->boolean('best_answer')->default(false);
+            $table->boolean('is_inital')->default(false);
             $table->longText('body_in_markdown')->nullable();
             $table->unsignedBigInteger('conversation_id')->nullable();
             $table->unsignedBigInteger('user_id')->unsigned()->nullable();

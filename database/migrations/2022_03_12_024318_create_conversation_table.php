@@ -16,7 +16,9 @@ class CreateConversationTable extends Migration
         Schema::create('conversation', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title')->nullable();
+            $table->string('slug')->nullable();
             $table->longText('body')->nullable();
+            $table->boolean('solved')->default(false);
             $table->longText('body_in_markdown')->nullable();
             $table->unsignedBigInteger('chanel_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
