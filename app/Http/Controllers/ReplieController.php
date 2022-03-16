@@ -15,7 +15,7 @@ class ReplieController extends Controller
 
     public function getDetail($name)
     {
-
+        $chanels = Chanels::get();
         $conversation = Conversation::with('user', 'all_replies', 'initalReplies.user.replies',  'chanel')->where('slug', $name)->first();
         // return $conversation;
         // $conversation = new ConversationResource($conversation);
@@ -26,7 +26,7 @@ class ReplieController extends Controller
             $initalReplies = InitalReplieResource::collection($conversation->initalReplies);
 
             $conversation = new ConversationResource($conversation);
-            return Inertia::render('Forum/Replie', compact('conversation', 'initalReplies'));
+            return Inertia::render('Forum/Replie', compact('conversation', 'chanels', 'initalReplies'));
         } else {
             $erros = "Not found conversation !!";
             return Inertia::render('Erros/401', ['erros' => $erros]);

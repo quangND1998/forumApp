@@ -20,7 +20,7 @@ createInertiaApp({
         }).$mount(el)
     },
 })
-
+window.ChatterEvents = new Vue();
 
 // createInertiaApp({
 //     resolve: name => require(`./Pages/${name}`),

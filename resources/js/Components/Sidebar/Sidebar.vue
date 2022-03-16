@@ -176,6 +176,10 @@
 
         <!-- Divider -->
         <hr class="my-4 md:min-w-full" />
+
+         <div class="w-full pb-2">
+                <NewQuestionButton></NewQuestionButton>
+            </div>
         <!-- Heading -->
         <h6
           class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
@@ -319,6 +323,7 @@
 import NotificationDropdown from "@/components/Dropdowns/NotificationDropdown.vue";
 import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
 import { Link } from "@inertiajs/inertia-vue";
+import NewQuestionButton from '@/Components/NewQuestionButton'
 export default {
   data() {
     return {
@@ -333,7 +338,8 @@ export default {
   components: {
     NotificationDropdown,
     UserDropdown,
-    Link
+    Link,
+    NewQuestionButton
   },
 };
 </script>
