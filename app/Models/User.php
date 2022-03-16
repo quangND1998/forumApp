@@ -50,4 +50,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Replies::class, 'replie_user', 'user_id', 'replie_id');
     }
+    public function getPermissionArray()
+    {
+        return $this->getAllPermissions()->mapWithKeys(function ($pr) {
+            return [$pr['name'] => true];
+        });
+    }
 }

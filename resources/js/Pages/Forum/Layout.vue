@@ -7,7 +7,7 @@
 
             <div class="flex-1 overflow-hidden px-4 py-8 md:p-4 overflow-y-auto" scroll-region>
                 <slot />
-                <NewQuestionComponent :chanels="chanels"></NewQuestionComponent>
+                <NewQuestionComponent :chanels="chanels" :errors="errors"></NewQuestionComponent>
             </div>
         </div>
     </div>
@@ -19,11 +19,12 @@ import HeaderStats from "@/Components/Headers/HeaderStats.vue";
 import FooterAdmin from "@/Components/Footers/FooterAdmin.vue";
 import NewQuestionComponent from "@/Components/Question/NewQuestionComponent"
 
+
 export default {
     name: "admin-layout",
     props: {
         chanels: Array,
-
+        errors: Object
     },
     components: {
         AdminNavbar,

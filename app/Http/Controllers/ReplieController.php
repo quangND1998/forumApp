@@ -22,6 +22,9 @@ class ReplieController extends Controller
         // return $conversation;
 
         if ($conversation !== null) {
+
+            $conversation->view = $conversation->view + 1;
+            $conversation->save();
             // return $conversation->initalReplies;
             $initalReplies = InitalReplieResource::collection($conversation->initalReplies);
 

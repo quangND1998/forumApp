@@ -17,7 +17,7 @@ class CreateChanelsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title')->unique();
             $table->string('slug')->nullable();
-            $table->string('color', 20)->nullable();
+            $table->string('color')->nullable();
             $table->string('path')->nullable();
             $table->timestamps();
         });

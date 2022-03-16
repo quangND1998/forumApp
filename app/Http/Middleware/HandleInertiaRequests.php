@@ -40,7 +40,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 // 'roles'=>  Auth::user()->roles,
-                // 'can' => $request->user() ? $request->user()->getPermissionArray() : [],
+                'can' => $request->user() ? $request->user()->getPermissionArray() : [],
                 // 'roles' => $request->user() ? $request->user()->getRolesArray() : [],
                 // 'owner' => $request->user() ? User::find($request->user()['created_byId']) : null
             ],

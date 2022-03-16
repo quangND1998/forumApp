@@ -20,7 +20,7 @@
                     <div class="modal-content p-2 px-4 text-left">
                         <!--Title-->
                         <div class="flex justify-between items-center">
-                            <p class="text-2xl">New discussion</p>
+                            <p class="text-2xl">Update Question</p>
                             <div @click="closeModal()" class="modal-close cursor-pointer z-50 p-4">
                                 <svg
                                     class="fill-current text-black"
@@ -102,7 +102,7 @@
                                 <button
                                     type="submit"
                                     class="w-32 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full text-center cursor-pointer"
-                                >create</button>
+                                >Update</button>
                             </div>
                         </div>
                     </div>
@@ -124,6 +124,7 @@ export default {
     },
     data() {
         return {
+
             visible: false,
             // discussion: new Discussion(),
             form: this.$inertia.form({
@@ -145,13 +146,15 @@ export default {
     },
     mounted() {
         var self = this
-        window.ChatterEvents.$on(events.NEW_DISCUSSION, () => {
-            console.log('aaaaaaaaa');
-            self.openModal()
+        window.ChatterEvents.$on('EditConversaion', (e) => {
+            // console.log(e);
+            self.openModal();
+            self.form.id = e.id;
+            self.form.title = e.title;
+            self.form.body = e.body;
+            self.form.chanel_id = e.chanel_id;
         })
-        window.ChatterEvents.$on(events.DISCUSSION_CONTENT_UPDATE, html => {
-            self.discussion.body = html
-        })
+
     },
     // computed: {
     //     ...mapGetters(['categories'])
@@ -171,21 +174,21 @@ export default {
             self.visible = true;
         },
         submit() {
-            this.form.post(this.route('admin.conversation.store'), {
+            this.form.post(this.route('admin.conversation.update', this.form.id),
+                {
+                    preserveState: true,
+                    onError: errors => {
+                        if (Object.keys(errors).length > 0) {
+                            this.visible = true;
+                        }
+                    },
+                    onSuccess: page => {
+                        this.visible = false;
+                        // this.form.reset();
+                    },
+                })
+        },
 
-                preserveState: true,
-                onError: errors => {
-                    if (Object.keys(errors).length > 0) {
-                        this.visible = true;
-                    }
-                },
-                onSuccess: page => {
-                    this.visible = false;
-                  
-                },
-            }
-            )
-        }
     }
 }
 </script>

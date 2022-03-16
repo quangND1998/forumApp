@@ -23,6 +23,7 @@ class ConversationResource extends JsonResource
                 'title' => $this->title,
                 'body' => $this->body,
                 'slug' => $this->slug,
+                'view' => $this->view,
                 'body_in_markdown' => $this->body_in_markdown,
                 'chanel_id' => $this->chanel_id,
                 'owner' => new UserResource($this->user),

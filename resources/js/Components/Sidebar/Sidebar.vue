@@ -69,16 +69,6 @@
           </div>
         </form>
 
-        <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
-        <!-- Heading -->
-        <h6
-          class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-        >
-          Admin Layout Pages
-        </h6>
-        <!-- Navigation -->
-
         <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
             <!-- <router-link
@@ -177,8 +167,9 @@
         <!-- Divider -->
         <hr class="my-4 md:min-w-full" />
 
-         <div class="w-full pb-2">
-                <NewQuestionButton></NewQuestionButton>
+         <div class="w-full pb-2" v-if="$page.props.auth.user !== null">
+                <NewQuestionButton v-if="$page.url.startsWith('/forum')"></NewQuestionButton>
+                <ReplyButtom v-if="$page.url.startsWith('/question')"></ReplyButtom>
             </div>
         <!-- Heading -->
         <h6
@@ -235,6 +226,33 @@
               All Thread
             </Link>
           </li>
+          <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
+            <Link
+              :href="route('admin.chanels.index')"
+              target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
+            >
+              <i
+                class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"
+              ></i>
+            Chanels
+            </Link>
+          </li>
+
+          <li class="inline-flex" v-if="$page.props.auth.user">
+            <Link
+              :href="route('myThread')"
+              target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
+            >
+              <i
+                class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"
+              ></i>
+              myThread
+            </Link>
+          </li>
+
+
 
           <li class="inline-flex">
             <a
@@ -324,6 +342,7 @@ import NotificationDropdown from "@/components/Dropdowns/NotificationDropdown.vu
 import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
 import { Link } from "@inertiajs/inertia-vue";
 import NewQuestionButton from '@/Components/NewQuestionButton'
+import ReplyButtom from "@/Components/ReplieComponent/ReplyButtom";
 export default {
   data() {
     return {
@@ -339,7 +358,8 @@ export default {
     NotificationDropdown,
     UserDropdown,
     Link,
-    NewQuestionButton
+    NewQuestionButton,
+    ReplyButtom
   },
 };
 </script>

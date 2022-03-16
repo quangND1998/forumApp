@@ -1,5 +1,6 @@
 <template>
     <div>
+        <UpdateQuestionComponent :errors="errors" :chanels="chanels"></UpdateQuestionComponent>
         <div v-for="post in conversations.data" :key="post.id">
             <div
                 class="flex cursor-pointer items-center flex-col md:flex-row md:hover:bg-gray-200 hover:rounded-lg md:px-6 md:py-4 mb-6 md:mb-0 transition-all px-6 py-5 md:px-0 md:py-0 rounded-lg -mx-2 md:mx-0"
@@ -27,28 +28,14 @@
                             :style="`background-color: ${post.chanel.color}`"
                         >{{ post.chanel.title }}s</span>
                         <span class="text-gray-800 text-xs">posted {{ post.time_ago }}</span>
-
-                        <!-- <div class="flex bg-gray-200 rounded-full h-6 items-center">
-                            <div class="flex py-2 px-3 items-center">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="13"
-                                    height="12"
-                                    viewBox="0 0 15 14"
-                                    class="mr-2"
-                                >
-                                    <path
-                                        fill="#78909C"
-                                        fill-rule="evenodd"
-                                        d="M7.5 0C3.344 0 0 2.818 0 6.286c0 1.987 1.094 3.757 2.781 4.914l.117 2.35c.022.438.338.58.704.32l2.023-1.442c.594.144 1.219.18 1.875.18 4.156 0 7.5-2.817 7.5-6.285C15 2.854 11.656 0 7.5 0z"
-                                        opacity=".5"
-                                    />
-                                </svg>
-                                <span
-                                    class="text-xs text-gray-800 font-semibold leading-none"
-                                >{{ discussion.answers }}</span>
-                            </div>
-                        </div>-->
+                        <i
+                            @click="onEdit(post)"
+                            class="fas fa-edit cursor-pointer rounded-md px-2 py-2 m-2 border-1 border-green-400"
+                        ></i>
+                        <i
+                            @click="onDelete(post.id)"
+                            class="fas fa-trash-alt cursor-pointer md:hover:bg-red-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
+                        ></i>
                     </div>
                 </div>
 
@@ -66,7 +53,14 @@
                             >{{ post.chanel.title }}</span>
                             <span class="text-gray-800 text-xs font-bold">posted {{ post.time_ago }}</span>
                         </Link>
-
+                        <i
+                            @click="onEdit(post)"
+                            class="fas fa-edit cursor-pointer md:hover:bg-green-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
+                        ></i>
+                        <i
+                            @click="onDelete(post.id)"
+                            class="fas fa-trash-alt cursor-pointer md:hover:bg-red-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
+                        ></i>
                         <div v-if="post.lastReplie" class="text-gray-800 text-xs">
                             <span
                                 class="text-blue-600 uppercase font-bold"
@@ -153,14 +147,33 @@
 import { Link } from '@inertiajs/inertia-vue'
 import Pagination from "@/Components/Pagination";
 import LayoutForum from '@/Pages/Forum/Layout'
+import UpdateQuestionComponent from '@/Components/Question/UpdateQuestionComponent';
 export default {
     layout: LayoutForum,
     props: {
-        conversations: Object
+        conversations: Object,
+        chanels: Array,
+        errors: Object
     },
     components: {
         Pagination,
-        Link
+        Link,
+        UpdateQuestionComponent
+    },
+    methods: {
+        onEdit(data) {
+            window.ChatterEvents.$emit('EditConversaion', data)
+        },
+        onDelete(id) {
+            if (!confirm("Are you sure want to remove?")) return;
+            this.$inertia.delete(
+                this.route("admin.conversation.delete", id),
+                null,
+                {
+                    preserveState: true
+                }
+            );
+        }
     }
 
 }

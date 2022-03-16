@@ -30,7 +30,7 @@
                             />
                         </a>
                     </div>
-                    <divc class="flex-1 text-left leading-none">
+                    <div class="flex-1 text-left leading-none">
                         <div class="flex items-center">
                             <a
                                 class="font-lg mr-2 block font-bold text-black"
@@ -41,14 +41,14 @@
                                 <span class="text-sm text-gray-600">Post {{ conversation.time_ago }}</span>
                             </span>
                         </div>
-                    </divc>
+                    </div>
                 </header>
                 <h1
                     class="mb-2 rounded-xl px-6 py-4 text-2lg font-semibold text-black md:mb-6 bg-blue-100"
                 >{{ conversation.title }}</h1>
                 <div class="content user-content text-[13px] text-black">
-                    <p>{{ conversation.body }}</p>
-                    <div v-html="conversation.body_in_markdown"></div>
+                 
+                    <div v-html="conversation.body"></div>
                 </div>
             </div>
         </div>
