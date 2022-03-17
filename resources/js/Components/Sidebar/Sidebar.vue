@@ -254,7 +254,7 @@
 
 
 
-          <li class="inline-flex">
+          <!-- <li class="inline-flex">
             <a
               href="https://www.creative-tim.com/learning-lab/tailwind/vue/alerts/notus"
               target="_blank"
@@ -329,7 +329,7 @@
               <i class="fab fa-vuejs mr-2 text-blueGray-300 text-base"></i>
               VueJS
             </a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>

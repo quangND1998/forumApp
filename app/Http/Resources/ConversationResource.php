@@ -36,6 +36,8 @@ class ConversationResource extends JsonResource
                 'solved' => $this->solved,
                 // 'lastReplie' => $this->lastReplie
                 'lastReplie' => new LastReplieResource($this->lastReplie)
+                
+               
 
             ];
     }

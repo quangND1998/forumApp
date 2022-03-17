@@ -34,6 +34,7 @@ Vue.mixin({
                 return moment(String(value)).format('DD/MM/YYYY HH:mm')
             }
         },
+
     },
 })
 

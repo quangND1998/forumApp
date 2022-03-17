@@ -23,7 +23,7 @@
 
                     <div class="flex md:hidden items-center justify-center ml-auto">
                         <span
-                            class="mr-3 inline-flex text-white rounded-full h-6 px-3 justify-center items-center text-xs"
+                            class="border mr-3 inline-flex text-white rounded-full h-6 px-3 justify-center items-center text-xs"
                             :style="`background-color: ${post.chanel.color}`"
                         >{{ post.chanel.title }}s</span>
                         <span class="text-gray-800 text-xs">posted {{ post.time_ago }}</span>
@@ -61,7 +61,7 @@
                         >
                             {{ post.title }}
                             <span
-                                class="hidden md:inline-flex text-white rounded-full h-4 px-3 justify-center items-center text-xs lowercase"
+                                class=" border hidden md:inline-flex text-white rounded-full h-4 px-3 justify-center items-center text-xs lowercase"
                                 :style="`background-color: ${post.chanel.color}`"
                             >{{ post.chanel.title }}</span>
                             <span class="text-gray-800 text-xs font-bold">posted {{ post.time_ago }}</span>

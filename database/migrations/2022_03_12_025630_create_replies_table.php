@@ -21,6 +21,7 @@ class CreateRepliesTable extends Migration
             $table->longText('body_in_markdown')->nullable();
             $table->unsignedBigInteger('conversation_id')->nullable();
             $table->unsignedBigInteger('user_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('replie_id')->unsigned()->nullable();
             $table->foreign('conversation_id')->references('id')->on('conversation')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

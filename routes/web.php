@@ -43,6 +43,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('update/{id}', [ConversationController::class, 'update'])->name('update');
             Route::delete('delete/{id}', [ConversationController::class, 'delete'])->name('delete');
         });
+
+        Route::prefix('replie')->as('replie.')->group(function () {
+
+            Route::post('store/{id}', [ReplieController::class, 'store'])->name('store');
+            Route::post('likeReplie/{id}', [ReplieController::class, 'likeRelie'])->name('like');
+        });
     });
     Route::get('myThread', [ConversationController::class, 'myConversation'])->name('myThread');
 });

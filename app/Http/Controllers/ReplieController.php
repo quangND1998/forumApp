@@ -9,6 +9,9 @@ use App\Models\Conversation;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Resources\ReplieResource;
+use App\Models\Replies;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ReplieController extends Controller
 {
@@ -16,7 +19,8 @@ class ReplieController extends Controller
     public function getDetail($name)
     {
         $chanels = Chanels::get();
-        $conversation = Conversation::with('user', 'all_replies', 'initalReplies.user.replies',  'chanel')->where('slug', $name)->first();
+        $conversation = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies.users', 'chanel')->where('slug', $name)->first();
+        // return $conversation;
         // return $conversation;
         // $conversation = new ConversationResource($conversation);
         // return $conversation;
@@ -25,6 +29,7 @@ class ReplieController extends Controller
 
             $conversation->view = $conversation->view + 1;
             $conversation->save();
+
             // return $conversation->initalReplies;
             $initalReplies = InitalReplieResource::collection($conversation->initalReplies);
 
@@ -34,5 +39,53 @@ class ReplieController extends Controller
             $erros = "Not found conversation !!";
             return Inertia::render('Erros/401', ['erros' => $erros]);
         }
+    }
+    public function store(Request $request, $id)
+    {
+
+        $conversation = Conversation::findOrFail($id);
+        $this->validate(
+            $request,
+            [
+
+                'body' => 'nullable',
+
+            ]
+        );
+
+        $replie = Replies::create([
+            'body' => $request->body,
+            'user_id' => Auth::user()->id,
+            'conversation_id' => $conversation->id
+        ]);
+        if ($request->replie_id == null) {
+            $replie->is_inital = 1;
+            $replie->save();
+        } else {
+            $replie->replie_id = $request->replie_id;
+            $replie->save();
+        }
+        return back()->with('success', "Reply succesffly");
+    }
+
+    public function likeRelie($id, Request $reuest)
+    {
+        $replie = Replies::findOrFail($id);
+        if ($replie->users->contains(Auth::user()->id)) {
+
+            $replie->users()->detach(Auth::user());
+        } else {
+
+            $replie->users()->attach(Auth::user());
+        }
+        return back();
+
+        // if ($replie->users->pivot == null) {
+        //     $replie->users()->attach(Auth::user());
+        // } elseif ($replie->users->pivot->user_id == Auth::user()->id) {
+        //     $replie->users()->detach(Auth::user());
+        // } else {
+        //     $replie->users()->attach(Auth::user());
+        // }
     }
 }

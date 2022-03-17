@@ -141,7 +141,7 @@ export default {
     },
     props: {
         chanels: Array,
-        errors: Object
+        errors: Object,
     },
     mounted() {
         var self = this

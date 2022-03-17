@@ -6,13 +6,13 @@
             <div class="mr-5 hidden text-left md:block">
                 <a
                     class="relative flex items-start mb-2"
-                    style="width: 72px; height: 72px; padding: 2px;"
+                    style="width: 64px; height: 64px; padding: 2px;"
                 >
                     <img
                         class="relative bg-white ls-is-cached lazyloaded"
                         style="width: 100%; border-radius: 9px;"
-                        width="72"
-                        height="72"
+                        width="64"
+                        height="64"
                         :src="conversation.owner.avatar"
                         alt="`avatar of ${conversation.owner.avatar} on ${conversation.title}`"
                     />
@@ -60,6 +60,9 @@ import { Link } from '@inertiajs/inertia-vue'
 export default {
     props: {
         conversation: Object
+    },
+    methods:{
+    
     }
 
 

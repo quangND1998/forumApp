@@ -14,9 +14,10 @@ class ForumController extends Controller
     public function index(Request $request)
     {
         $chanels = Chanels::get();
-        $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user.replies', 'chanel', 'lastReplie')->where(function ($query) use ($request) {
+        $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where(function ($query) use ($request) {
             $query->where('title', 'LIKE', '%' . $request->term . '%');
         })->paginate(20)->appends(['term' => $request->term]);
+
         $conversations = ConversationResource::collection($conversations);
 
         return Inertia::render('Forum/Index', compact('chanels', 'conversations'));
