@@ -54,6 +54,15 @@
                                         </span>
                                     </div>
                                 </div>
+                                <div
+                                    v-if="replie.best_answer == 1"
+                                    class="relative ml-3 flex"
+                                    style="top: -5px;"
+                                >
+                                    <span
+                                        class="inline-flex items-center rounded-full bg-blue-500 px-6 py-2 text-3xs font-bold uppercase text-white md:text-2xs"
+                                    >Best Answer</span>
+                                </div>
                             </header>
                             <div class="content user-content text-[13px] text-black">
                                 <div v-html="replie.body"></div>
@@ -120,6 +129,15 @@
                                                 >Post {{ re_reply.time_ago }}</span>
                                             </span>
                                         </div>
+                                    </div>
+                                    <div
+                                        v-if="re_reply.best_answer == 1"
+                                        class="relative ml-3 flex"
+                                        style="top: -5px;"
+                                    >
+                                        <span
+                                            class="inline-flex items-center rounded-full bg-blue-500 px-6 py-2 text-3xs font-bold uppercase text-white md:text-2xs"
+                                        >Best Answer</span>
                                     </div>
                                 </header>
                                 <div class="content user-content text-[13px] text-black">

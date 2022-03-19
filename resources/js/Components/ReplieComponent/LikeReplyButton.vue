@@ -45,6 +45,26 @@
             @click="onEdit(comment)"
             class="fas fa-edit cursor-pointer rounded-md inline-flex items-center border border-solid border-deep-black/3 bg-gray-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs reply-likes mobile:text-sm has-none border-deep-black/3 bg-grey-200 mr-auto md:mr-0"
         ></i>
+        <div
+            v-if="$page.props.auth.user && $page.props.auth.user.id == conversation.owner.id && $page.props.auth.user.id !== comment.owner.id"
+            class="rounded-md inline-flex items-center hover:border hover:border-gray-400 border border-solid border-deep-black/3 bg-grey-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs mr-2 text-grey-800"
+        >
+            <div>
+                <div class="form-check">
+                    <input
+                        class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                        type="checkbox"
+                        value
+                        :checked="comment.best_answer == 1 ? true : false"
+                        @change="onChangeBestAnswer(comment, $event)"
+                    />
+                    <label
+                        class="form-check-label inline-block text-gray-800"
+                        for="flexCheckChecked"
+                    >Best Answer</label>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -89,7 +109,22 @@ export default {
         },
         onEdit(data) {
             window.ChatterEvents.$emit('editReplyEvent', data)
+        },
+        onChangeBestAnswer(data, event) {
+            if (event.target.checked) {
+                this.form.best_answer = 1;
+            } else {
+                this.form.best_answer = 0;
+            }
+            let query = {
+                id: data.id,
+                best_answer: this.form.best_answer
+            };
+            this.$inertia.post(this.route("admin.replie.bestAnswer"), query, {
+                preserveScroll: true
+            });
         }
+
     }
 }
 </script>

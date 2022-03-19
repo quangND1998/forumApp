@@ -14,7 +14,7 @@
                             <option
                                 v-for="(chanel, index) in chanels"
                                 :key="index"
-                                :value="chanel.id"
+                                :value="chanel.title"
                             >{{ chanel.title }}</option>
                         </select>
                     </div>
@@ -199,6 +199,7 @@ export default {
         conversations: Object,
         chanels: Array,
         category: String,
+        solved: String
 
     },
     components: {
@@ -210,6 +211,7 @@ export default {
         return {
             term: null,
             filter: this.category,
+            answered: this.solved
         }
     },
     methods: {
@@ -221,6 +223,8 @@ export default {
                 this.filter = event.target.value;
                 let query = {
                     category: event.target.value,
+                    term: this.term,
+                    answered: this.answered
                 };
 
                 this.$inertia.get(this.route("forum"), query);
@@ -228,12 +232,18 @@ export default {
         },
         search() {
             if (this.filter == null) {
-                this.$inertia.get(this.route("forum"), { term: this.term },
+                let query = {
+                    category: this.filter,
+                    term: this.term,
+                    answered: this.answered
+                };
+                this.$inertia.get(this.route("forum"), query,
                     { preserveState: true });
             } else {
                 let query = {
                     category: this.filter,
-                    term: this.term
+                    term: this.term,
+                    answered: this.answered
                 };
                 this.$inertia.get(this.route("forum"), query,
                     { preserveState: true });

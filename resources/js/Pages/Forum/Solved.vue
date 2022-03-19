@@ -1,9 +1,44 @@
 <template>
     <div>
-        <UpdateQuestionComponent :errors="errors" :chanels="chanels"></UpdateQuestionComponent>
+        <div class="mb-6 flex flex-wrap justify-center md:mb-8 md:justify-between">
+            <div class="flex flex-1">
+                <div class="mobile:mr-4 mr-6 md:hidden lg:block">
+                    <div class="select-wrap">
+                        <select
+                            v-model="filter"
+                            @change="Filter"
+                            class="flex cursor-pointer items-center rounded-full bg-grey-400 px-5 py-3 text-xs leading-none text-grey-800"
+                            style="width: 115px;"
+                        >
+                            <option value="all">All</option>
+                            <option
+                                v-for="(chanel, index) in chanels"
+                                :key="index"
+                                :value="chanel.id"
+                            >{{ chanel.title }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <form class="search-form mt-5 h-[40px] w-full rounded-full bg-grey-400 md:mt-0 md:w-52">
+                <span
+                    class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3"
+                >
+                    <i class="fas fa-search"></i>
+                </span>
+                <input
+                    v-model="term"
+                    @keyup="search"
+                    type="text"
+                    placeholder="Search here..."
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
+                />
+            </form>
+        </div>
+
         <div v-for="post in conversations.data" :key="post.id">
             <div
-                class="flex cursor-pointer items-center flex-col md:flex-row md:hover:bg-gray-200 hover:rounded-lg md:px-6 md:py-4 mb-6 md:mb-0 transition-all px-6 py-5 md:px-0 md:py-0 rounded-lg -mx-2 md:mx-0"
+                class="flex cursor-pointer items-center flex-col md:flex-row md:hover:bg-gray-200 hover:rounded-lg md:px-6 md:py-4 transition-all px-6 py-5 md:px-0 md:py-0 rounded-lg -mx-2 md:mx-0"
             >
                 <div class="w-full md:w-auto md:mr-6 flex items-center md:block mb-4 md:mb-0">
                     <span class="icon mr-3 md:mr-0">
@@ -24,18 +59,32 @@
 
                     <div class="flex md:hidden items-center justify-center ml-auto">
                         <span
-                            class="mr-3 inline-flex text-white rounded-full h-6 px-3 justify-center items-center text-xs"
+                            class="btn btn-channel ml-5 block w-24 py-2 px-4 text-center text-2xs is-eloquent"
                             :style="`background-color: ${post.chanel.color}`"
                         >{{ post.chanel.title }}s</span>
                         <span class="text-gray-800 text-xs">posted {{ post.time_ago }}</span>
-                        <i
-                            @click="onEdit(post)"
-                            class="fas fa-edit cursor-pointer rounded-md px-2 py-2 m-2 border-1 border-green-400"
-                        ></i>
-                        <i
-                            @click="onDelete(post.id)"
-                            class="fas fa-trash-alt cursor-pointer md:hover:bg-red-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
-                        ></i>
+
+                        <!-- <div class="flex bg-gray-200 rounded-full h-6 items-center">
+                            <div class="flex py-2 px-3 items-center">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="13"
+                                    height="12"
+                                    viewBox="0 0 15 14"
+                                    class="mr-2"
+                                >
+                                    <path
+                                        fill="#78909C"
+                                        fill-rule="evenodd"
+                                        d="M7.5 0C3.344 0 0 2.818 0 6.286c0 1.987 1.094 3.757 2.781 4.914l.117 2.35c.022.438.338.58.704.32l2.023-1.442c.594.144 1.219.18 1.875.18 4.156 0 7.5-2.817 7.5-6.285C15 2.854 11.656 0 7.5 0z"
+                                        opacity=".5"
+                                    />
+                                </svg>
+                                <span
+                                    class="text-xs text-gray-800 font-semibold leading-none"
+                                >{{ discussion.answers }}</span>
+                            </div>
+                        </div>-->
                     </div>
                 </div>
 
@@ -45,15 +94,13 @@
                             :href="route('question.getDetail', post.slug)"
                             class="mb-3 md:mb-1 text-base md:text-lg font-bold md:font-semibold tracking-tight text-gray-900 hover:text-gray-900"
                             style="word-break: break-word;"
-                        >{{ post.title }}</Link>
-                        <i
-                            @click="onEdit(post)"
-                            class="fas fa-edit cursor-pointer md:hover:bg-green-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
-                        ></i>
-                        <i
-                            @click="onDelete(post.id)"
-                            class="fas fa-trash-alt cursor-pointer md:hover:bg-red-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
-                        ></i>
+                        >
+                            {{ post.title }}
+                            <span
+                                class="text-gray-800 text-xs font-bold"
+                            >posted {{ post.time_ago }}</span>
+                        </Link>
+
                         <div v-if="post.lastReplie" class="text-gray-800 text-xs">
                             <span
                                 class="text-blue-600 uppercase font-bold"
@@ -81,7 +128,7 @@
                     </div>
                 </div>
                 <div
-                    class="hidden md:flex md:items-center md:flex-row-reverse text-center md:ml-auto relative"
+                    class="relative hidden text-center md:ml-auto md:flex md:flex-row-reverse md:items-center"
                     style="top: -10px;"
                 >
                     <div class="flex items-center justify-center ml-4">
@@ -134,23 +181,6 @@
                             :style="`color: ${post.chanel.color}; border-color: ${post.chanel.color} `"
                         >{{ post.chanel.title }}</a>
                     </div>
-                    <div
-                        class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"
-                    >
-                        <input
-                            type="checkbox"
-                            name="toggle"
-                            :checked="post.solved == 1 ? true : false"
-                            @change="onChangeSolved(post, $event)"
-                            class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 appearance-none cursor-pointer"
-                        />
-                        <label
-                            for="toggle"
-                            class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-300 cursor-pointer"
-                        ></label>
-                    </div>
-                    <label v-if="post.solved == 1" for="toggle" class="text-xs text-gray-700">Solved</label>
-                    <label v-else for="toggle" class="text-xs mr-1 text-gray-700">UnSolved</label>
                 </div>
             </div>
         </div>
@@ -163,54 +193,53 @@
 import { Link } from '@inertiajs/inertia-vue'
 import Pagination from "@/Components/Pagination";
 import LayoutForum from '@/Pages/Forum/Layout'
-import UpdateQuestionComponent from '@/Components/Question/UpdateQuestionComponent';
 export default {
     layout: LayoutForum,
     props: {
         conversations: Object,
         chanels: Array,
-        errors: Object
+        category: String,
+
     },
     components: {
         Pagination,
-        Link,
-        UpdateQuestionComponent
+        Link
     },
+
     data() {
         return {
-            form: this.$inertia.form({
-
-            })
+            term: null,
+            filter: this.category,
         }
     },
     methods: {
-        onEdit(data) {
-            window.ChatterEvents.$emit('EditConversaion', data)
-        },
-        onDelete(id) {
-            if (!confirm("Are you sure want to remove?")) return;
-            this.$inertia.delete(
-                this.route("admin.conversation.delete", id),
-                null,
-                {
-                    preserveState: true
-                }
-            );
-        },
-        onChangeSolved(data, event) {
-            if (event.target.checked) {
-                this.form.solved = 1;
+        Filter(event) {
+            if (event.target.value == "all") {
+                this.filter = event.target.value;
+                this.$inertia.get(this.route("solved"));
             } else {
-                this.form.solved = 0;
+                this.filter = event.target.value;
+                let query = {
+                    category: event.target.value,
+                };
+
+                this.$inertia.get(this.route("solved"), query);
             }
-            let query = {
-                id: data.id,
-                solved: this.form.solved
-            };
-            this.$inertia.post(this.route("admin.conversation.makeSolved"), query, {
-                preserveScroll: true
-            });
-        }
+        },
+        search() {
+            if (this.filter == null) {
+                this.$inertia.get(this.route("solved"), { term: this.term },
+                    { preserveState: true });
+            } else {
+                let query = {
+                    category: this.filter,
+                    term: this.term
+                };
+                this.$inertia.get(this.route("solved"), query,
+                    { preserveState: true });
+            }
+
+        },
     }
 
 }
@@ -255,11 +284,11 @@ export default {
 .fill-current {
     fill: currentColor;
 }
-.toggle-checkbox:checked {
-    right: 0;
-    border-color: #68d391;
+.select-wrap {
+    position: relative;
 }
-.toggle-checkbox:checked + .toggle-label {
-    background-color: #68d391;
+.btn-channel {
+    border: 1px solid;
+    color: var(--channel-color);
 }
 </style>

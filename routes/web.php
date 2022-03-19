@@ -26,6 +26,9 @@ Route::get('language/{language}', function ($language) {
     return redirect()->back();
 })->name('language');
 Route::get('/forum', [ForumController::class, 'index'])->name('forum');
+Route::get('/solved', [ForumController::class, 'getSolved'])->name('solved');
+Route::get('/Unsolved', [ForumController::class, 'getUnsolved'])->name('Unsolved');
+
 Route::get('/question/{name}', [ReplieController::class, 'getDetail'])->name('question.getDetail');
 // Route::get('/')
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -42,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('store', [ConversationController::class, 'store'])->name('store');
             Route::post('update/{id}', [ConversationController::class, 'update'])->name('update');
             Route::delete('delete/{id}', [ConversationController::class, 'delete'])->name('delete');
+            Route::post('makeSolved', [ConversationController::class, 'makeSolved'])->name('makeSolved');
         });
 
         Route::prefix('replie')->as('replie.')->group(function () {
@@ -49,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('store/{id}', [ReplieController::class, 'store'])->name('store');
             Route::post('likeReplie/{id}', [ReplieController::class, 'likeRelie'])->name('like');
             Route::put('update/{id}', [ReplieController::class, 'update'])->name('update');
+            Route::post('best_answer', [ReplieController::class, 'bestAnswer'])->name('bestAnswer');
         });
     });
     Route::get('myThread', [ConversationController::class, 'myConversation'])->name('myThread');

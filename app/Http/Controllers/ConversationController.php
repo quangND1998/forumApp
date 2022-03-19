@@ -10,6 +10,7 @@ use App\Http\Resources\ConversationResource;
 use App\Http\Resources\ReplieResource;
 use Inertia\Inertia;
 use App\Models\Chanels;
+use App\Models\Replies;
 
 class ConversationController extends Controller
 {
@@ -70,11 +71,10 @@ class ConversationController extends Controller
 
         return Inertia::render('Forum/MyConversation', compact('conversations', 'chanels'));
     }
-    public function bestAnswer()
-    {
-    }
+
     public function makeSolved(Request $request)
     {
+    
         $conversation = Conversation::find($request->id)->update(['solved' => $request->solved]);;
         return back()->with('success', "Successfully");
     }

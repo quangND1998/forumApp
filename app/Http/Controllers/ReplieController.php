@@ -108,4 +108,11 @@ class ReplieController extends Controller
 
         return back()->with('success', "Update Reply succesffly");
     }
+
+    public function bestAnswer(Request $request)
+    {
+      
+        $replie = Replies::find($request->id)->update(['best_answer' => $request->best_answer]);
+        return back()->with('success', "Successfully");
+    }
 }

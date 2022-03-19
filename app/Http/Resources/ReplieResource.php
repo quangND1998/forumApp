@@ -22,6 +22,7 @@ class ReplieResource extends JsonResource
                 'body' => $this->body,
                 'slug' => $this->slug,
                 'body_in_markdown' => $this->body_in_markdown,
+                'best_answer' => $this->best_answer,
                 'conversation_id' => $this->conversation_id,
                 'owner' => new UserResource($this->user),
                 'time_ago' => Carbon::parse($this->created_at)->diffForHumans(),

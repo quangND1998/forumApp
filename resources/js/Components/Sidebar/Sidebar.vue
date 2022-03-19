@@ -216,7 +216,7 @@
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="inline-flex">
             <Link
-              :href="route('forum')"
+              :href="route('forum')" 
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >
@@ -236,6 +236,26 @@
                 class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"
               ></i>
             Chanels
+            </Link>
+          </li>
+            <li class="inline-flex">
+            <Link
+              href="/forum?answered=1"
+              target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
+            >
+            <i class="far fa-check-circle mr-2 text-blueGray-300 text-base"></i>
+            Solved
+            </Link>
+          </li>
+            <li class="inline-flex">
+            <Link
+              href="/forum?answered=0"
+              target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
+            >
+            <i class="far fa-times-circle mr-2 text-blueGray-300 text-base"></i>
+            Unsolved
             </Link>
           </li>
 
