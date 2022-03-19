@@ -47,11 +47,7 @@
                             style="word-break: break-word;"
                         >
                             {{ post.title }}
-                            <span
-                                class="hidden md:inline-flex text-white rounded-full h-4 px-3 justify-center items-center text-xs lowercase"
-                                :style="`background-color: ${post.chanel.color}`"
-                            >{{ post.chanel.title }}</span>
-                            <span class="text-gray-800 text-xs font-bold">posted {{ post.time_ago }}</span>
+                          
                         </Link>
                         <i
                             @click="onEdit(post)"
@@ -134,6 +130,12 @@
                         <span
                             class="text-xs text-gray-800 font-semibold text-left leading-none"
                         >{{ post.view }}</span>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <a
+                            class="items-center justify-center border hidden md:inline-flex text-white rounded-full h-4 px-3 text-xs uppercase"
+                            :style="`color: ${post.chanel.color}; border-color: ${post.chanel.color} `"
+                        >{{ post.chanel.title }}</a>
                     </div>
                 </div>
             </div>

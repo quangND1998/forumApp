@@ -51,12 +51,16 @@
                                         </button>
                                     </div>
                                     <div class="control">
-                                        <textarea
-                                            v-model="form.body"
+                                        <ckeditor
                                             class="textarea mb-1 w-full border-l-0 border-r-0 px-0 py-4 text-sm focus:border-grey-500 overflow-y"
                                             style="min-height: 150px; max-height: 45vh; overflow: hidden; overflow-wrap: break-word; resize: none; height: 150px;"
                                             data-tribute="true"
-                                        ></textarea>
+                                            v-model="form.body"
+                                            :editor="editor"
+                                            :config="editorConfig"
+                                            tag-name="textarea"
+                                        ></ckeditor>
+                                        <div class="text-red-500" v-if="errors">{{ errors.body }}</div>
                                     </div>
                                     <div class="flex items-center justify-between">
                                         <div
@@ -115,25 +119,26 @@ export default {
                 id: null,
                 body: null,
                 user_id: null,
-                replie_id: null
+                replie_id: null,
+                replie_user: null
             }),
             editor: ClassicEditor,
             editorData: "<p>Content of the editor.</p>",
             editorConfig: {
-                // The configuration of the editor.
+                toolbar: ['bold', 'italic', '|', 'link']
             }
         };
     },
     mounted() {
         var self = this;
         window.ChatterEvents.$on("RelytoQuestion", e => {
-            // console.log(e);
             self.openModal();
         });
-        window.ChatterEvents.$on("ReplieEvent", e => {
+        window.ChatterEvents.$on("ReplieEvent", (e, comment) => {
             self.form.replie_id = e.id
-            self.openModalReplie(e);
+            self.openModalReplie(e, comment);
         });
+
     },
     methods: {
 
@@ -154,28 +159,31 @@ export default {
             })
 
         },
+
         toggleModal() {
             this.visible = !this.visible;
         },
         closeModal() {
 
             this.visible = false;
+            this.form.reset();
         },
         openModal() {
             this.visible = true;
             this.reply_to = "Post"
         },
 
-        openModalReplie(data) {
+        openModalReplie(data, comment) {
             this.visible = true;
-            this.reply_to = data.owner.name
+            this.reply_to = comment.owner.name
+            this.form.replie_user = `@${comment.owner.name}`
         },
         miniMize() {
             this.showMize = false;
             this.StyleCss = {
                 position: 'relative',
                 transition: '1s',
-                bottom: '-250px'
+                bottom: '-200px'
             }
         },
 

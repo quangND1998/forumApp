@@ -240,15 +240,15 @@
           </li>
 
           <li class="inline-flex" v-if="$page.props.auth.user">
+
             <Link
               :href="route('myThread')"
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >
-              <i
-                class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"
-              ></i>
-              myThread
+            <i class="far fa-question-circle mr-2  text-base"></i>
+
+              My Question
             </Link>
           </li>
 
@@ -335,7 +335,7 @@
     </div>
   </nav>
 </template>
-); }
+
 
 <script>
 import NotificationDropdown from "@/components/Dropdowns/NotificationDropdown.vue";
@@ -343,6 +343,7 @@ import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
 import { Link } from "@inertiajs/inertia-vue";
 import NewQuestionButton from '@/Components/NewQuestionButton'
 import ReplyButtom from "@/Components/ReplieComponent/ReplyButtom";
+import Icon from "@/Components/Icon";
 export default {
   data() {
     return {
@@ -359,7 +360,8 @@ export default {
     UserDropdown,
     Link,
     NewQuestionButton,
-    ReplyButtom
+    ReplyButtom,
+    Icon
   },
 };
 </script>

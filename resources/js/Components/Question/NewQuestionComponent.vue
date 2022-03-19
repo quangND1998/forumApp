@@ -94,10 +94,11 @@
                             </div>
 
                             <div class="text-right py-4">
-                                <button
+                                <a
+                                    type="button"
                                     @click="closeModal()"
                                     class="w-32 inline-block bg-gray-200 hover:bg-gray-500 font-bold py-2 px-4 rounded-full text-center cursor-pointer mr-2"
-                                >cancel</button>
+                                >cancel</a>
 
                                 <button
                                     type="submit"
@@ -181,7 +182,7 @@ export default {
                 },
                 onSuccess: page => {
                     this.visible = false;
-                  
+
                 },
             }
             )

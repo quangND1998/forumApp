@@ -46,6 +46,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Conversation::class, 'user_id');
     }
+
     public function replies()
     {
         return $this->belongsToMany(Replies::class, 'replie_user', 'user_id', 'replie_id');

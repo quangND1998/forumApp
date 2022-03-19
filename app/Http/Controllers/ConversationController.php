@@ -70,4 +70,12 @@ class ConversationController extends Controller
 
         return Inertia::render('Forum/MyConversation', compact('conversations', 'chanels'));
     }
+    public function bestAnswer()
+    {
+    }
+    public function makeSolved(Request $request)
+    {
+        $conversation = Conversation::find($request->id)->update(['solved' => $request->solved]);;
+        return back()->with('success', "Successfully");
+    }
 }

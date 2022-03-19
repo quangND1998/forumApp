@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
+use App\Http\Resources\ReplieResource;
 
 class UserResource extends JsonResource
 {
@@ -21,6 +22,7 @@ class UserResource extends JsonResource
                 'email' => $this->email,
                 'name' => $this->name,
                 'avatar' => $this->avatar ? $this->avatar : 'https://ui-avatars.com/api/?name=' . Str::slug($this->name) . '?background=0D8ABC&color=fff',
+                
             ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Http\Resources\UserResource;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -38,7 +39,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user() ?  new UserResource($request->user()) :  $request->user(),
                 // 'roles'=>  Auth::user()->roles,
                 'can' => $request->user() ? $request->user()->getPermissionArray() : [],
                 // 'roles' => $request->user() ? $request->user()->getRolesArray() : [],

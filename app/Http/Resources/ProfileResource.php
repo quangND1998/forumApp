@@ -3,10 +3,10 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
-use App\Http\Resources\LikeResource;
 
-class ReplieResource extends JsonResource
+class ProfileResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,16 +19,11 @@ class ReplieResource extends JsonResource
         return
             [
                 'id' => $this->id,
-                'body' => $this->body,
-                'slug' => $this->slug,
-                'body_in_markdown' => $this->body_in_markdown,
-                'conversation_id' => $this->conversation_id,
-                'owner' => new UserResource($this->user),
+                'email' => $this->email,
+                'name' => $this->name,
+                'avatar' => $this->avatar ? $this->avatar : 'https://ui-avatars.com/api/?name=' . Str::slug($this->name) . '?background=0D8ABC&color=fff',
+                'replies' => ReplieResource::collection($this->replies),
                 'time_ago' => Carbon::parse($this->created_at)->diffForHumans(),
-                'solved' => $this->solved,
-                'likes' =>  LikeResource::collection($this->users),
-                'replie_user' => $this->replie_user
-
             ];
     }
 }

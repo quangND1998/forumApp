@@ -48,11 +48,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::post('store/{id}', [ReplieController::class, 'store'])->name('store');
             Route::post('likeReplie/{id}', [ReplieController::class, 'likeRelie'])->name('like');
+            Route::put('update/{id}', [ReplieController::class, 'update'])->name('update');
         });
     });
     Route::get('myThread', [ConversationController::class, 'myConversation'])->name('myThread');
 });
-
+Route::get('@' . '{name}', [ForumController::class, 'profile'])->name('profile');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

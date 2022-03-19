@@ -43,13 +43,12 @@ class ReplieController extends Controller
     public function store(Request $request, $id)
     {
 
+
         $conversation = Conversation::findOrFail($id);
         $this->validate(
             $request,
             [
-
-                'body' => 'nullable',
-
+                'body' => 'required',
             ]
         );
 
@@ -63,9 +62,11 @@ class ReplieController extends Controller
             $replie->save();
         } else {
             $replie->replie_id = $request->replie_id;
+            $replie->body = $request->body;
+            $replie->replie_user = $request->replie_user;
             $replie->save();
         }
-        return back()->with('success', "Reply succesffly");
+        return back()->with('success', " Reply succesffly");
     }
 
     public function likeRelie($id, Request $reuest)
@@ -87,5 +88,24 @@ class ReplieController extends Controller
         // } else {
         //     $replie->users()->attach(Auth::user());
         // }
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $replie = Replies::findOrFail($id);
+        $this->validate(
+            $request,
+            [
+
+                'body' => 'required',
+
+            ]
+        );
+
+        $replie->body = $request->body;
+        $replie->save();
+
+        return back()->with('success', "Update Reply succesffly");
     }
 }

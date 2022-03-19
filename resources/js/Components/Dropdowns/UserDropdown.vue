@@ -11,9 +11,10 @@
           class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full"
         >
           <img
+            v-if="$page.props.auth.user"
             alt="..."
             class="w-full rounded-full align-middle border-none shadow-lg"
-            :src="image"
+            :src="$page.props.auth.user.avatar"
           />
         </span>
       </div>
@@ -27,20 +28,22 @@
       }"
     >
       <Link
-        class="flex items-center group py-3 px-1"
+        v-if="$page.props.auth.user"
+        :href="route('profile', $page.props.auth.user.name)"
+        class="flex items-center text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-blueGray-700"
+      >
+        <icon name="profile" class="w-4 h-4 mr-2" />Account
+      </Link>
+      <Link
+        class="flex items-center text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-blueGray-700"
         :href="route('logout')"
         as="button"
         type="button"
         method="post"
       >
-     
         <icon name="logout" class="w-4 h-4 mr-2" />
         <div class="text-sm">Logout</div>
       </Link>
-      <!-- <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-      >Register</a> -->
       <!-- <a
         href="javascript:void(0);"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"

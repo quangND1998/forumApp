@@ -24,6 +24,7 @@
         </button>
         <div class="flex">
             <button
+                v-if="$page.props.auth.user && $page.props.auth.user.id !== comment.owner.id"
                 @click="onClickReply"
                 class="rounded-md inline-flex items-center hover:border hover:border-gray-400 border border-solid border-deep-black/3 bg-grey-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs mr-2 text-grey-800"
             >
@@ -39,10 +40,10 @@
                 Reply
             </button>
         </div>
-        <i 
-            v-if="$page.props.auth.user.id == replie.owner.id"
-            @click="onEdit(replie)"
-            class="fas fa-edit cursor-pointer rounded-md px-2 py-2 m-2 border-1 border-green-400"
+        <i
+            v-if="$page.props.auth.user && $page.props.auth.user.id == comment.owner.id"
+            @click="onEdit(comment)"
+            class="fas fa-edit cursor-pointer rounded-md inline-flex items-center border border-solid border-deep-black/3 bg-gray-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs reply-likes mobile:text-sm has-none border-deep-black/3 bg-grey-200 mr-auto md:mr-0"
         ></i>
     </div>
 </template>
@@ -65,7 +66,7 @@ export default {
 
     methods: {
         onClickReply() {
-            window.ChatterEvents.$emit('ReplieEvent', this.replie)
+            window.ChatterEvents.$emit('ReplieEvent', this.replie, this.comment)
         },
         LikeReply() {
             this.$inertia.post(
@@ -86,9 +87,8 @@ export default {
             }
 
         },
-        onEdit(){
-            
-
+        onEdit(data) {
+            window.ChatterEvents.$emit('editReplyEvent', data)
         }
     }
 }

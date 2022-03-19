@@ -1,8 +1,44 @@
 <template>
     <div>
+        <div class="mb-6 flex flex-wrap justify-center md:mb-8 md:justify-between">
+            <div class="flex flex-1">
+                <div class="mobile:mr-4 mr-6 md:hidden lg:block">
+                    <div class="select-wrap">
+                        <select
+                            v-model="filter"
+                            @change="Filter"
+                            class="flex cursor-pointer items-center rounded-full bg-grey-400 px-5 py-3 text-xs leading-none text-grey-800"
+                            style="width: 115px;"
+                        >
+                            <option value="all">All</option>
+                            <option
+                                v-for="(chanel, index) in chanels"
+                                :key="index"
+                                :value="chanel.id"
+                            >{{ chanel.title }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <form class="search-form mt-5 h-[40px] w-full rounded-full bg-grey-400 md:mt-0 md:w-52">
+                <span
+                    class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3"
+                >
+                    <i class="fas fa-search"></i>
+                </span>
+                <input
+                    v-model="term"
+                    @keyup="search"
+                    type="text"
+                    placeholder="Search here..."
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
+                />
+            </form>
+        </div>
+
         <div v-for="post in conversations.data" :key="post.id">
             <div
-                class="flex cursor-pointer items-center flex-col md:flex-row md:hover:bg-gray-200 hover:rounded-lg md:px-6 md:py-4 mb-6 md:mb-0 transition-all px-6 py-5 md:px-0 md:py-0 rounded-lg -mx-2 md:mx-0"
+                class="flex cursor-pointer items-center flex-col md:flex-row md:hover:bg-gray-200 hover:rounded-lg md:px-6 md:py-4 transition-all px-6 py-5 md:px-0 md:py-0 rounded-lg -mx-2 md:mx-0"
             >
                 <div class="w-full md:w-auto md:mr-6 flex items-center md:block mb-4 md:mb-0">
                     <span class="icon mr-3 md:mr-0">
@@ -23,7 +59,7 @@
 
                     <div class="flex md:hidden items-center justify-center ml-auto">
                         <span
-                            class="border mr-3 inline-flex text-white rounded-full h-6 px-3 justify-center items-center text-xs"
+                            class="btn btn-channel ml-5 block w-24 py-2 px-4 text-center text-2xs is-eloquent"
                             :style="`background-color: ${post.chanel.color}`"
                         >{{ post.chanel.title }}s</span>
                         <span class="text-gray-800 text-xs">posted {{ post.time_ago }}</span>
@@ -61,10 +97,8 @@
                         >
                             {{ post.title }}
                             <span
-                                class=" border hidden md:inline-flex text-white rounded-full h-4 px-3 justify-center items-center text-xs lowercase"
-                                :style="`background-color: ${post.chanel.color}`"
-                            >{{ post.chanel.title }}</span>
-                            <span class="text-gray-800 text-xs font-bold">posted {{ post.time_ago }}</span>
+                                class="text-gray-800 text-xs font-bold"
+                            >posted {{ post.time_ago }}</span>
                         </Link>
 
                         <div v-if="post.lastReplie" class="text-gray-800 text-xs">
@@ -94,7 +128,7 @@
                     </div>
                 </div>
                 <div
-                    class="hidden md:flex md:items-center md:flex-row-reverse text-center md:ml-auto relative"
+                    class="relative hidden text-center md:ml-auto md:flex md:flex-row-reverse md:items-center"
                     style="top: -10px;"
                 >
                     <div class="flex items-center justify-center ml-4">
@@ -141,6 +175,12 @@
                             class="text-xs text-gray-800 font-semibold text-left leading-none"
                         >{{ post.view }}</span>
                     </div>
+                    <div class="flex items-center justify-center">
+                        <a
+                            class="items-center justify-center border hidden md:inline-flex text-white rounded-full h-4 px-3 text-xs uppercase"
+                            :style="`color: ${post.chanel.color}; border-color: ${post.chanel.color} `"
+                        >{{ post.chanel.title }}</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -156,11 +196,50 @@ import LayoutForum from '@/Pages/Forum/Layout'
 export default {
     layout: LayoutForum,
     props: {
-        conversations: Object
+        conversations: Object,
+        chanels: Array,
+        category: String,
+
     },
     components: {
         Pagination,
         Link
+    },
+
+    data() {
+        return {
+            term: null,
+            filter: this.category,
+        }
+    },
+    methods: {
+        Filter(event) {
+            if (event.target.value == "all") {
+                this.filter = event.target.value;
+                this.$inertia.get(this.route("forum"));
+            } else {
+                this.filter = event.target.value;
+                let query = {
+                    category: event.target.value,
+                };
+
+                this.$inertia.get(this.route("forum"), query);
+            }
+        },
+        search() {
+            if (this.filter == null) {
+                this.$inertia.get(this.route("forum"), { term: this.term },
+                    { preserveState: true });
+            } else {
+                let query = {
+                    category: this.filter,
+                    term: this.term
+                };
+                this.$inertia.get(this.route("forum"), query,
+                    { preserveState: true });
+            }
+
+        },
     }
 
 }
@@ -204,5 +283,12 @@ export default {
 }
 .fill-current {
     fill: currentColor;
+}
+.select-wrap {
+    position: relative;
+}
+.btn-channel {
+    border: 1px solid;
+    color: var(--channel-color);
 }
 </style>

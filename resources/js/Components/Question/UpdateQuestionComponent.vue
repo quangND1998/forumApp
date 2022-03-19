@@ -95,7 +95,7 @@
 
                             <div class="text-right py-4">
                                 <button
-                                    @click="closeModal()"
+                                    @click.prevent="closeModal()"
                                     class="w-32 inline-block bg-gray-200 hover:bg-gray-500 font-bold py-2 px-4 rounded-full text-center cursor-pointer mr-2"
                                 >cancel</button>
 
