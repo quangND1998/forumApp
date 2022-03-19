@@ -59,8 +59,8 @@
 
                     <div class="flex md:hidden items-center justify-center ml-auto">
                         <span
-                            class="btn btn-channel ml-5 block w-24 py-2 px-4 text-center text-2xs is-eloquent"
-                            :style="`background-color: ${post.chanel.color}`"
+                            class="mr-1 btn btn-channel rounded-md ml-5 block w-24 py-1 px-2 text-center text-xs is-eloquent"
+                               :style="`color: ${post.chanel.color}; border-color: ${post.chanel.color} `"
                         >{{ post.chanel.title }}s</span>
                         <span class="text-gray-800 text-xs">posted {{ post.time_ago }}</span>
 

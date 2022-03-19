@@ -216,18 +216,20 @@
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="inline-flex">
             <Link
+            :class="[$page.url == '/forum' ? 'opacity-75 text-blue-300' : '']"
               :href="route('forum')" 
               target="_blank"
-              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
+              class="text-blueGray-700 hover:text-blueGray-400 text-sm block mb-4 no-underline font-semibold"
             >
               <i
                 class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"
               ></i>
-              All Thread
+              All Thread 
             </Link>
           </li>
           <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
             <Link
+            :class="[$page.url == '/admin/chanels' ? 'opacity-75 text-blue-300' : '']"
               :href="route('admin.chanels.index')"
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
@@ -240,6 +242,7 @@
           </li>
             <li class="inline-flex">
             <Link
+               :class="[$page.url.startsWith('/forum?answered=1') ? 'opacity-75 text-blue-300' : '']"
               href="/forum?answered=1"
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
@@ -251,6 +254,7 @@
             <li class="inline-flex">
             <Link
               href="/forum?answered=0"
+              :class="[$page.url.startsWith('/forum?answered=0') ? 'opacity-75 text-blue-300' : '']"
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >
@@ -263,6 +267,7 @@
 
             <Link
               :href="route('myThread')"
+              :class="[$page.url.startsWith('/myThread') ? 'opacity-75 text-blue-300' : '']"
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
             >

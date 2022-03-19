@@ -17,7 +17,7 @@
                     style="z-index:9999;"
                 >
                     <!-- Add margin if you want to see some of the overlay behind the modal-->
-                    <div class="modal-content p-2 px-4 text-left">
+                    <div class="modal-content p-2 px-4 text-left overflow-y-auto" style="max-height: 50vh">
                         <!--Title-->
                         <div class="flex justify-between items-center">
                             <p class="text-2xl">Update Question</p>

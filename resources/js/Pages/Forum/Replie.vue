@@ -60,7 +60,7 @@
                                     style="top: -5px;"
                                 >
                                     <span
-                                        class="inline-flex items-center rounded-full bg-blue-500 px-6 py-2 text-3xs font-bold uppercase text-white md:text-2xs"
+                                        class="inline-flex items-center rounded-full bg-blue-500 px-3 py-1 text-2xs font-bold uppercase text-white md:text-2xs"
                                     >Best Answer</span>
                                 </div>
                             </header>
@@ -136,7 +136,7 @@
                                         style="top: -5px;"
                                     >
                                         <span
-                                            class="inline-flex items-center rounded-full bg-blue-500 px-6 py-2 text-3xs font-bold uppercase text-white md:text-2xs"
+                                            class="inline-flex items-center rounded-full bg-blue-500 px-3 py-1 text-2xs font-bold uppercase text-white md:text-2xs"
                                         >Best Answer</span>
                                     </div>
                                 </header>

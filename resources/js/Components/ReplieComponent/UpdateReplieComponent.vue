@@ -182,7 +182,7 @@ export default {
             this.StyleCss = {
                 position: 'relative',
                 transition: '1s',
-                bottom: '-250px'
+                bottom: '-200px'
             }
         },
 
