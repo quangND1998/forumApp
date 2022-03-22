@@ -203,7 +203,7 @@
           </li>
         </ul>
 
-     
+
         <!-- Divider -->
         <hr class="my-4 md:min-w-full" />
         <!-- Heading -->
@@ -217,14 +217,14 @@
           <li class="inline-flex">
             <Link
             :class="[$page.url == '/forum' ? 'opacity-75 text-blue-300' : '']"
-              :href="route('forum')" 
+              :href="route('forum')"
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-400 text-sm block mb-4 no-underline font-semibold"
             >
               <i
                 class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"
               ></i>
-              All Thread 
+              All Thread
             </Link>
           </li>
           <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
@@ -363,8 +363,8 @@
 
 
 <script>
-import NotificationDropdown from "@/components/Dropdowns/NotificationDropdown.vue";
-import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
+import NotificationDropdown from "@/Components/Dropdowns/NotificationDropdown.vue";
+import UserDropdown from "@/Components/Dropdowns/UserDropdown.vue";
 import { Link } from "@inertiajs/inertia-vue";
 import NewQuestionButton from '@/Components/NewQuestionButton'
 import ReplyButtom from "@/Components/ReplieComponent/ReplyButtom";
