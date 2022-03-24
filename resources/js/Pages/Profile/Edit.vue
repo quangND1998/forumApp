@@ -24,7 +24,7 @@
                                                 />
                                             </Link>
                                             <div class="flex justify-between gap-x-1">
-                                                <Link  v-if="$page.props.auth.user"
+                                                <Link
                                                     class="btn btn-dark-blue rounded-md px-2 py-1 text-[12px] normal-case"
                                                 >Edit</Link>
                                             </div>

@@ -57,4 +57,9 @@ class User extends Authenticatable
             return [$pr['name'] => true];
         });
     }
+
+    public function activities()
+    {
+        return $this->hasMany(Activities::class, 'user_id');
+    }
 }

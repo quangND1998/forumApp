@@ -57,6 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
     });
     Route::get('myThread', [ConversationController::class, 'myConversation'])->name('myThread');
+    Route::get('setting/account/update', [ForumController::class, 'editProfile'])->name('editProfile');
 });
 Route::get('@' . '{name}', [ForumController::class, 'profile'])->name('profile');
 

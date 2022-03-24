@@ -20,12 +20,13 @@ class CreateConversationTable extends Migration
             $table->longText('body')->nullable();
             $table->boolean('solved')->default(false);
             $table->longText('body_in_markdown')->nullable();
-            $table->unsignedBigInteger('chanel_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+
             $table->integer('view')->default(0);
+            $table->unsignedBigInteger('chanel_id')->nullable();
             $table->foreign('chanel_id')->references('id')->on('chanels')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

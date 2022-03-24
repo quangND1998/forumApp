@@ -23,12 +23,12 @@ class ForumController extends Controller
         $solved = $request->input('answered');
 
         if ($chanel !== null && $solved !== null) {
-           
+
             $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('solved', $solved)->where('chanel_id', $chanel->id)->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel == null && $solved !== null) {
-           
+
             $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('solved', $solved)->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
@@ -104,10 +104,26 @@ class ForumController extends Controller
     public function profile($name)
     {
 
-        $user = User::with('replies.conversation')->where('name', $name)->first();
+        $user = User::with('replies.conversation', 'conversations')->where('name', $name)->first();
+        // $activities= User::with()
+
         if ($user) {
             $user = new ProfileResource($user);
             return Inertia::render('Profile/Index', compact('user'));
+        } else {
+            $erros = "Not found user !!";
+            return Inertia::render('Erros/401', ['erros' => $erros]);
+        }
+    }
+
+    public function editProfile($name)
+    {
+        $user = User::with('replies.conversation', 'conversations')->where('name', $name)->first();
+        // $activities= User::with()
+
+        if ($user) {
+            $user = new ProfileResource($user);
+            return Inertia::render('Profile/Edit', compact('user'));
         } else {
             $erros = "Not found user !!";
             return Inertia::render('Erros/401', ['erros' => $erros]);

@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\ReplieResource;
+use App\Models\Activities;
 use Inertia\Inertia;
 use App\Models\Chanels;
 use App\Models\Replies;
@@ -31,6 +32,7 @@ class ConversationController extends Controller
             'chanel_id' => $request->chanel_id,
             'user_id' => Auth::user()->id
         ]);
+
         return back()->with('success', 'Create question successfully');
     }
 
@@ -51,6 +53,8 @@ class ConversationController extends Controller
             'body' => $request->body,
             'chanel_id' => $request->chanel_id,
         ]);
+    
+
         return back()->with('success', 'Update question successfully');
     }
 
