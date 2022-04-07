@@ -30,6 +30,7 @@ Route::get('/solved', [ForumController::class, 'getSolved'])->name('solved');
 Route::get('/Unsolved', [ForumController::class, 'getUnsolved'])->name('Unsolved');
 
 Route::get('/question/{name}', [ReplieController::class, 'getDetail'])->name('question.getDetail');
+
 // Route::get('/')
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('admin')->as('admin.')->group(function () {
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('update/{id}', [ConversationController::class, 'update'])->name('update');
             Route::delete('delete/{id}', [ConversationController::class, 'delete'])->name('delete');
             Route::post('makeSolved', [ConversationController::class, 'makeSolved'])->name('makeSolved');
+            Route::post('lockComment', [ConversationController::class, 'lockComment'])->name('lockComment');
         });
 
         Route::prefix('replie')->as('replie.')->group(function () {
@@ -58,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     Route::get('myThread', [ConversationController::class, 'myConversation'])->name('myThread');
     Route::get('setting/account/update', [ForumController::class, 'editProfile'])->name('editProfile');
+    Route::post('saveProfile',[ForumController::class, 'saveProfile'])->name('saveProfile');
 });
 Route::get('@' . '{name}', [ForumController::class, 'profile'])->name('profile');
 

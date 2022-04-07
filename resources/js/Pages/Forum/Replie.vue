@@ -1,6 +1,14 @@
 <template>
     <transition name="fade" class="flex flex-wrap p-4 pb-0 w-full">
+     
         <div>
+            <div v-if="conversation.lock_comment" class="bg-indigo-900 text-center py-4 lg:px-4 mb-4">
+                <div class="p-2 bg-indigo-800 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+                <span class="flex rounded-full bg-indigo-500 uppercase px-2 py-1 text-xs font-bold mr-3">New</span>
+                <span class="font-semibold mr-2 text-left flex-auto">Can't comment or reply because the post owner has locked this feature</span>
+            
+            </div>
+            </div>
             <Conversation :conversation="conversation"></Conversation>
             <div
                 v-for="replie in initalReplies"
@@ -158,8 +166,8 @@
                     </div>
                 </div>
             </div>
-            <NewReplieComponent :conversation="conversation" :initalReplies="initalReplies"></NewReplieComponent>
-            <UpdateReplieComponent :conversation="conversation" :initalReplies="initalReplies"></UpdateReplieComponent>
+            <NewReplieComponent v-if="conversation.lock_comment == false" :conversation="conversation" :initalReplies="initalReplies"></NewReplieComponent>
+            <UpdateReplieComponent v-if="conversation.lock_comment == false"  :conversation="conversation" :initalReplies="initalReplies"></UpdateReplieComponent>
         </div>
     </transition>
 </template>
@@ -171,12 +179,14 @@ import LayoutForum from '@/Pages/Forum/Layout'
 import NewReplieComponent from '@/Components/ReplieComponent/NewReplieComponent'
 import LikeReplyButton from '@/Components/ReplieComponent/LikeReplyButton'
 import UpdateReplieComponent from '@/Components/ReplieComponent/UpdateReplieComponent'
+import Echo from 'laravel-echo'
 export default {
     layout: LayoutForum,
     props: {
         conversation: Object,
         initalReplies: Array,
-        errors: Object
+        errors: Object,
+        replie_id:String
     },
     components: {
         Link,
@@ -184,6 +194,71 @@ export default {
         NewReplieComponent,
         LikeReplyButton,
         UpdateReplieComponent
+    },
+     mounted() {
+        this.listenForNewComment();
+        this.listenForLikeComment();
+    },
+    data(){
+        return{
+            replyId:this.replie_id
+        }
+    },
+    methods:{
+        listenForNewComment(){
+           window.Echo.channel('replie_event').listen("ReplieCommentEvent", (e)=>{
+            
+                if(e.replie_id ==null ){
+
+                    this.initalReplies.push(e);
+                
+                }
+                else{
+                    // this.initalReplies.forEach(element => {
+                    //     if(element.id == e.replie_id){
+                    //         element.replies.push(e);
+                    //     }
+                        
+                    // });
+                    for(let i=0;i < this.initalReplies.length ;i++){
+                        if(this.initalReplies[i].id == e.replie_id){
+                            this.initalReplies[i].replies.push(e);
+                        }
+                    }
+                }
+                
+            })
+        },
+        listenForLikeComment(){
+              window.Echo.channel('like_event').listen("LikeCommentEvent", (e)=>{
+            
+                if(e.replie_id ==null ){
+                     this.initalReplies.forEach(element => {
+                        if(element.id == e.id){
+                            element.likes =e.likes;
+                            element.best_answer = e.best_answer
+                        }
+                        
+                    });
+                   
+                
+                }
+                else{
+                    this.initalReplies.forEach(element => {
+                        if(element.id == e.replie_id){
+                            element.replies.forEach(replie => {
+                                if(replie.id == e.id){
+                                    replie.likes =e.likes;
+                                    replie.best_answer = e.best_answer
+                                }
+
+                            });
+                        }
+                    });
+                }
+                
+            })
+        }
     }
 }
 </script>

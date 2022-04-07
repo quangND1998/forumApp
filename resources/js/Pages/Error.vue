@@ -27,7 +27,7 @@
           {{ description }}
         </h6>
 
-        <Link href="forum" class="px-6 py-2 text-sm rounded-md font-semibold text-blue-800 bg-blue-100">Go home</Link>
+        <Link href="/forum" class="px-6 py-2 text-sm rounded-md font-semibold text-blue-800 bg-blue-100">Go home</Link>
       </div>
     </div>
   </div>

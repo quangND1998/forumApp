@@ -144,13 +144,41 @@
                             @change="onChangeSolved(post, $event)"
                             class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 appearance-none cursor-pointer"
                         />
+
+                        
                         <label
                             for="toggle"
                             class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-300 cursor-pointer"
                         ></label>
+                        
                     </div>
-                    <label v-if="post.solved == 1" for="toggle" class="text-xs text-gray-700">Solved</label>
-                    <label v-else for="toggle" class="text-xs mr-1 text-gray-700">UnSolved</label>
+                        <label v-if="post.solved == 1" for="toggle" class="text-xs text-gray-700">Solved</label>
+                        <label v-else for="toggle" class="text-xs mr-1 text-gray-700">UnSolved</label>
+
+                     <div
+                        class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"
+                    >
+                        <input
+                            type="checkbox"
+                            name="toggle"
+                            :checked="post.lock_comment == 1 ? true : false"
+                            @change="onChangelooked(post, $event)"
+                            class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 appearance-none cursor-pointer"
+                        />
+
+                        
+                        <label
+                            for="toggle"
+                            class="toggle-label block overflow-hidden h-4 rounded-full bg-gray-300 cursor-pointer"
+                        ></label>
+                        
+                    </div>
+                        <label v-if="post.lock_comment == 1" for="toggle" class="text-xs text-gray-700">Lock Comment</label>
+                        <label v-else for="toggle" class="text-xs mr-1 text-gray-700">Un Lock</label>
+
+                   
+
+                    
                 </div>
             </div>
         </div>
@@ -183,6 +211,10 @@ export default {
             })
         }
     },
+    mounted(){
+        //this.listenForDeleteConverstion();
+        this.listenForViewConverstion();
+    },
     methods: {
         onEdit(data) {
             window.ChatterEvents.$emit('EditConversaion', data)
@@ -210,6 +242,35 @@ export default {
             this.$inertia.post(this.route("admin.conversation.makeSolved"), query, {
                 preserveScroll: true
             });
+        },
+           onChangelooked(data, event) {
+            if (event.target.checked) {
+                this.form.lock_comment = 1;
+            } else {
+                this.form.lock_comment = 0;
+            }
+            let query = {
+                id: data.id,
+                lock_comment: this.form.lock_comment
+            };
+            this.$inertia.post(this.route("admin.conversation.lockComment"), query, {
+                preserveScroll: true
+            });
+        },
+        // listenForDeleteConverstion(){
+        //      window.Echo.channel('deleteConversation_event').listen('DeleteConvsesationEvent', (e)=>{
+        //          console.log(e)
+        //         let index = this.conversations.data.findIndex(x => x.id == e.id);
+        //         this.conversations.data.splice(index,1);
+        //     })
+        // }
+
+          listenForViewConverstion(){
+             window.Echo.channel('view_conversation_event').listen('ViewConversationEvent', (e)=>{
+             
+                let index = this.conversations.data.findIndex(x => x.id == e.id);
+                this.conversations.data.splice(index,1,e);
+            })
         }
     }
 

@@ -166,6 +166,7 @@ export default {
         },
         closeModal() {
             this.visible = false;
+              this.reset();
         },
         openModal() {
             var self = this;
@@ -182,10 +183,19 @@ export default {
                 },
                 onSuccess: page => {
                     this.visible = false;
+                    this.reset();
 
                 },
             }
             )
+        },
+        reset(){
+              this.form = this.$inertia.form({
+                id: null,
+                title: null,
+                body: null,
+                chanel_id: null
+            })
         }
     }
 }

@@ -12,19 +12,29 @@ use App\Http\Resources\ReplieResource;
 use App\Models\Replies;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\ReplieActivity;
+use App\Jobs\UpdateActivity;
+use App\Jobs\LikeCommentActivity;
+use App\Models\Activities;
+use Illuminate\Support\Carbon;
+use App\Events\ReplieCommentEvent;
+use App\Events\LikeCommentEvent;
+use App\Events\ViewConversationEvent;
 
 class ReplieController extends Controller
 {
 
-    public function getDetail($name)
+    public function getDetail(Request $request,$name)
     {
         $chanels = Chanels::get();
-        $conversation = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies.users', 'chanel')->where('slug', $name)->first();
+        $replie_id = $request->input('replyId');
+        $conversation = Conversation::with(['user', 'all_replies', 'initalReplies.user', 'initalReplies.replies.users', 'chanel'])->where('slug', $name)->first();
+     
         // return $conversation;
         // return $conversation;
         // $conversation = new ConversationResource($conversation);
         // return $conversation;
-
+        
         if ($conversation !== null) {
 
             $conversation->view = $conversation->view + 1;
@@ -34,7 +44,8 @@ class ReplieController extends Controller
             $initalReplies = InitalReplieResource::collection($conversation->initalReplies);
 
             $conversation = new ConversationResource($conversation);
-            return Inertia::render('Forum/Replie', compact('conversation', 'chanels', 'initalReplies'));
+            broadcast(new ViewConversationEvent($conversation))->toOthers();
+            return Inertia::render('Forum/Replie', compact('conversation', 'chanels', 'initalReplies','replie_id'));
         } else {
             $erros = "Not found conversation !!";
             return Inertia::render('Erros/401', ['erros' => $erros]);
@@ -60,25 +71,55 @@ class ReplieController extends Controller
         if ($request->replie_id == null) {
             $replie->is_inital = 1;
             $replie->save();
+
         } else {
             $replie->replie_id = $request->replie_id;
             $replie->body = $request->body;
             $replie->replie_user = $request->replie_user;
             $replie->save();
         }
+        $replie->load('users','user');
+        broadcast(new ReplieCommentEvent($replie))->toOthers();;
+        $activty= Activities::create([
+            'heading' => "Replied to",
+            'icon' => "/images/profiles/replied_to_conversation_icon.svg",
+            "pointsEarned" => 10,
+            'type' => 1,
+            'user_id' =>Auth::user()->id
+        ]);
+        $activty->date = Carbon::createFromFormat('Y-m-d H:i:s', $activty->created_at)->format('Y-m-d');
+        $activty->save();
+        $replie->activities()->save($activty);
+
+        dispatch(new ReplieActivity($conversation,$replie, $activty));
+      
         return back()->with('success', " Reply succesffly");
     }
 
     public function likeRelie($id, Request $reuest)
     {
         $replie = Replies::findOrFail($id);
+        $conversation= Conversation::findOrFail($replie->conversation_id);
         if ($replie->users->contains(Auth::user()->id)) {
 
             $replie->users()->detach(Auth::user());
         } else {
+            $activty= Activities::create([
+                'heading' => "Liked Comment",
+                'icon' => "/images/profiles/liked_comment_icon.svg",
+                "pointsEarned" => 50,
+                'type' => 2,
+                'user_id' =>Auth::user()->id
+            ]);
+            $activty->date = Carbon::createFromFormat('Y-m-d H:i:s', $activty->created_at)->format('Y-m-d');
+            $activty->save();
+            $replie->activities()->save($activty);
 
+            dispatch(new LikeCommentActivity($conversation,$replie, $activty));
             $replie->users()->attach(Auth::user());
         }
+        $replie->load('users','user');
+        broadcast(new LikeCommentEvent($replie))->toOthers();
         return back();
 
         // if ($replie->users->pivot == null) {
@@ -105,14 +146,17 @@ class ReplieController extends Controller
 
         $replie->body = $request->body;
         $replie->save();
-
+        $replie->load('users','user');
+        broadcast(new ReplieCommentEvent($replie))->toOthers();;
         return back()->with('success', "Update Reply succesffly");
     }
 
     public function bestAnswer(Request $request)
     {
-      
-        $replie = Replies::find($request->id)->update(['best_answer' => $request->best_answer]);
+        $replie = Replies::with('users','user')->find($request->id);
+        $replie->update(['best_answer' => $request->best_answer]);
+        
+        broadcast(new LikeCommentEvent($replie))->toOthers();
         return back()->with('success', "Successfully");
     }
 }

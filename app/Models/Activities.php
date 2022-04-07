@@ -9,13 +9,17 @@ class Activities extends Model
 {
     use HasFactory;
     protected $table = 'activities';
-    protected $fillable = ['id',    'date',    'heading',    'icon',    'pointsEarned',  'type', 'user_id', 'created_at',    'updated_at'];
+    protected $fillable = ['id',    'date',    'heading',    'icon',    'pointsEarned',  'type', 'user_id', 'conversation_id', 'created_at',    'updated_at'];
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
+    }
+    public function activitiesable()
+    {
+        return $this->morphTo();
     }
     public function subject()
     {
-        return $this->hasOne(Subject::class, 'scene_id');
+        return $this->hasOne(Subject::class, 'activities_id');
     }
 }

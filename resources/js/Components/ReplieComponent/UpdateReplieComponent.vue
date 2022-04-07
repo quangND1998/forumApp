@@ -172,7 +172,7 @@ export default {
         },
 
         openModalReplie(data) {
-            console.log(data)
+            // console.log(data)
             this.visible = true;
             this.reply_to = data.owner.name
          

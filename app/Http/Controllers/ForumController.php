@@ -9,9 +9,12 @@ use App\Models\Conversation;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\ProfileResource;
 use App\Http\Resources\ReplieResource;
+use App\Models\Activities;
 use App\Models\User;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use App\Http\Resources\ActivitiesResources;
 class ForumController extends Controller
 {
     public function index(Request $request)
@@ -43,8 +46,6 @@ class ForumController extends Controller
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         }
-
-
 
         $conversations = ConversationResource::collection($conversations);
 
@@ -104,29 +105,106 @@ class ForumController extends Controller
     public function profile($name)
     {
 
-        $user = User::with('replies.conversation', 'conversations')->where('name', $name)->first();
+        $user = User::with(['activities.subject'])->where('name', $name)->first();
+        $activities = ActivitiesResources::collection($user->activities)->groupBy('date');
         // $activities= User::with()
+      
+       
 
         if ($user) {
             $user = new ProfileResource($user);
-            return Inertia::render('Profile/Index', compact('user'));
+            return Inertia::render('Profile/Index', compact('user','activities'));
         } else {
             $erros = "Not found user !!";
             return Inertia::render('Erros/401', ['erros' => $erros]);
         }
     }
 
-    public function editProfile($name)
+    public function editProfile()
     {
-        $user = User::with('replies.conversation', 'conversations')->where('name', $name)->first();
+        $user = User::with('replies.conversation', 'conversations.all_replies')->findOrFail(Auth::user()->id);
         // $activities= User::with()
-
+        $total_replies=0;
+        foreach($user->conversations as $conversation){
+         
+                $total_replies += count($conversation->all_replies);
+            
+        }
+        $total_view =0;
+        foreach($user->conversations as $conversation){
+         
+            $total_view += $conversation->view;
+        
+        }
+        
+        
+       
         if ($user) {
             $user = new ProfileResource($user);
-            return Inertia::render('Profile/Edit', compact('user'));
+            return Inertia::render('Profile/Edit', compact('user','total_replies','total_view'));
         } else {
             $erros = "Not found user !!";
             return Inertia::render('Erros/401', ['erros' => $erros]);
         }
+    }
+
+    public function saveProfile(Request $request){
+        $user = Auth::user();
+ 
+        $this->validate(
+            $request,
+            [
+                'email' => 'required|name|unique:users,name,' . $user->id,
+                'email' => 'required|email|unique:users,email,' . $user->id,
+                'country' => 'nullable',
+                'address' => 'required',
+                'about_you' => 'nullable',
+                'avatar' =>  'nullable|mimes:png,jpg,jpeg|max:20000',
+            ]
+        );
+
+        $public_setting =  'avatar/';
+       
+        if (!file_exists($public_setting)) {
+            mkdir($public_setting, 0777, true);
+        }
+
+        $user = Auth::user();
+        $time= time();
+        $user->name= $request->name;
+        $user->email = $request->email;
+        $user->country= $request->country;
+        $user->address = $request->address;
+        $user->about_you= $request->about_you;
+        $user->avatar = $request->hasFile('avatar') ? $this->update_image($request->file('avatar'), $time, $public_setting, $user->avatar): $user->avatar;
+        $user->save();
+        return back()->with('success', 'Update successfully');
+
+    }
+
+    public function update_image($file, $name, $middlepath, $attribute)
+    {
+
+        $destinationpath = public_path() . "/" . $middlepath;
+
+        $user_id = Auth::user()->id;
+        $name = $name . "-" . Str::slug($file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
+
+        if ($attribute == null || file_exists($attribute) == false) {
+            $file->move($destinationpath, $name);
+            $path = $middlepath . $name;
+        } else {
+            if (Str::contains($attribute, 'default')) {
+
+                $file->move($destinationpath, $name);
+                $path = $middlepath . $name;
+            } else {
+                unlink($attribute);
+                $file->move($destinationpath, $name);
+                $path = $middlepath . $name;
+            }
+        }
+
+        return $path;
     }
 }

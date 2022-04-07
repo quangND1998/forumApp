@@ -16,3 +16,19 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('replie_event', function ($user) {
+    return true;
+});
+Broadcast::channel('like_event', function ($user) {
+    return true;
+});
+Broadcast::channel('conversation_event', function ($user) {
+    return true;
+});
+Broadcast::channel('deleteConversation_event', function ($user) {
+    return true;
+});
+Broadcast::channel('view_conversation_event', function ($user) {
+    return true;
+});

@@ -27,4 +27,9 @@ class Replies extends Model
     {
         return $this->belongsToMany(User::class,  'replie_user', 'replie_id', 'user_id');
     }
+
+    public function activities()
+    {
+        return $this->morphMany(Activities::class, 'activitiesable');
+    }
 }

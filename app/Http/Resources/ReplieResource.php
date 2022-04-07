@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 use App\Http\Resources\LikeResource;
-
+use App\Http\Resources\UserResource;
 class ReplieResource extends JsonResource
 {
     /**
@@ -28,6 +28,7 @@ class ReplieResource extends JsonResource
                 'time_ago' => Carbon::parse($this->created_at)->diffForHumans(),
                 'solved' => $this->solved,
                 'likes' =>  LikeResource::collection($this->users),
+                'replie_id' => $this->replie_id,
                 'replie_user' => $this->replie_user
 
             ];

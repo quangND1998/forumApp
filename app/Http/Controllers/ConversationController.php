@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Conversation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -12,7 +13,12 @@ use App\Models\Activities;
 use Inertia\Inertia;
 use App\Models\Chanels;
 use App\Models\Replies;
-
+use App\Jobs\ListenUserAcivity;
+use App\Jobs\UpdateActivity;
+use Illuminate\Support\Carbon;
+use App\Events\NewConversationEvent;
+use App\Events\DeleteConvsesationEvent;
+use App\Jobs\DeleteConversation;
 class ConversationController extends Controller
 {
     public function store(Request $request)
@@ -25,20 +31,41 @@ class ConversationController extends Controller
                 'chanel_id' => 'required'
             ]
         );
-        Conversation::create([
+        $conversation= Conversation::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'body' => $request->body,
             'chanel_id' => $request->chanel_id,
             'user_id' => Auth::user()->id
         ]);
+        // $heading= "Started a new Conversation";
+        // $icon= "/images/profiles/started_conversation_icon.svg";
+        // $pointsEarned= 50;
+        // $type="Forum\Conversation";
+
+        $activty= Activities::create([
+            'heading' => "Started a new Conversation",
+            'icon' => "/images/profiles/started_conversation_icon.svg",
+            "pointsEarned" => 50, 
+            'type' => 0,
+            'user_id' =>Auth::user()->id
+        ]);
+        $activty->date = Carbon::createFromFormat('Y-m-d H:i:s', $activty->created_at)->format('Y-m-d');
+        $activty->save();
+        $conversation->activities()->save($activty);
+        dispatch(new ListenUserAcivity($conversation, $activty));
+        $conversation->load('user','chanel','all_replies', 'lastReplie.user');
+        broadcast(new NewConversationEvent($conversation))->toOthers();;
+        
+
+        
 
         return back()->with('success', 'Create question successfully');
     }
 
     public function update(Request $request, $id)
     {
-        $conversation = Conversation::findOrFail($id);
+        $conversation = Conversation::with('activities.subject','all_replies.activities.subject')->findOrFail($id);
         $this->validate(
             $request,
             [
@@ -53,15 +80,39 @@ class ConversationController extends Controller
             'body' => $request->body,
             'chanel_id' => $request->chanel_id,
         ]);
-    
+        foreach ($conversation->activities as $activty) {
+            $activty->subject->title = $request->title;
+            $activty->subject->save();
+        }
+        foreach ($conversation->all_replies as $replie) {
+            foreach ($replie->activities as $activty) {
+                $activty->subject->title = $request->title;
+                $activty->subject->save();
+            }
+        }
+       
 
         return back()->with('success', 'Update question successfully');
     }
 
     public  function delete($id)
     {
-        $conversation = Conversation::findOrFail($id);
+        $conversation = Conversation::with('all_replies.activities','activities')->findOrFail($id);
+      
+     
+        foreach ($conversation->activities as $activty) {
+            $activty->delete();
+        }
+        foreach ($conversation->all_replies as $replie) {
+            foreach ($replie->activities as $activty) {
+                $activty->delete();
+            }
+        }
+        broadcast(new DeleteConvsesationEvent($conversation));
+        
+        // dispatch(new DeleteConversation($conversation));
         $conversation->delete();
+      
         return back()->with('success', 'Update question successfully');
     }
 
@@ -80,6 +131,13 @@ class ConversationController extends Controller
     {
     
         $conversation = Conversation::find($request->id)->update(['solved' => $request->solved]);;
+        return back()->with('success', "Successfully");
+    }
+
+    public function lockComment(Request $request)
+    {
+    
+        $conversation = Conversation::find($request->id)->update(['lock_comment' => $request->lock_comment]);;
         return back()->with('success', "Successfully");
     }
 }

@@ -10,9 +10,11 @@
                 <NewQuestionComponent :chanels="chanels" :errors="errors"></NewQuestionComponent>
             </div>
         </div>
+        
     </div>
 </template>
 <script>
+
 import AdminNavbar from "@/Components/Navbars/AdminNavbar.vue";
 import Sidebar from "@/Components/Sidebar/Sidebar.vue";
 import HeaderStats from "@/Components/Headers/HeaderStats.vue";

@@ -186,6 +186,7 @@
         </div>
 
         <pagination class="mt-6" :links="conversations.meta.links" />
+        
     </div>
 </template>
 
@@ -193,6 +194,7 @@
 import { Link } from '@inertiajs/inertia-vue'
 import Pagination from "@/Components/Pagination";
 import LayoutForum from '@/Pages/Forum/Layout'
+
 export default {
     layout: LayoutForum,
     props: {
@@ -206,7 +208,11 @@ export default {
         Pagination,
         Link
     },
-
+    mounted(){
+        this.listenForNewConverstion();
+        this.listenForDeleteConverstion();
+        this.listenForViewConverstion();
+    },
     data() {
         return {
             term: null,
@@ -250,6 +256,26 @@ export default {
             }
 
         },
+        listenForNewConverstion(){
+             window.Echo.channel('conversation_event').listen('NewConversationEvent', (e)=>{
+                 console.log('listenForNewConverstion',e)
+                this.conversations.data.push(e);
+            })
+        },
+         listenForDeleteConverstion(){
+             window.Echo.channel('deleteConversation_event').listen('DeleteConvsesationEvent', (e)=>{
+                  console.log('listenForDeleteConverstion',e)
+                let index = this.conversations.data.findIndex(x => x.id == e.id);
+                this.conversations.data.splice(index,1);
+            })
+        },
+         listenForViewConverstion(){
+             window.Echo.channel('view_conversation_event').listen('ViewConversationEvent', (e)=>{
+                  console.log('listenForViewConverstion',e)
+                let index = this.conversations.data.findIndex(x => x.id == e.id);
+                this.conversations.data.splice(index,1,e);
+            })
+        }
     }
 
 }

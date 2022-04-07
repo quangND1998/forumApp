@@ -9,7 +9,7 @@ class Conversation extends Model
 {
     use HasFactory;
     protected $table = 'conversation';
-    protected $fillable = ['id',    'title',  'slug',  'body', 'solved', 'is_inital',   'body_in_markdown',    'chanel_id',    'user_id',    'view',    'created_at',    'updated_at'];
+    protected $fillable = ['id',    'title',  'slug',  'body', 'solved', 'is_inital',   'body_in_markdown', 'lock_comment',   'chanel_id',    'user_id',    'view',    'created_at',    'updated_at'];
 
     public function user()
     {
@@ -22,6 +22,16 @@ class Conversation extends Model
     public function all_replies()
     {
         return $this->hasMany(Replies::class, 'conversation_id');
+    }
+
+    // public function activities()
+    // {
+    //     return $this->hasMany(Activities::class, 'conversation_id');
+    // }
+
+    public function activities()
+    {
+        return $this->morphMany(Activities::class, 'activitiesable');
     }
 
     public function initalReplies()

@@ -9,6 +9,8 @@ import {
     ColorPanel
 } from 'one-colorpicker'
 import CKEditor from '@ckeditor/ckeditor5-vue2';
+import vueCountryRegionSelect from 'vue-country-region-select'
+Vue.use(vueCountryRegionSelect)
 Vue.use(ColorPanel)
 Vue.use(ColorPicker)
 Vue.mixin({
@@ -16,6 +18,7 @@ Vue.mixin({
         route: window.route,
     }
 })
+import moment from 'moment';
 Vue.use(CKEditor);
 Vue.mixin(require('./base'))
 Vue.mixin({
@@ -32,6 +35,12 @@ Vue.mixin({
         formatDate: function(value) {
             if (value) {
                 return moment(String(value)).format('DD/MM/YYYY HH:mm')
+            }
+        },
+
+        formatDateMonth: function(value) {
+            if (value) {
+                return moment(String(value), "YYYY-MM-DD").format("MMM D YY")
             }
         },
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="3xl:flex">
+    <div class="3xl:flex overflow-x-auto ">
         <div class="header-wrap relative main-banner-gradient lg:rounded-b-[26px]">
             <section class="pt-0 pb-[60px] md:pt-8">
                 <div class="px-0 pt-0 pb-1">
@@ -15,7 +15,7 @@
                                                 style="width: 112px; height: 112px; padding: 2px; border-radius: 30px;"
                                             >
                                                 <img
-                                                    src="//www.gravatar.com/avatar/92df97f4c0723ebc9d7d974efba7a1af?s=100&d=https%3A%2F%2Fs3.amazonaws.com%2Flaracasts%2Fimages%2Fforum%2Favatars%2Fdefault-avatar-35.png"
+                                                    :src="user.avatar"
                                                     class="relative bg-white text-deep-black/10 mb-4 lg:mb-0 p-1"
                                                     style="width: 100%; max-width: none; border-radius: 24px;"
                                                     height="112"
@@ -24,7 +24,7 @@
                                                 />
                                             </Link>
                                             <div class="flex justify-between gap-x-1">
-                                                <Link  v-if="$page.props.auth.user"
+                                                <Link  v-if="$page.props.auth.user" :href="route('editProfile')"
                                                     class="btn btn-dark-blue rounded-md px-2 py-1 text-[12px] normal-case"
                                                 >Edit</Link>
                                             </div>
@@ -68,9 +68,8 @@
                         </li>
                     </ul>
                     <div>
-                        <div class="container">
-                            <div class="lg:mx-auto lg:w-2/3">
-                                <div class="timeline-section flex">
+                        <div  class="container">
+                            <div class="lg:mx-auto lg:w-2/3" v-for="(value, name, index) in activities" :key="index">
                                     <div class="timeline-date mr-3">
                                         <div class="inline-block text-right">
                                             <div
@@ -78,36 +77,54 @@
                                             >
                                                 <div
                                                     class="h-7 mr-1 flex w-10 items-center justify-center rounded-lg border border-solid border-blue-200 bg-white text-xs"
-                                                >Mar</div>
+                                                > {{formatDateMonth(name).split(" ")[0]}}</div>
                                                 <div
                                                     class="h-7 flex w-10 items-center justify-center rounded-lg border border-solid border-blue-200 bg-white text-lg"
                                                     style="box-shadow: rgba(36, 37, 38, 0.08) 4px 4px 15px 0px;"
-                                                >20</div>
-                                                <div
-                                                    class="text-xs font-medium text-gray-500"
-                                                >3m ago</div>
+                                                > {{formatDateMonth(name).split(" ")[1]}}</div>
+                                              
                                             </div>
                                         </div>
                                     </div>
-                                    <div
+                                <div class="timeline-section flex" v-for="activity in value" :key="activity.id">
+                                    <div class="timeline-date mr-3">
+                                        <div class="inline-block text-right">
+                                            <div
+                                                class="mb-1 flex text-xs font-semibold  text-black lg:text-sm"
+                                            >
+                                            
+                                                <div
+                                                    class="text-xs font-medium text-gray-500"
+                                                >{{activity.createdDiff}}</div>
+                                                <div
+                                                class="timeline-contents-activity-icon flex h-10 w-10 items-center justify-center rounded-full border border-card bg-white p-2"
+                                            >
+                                                <img :src="activity.icon" alt=""> 
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div 
                                         class="relative rounded-xl px-5 py-4 border border-grey-200 bg-white timeline-contents-item mb-5 h-auto w-full border p-6"
                                     >
                                         <div
                                             class="timeline-contents-activity absolute flex h-full justify-center"
                                         >
-                                            <div
-                                                class="timeline-contents-activity-icon flex h-10 w-10 items-center justify-center rounded-full border border-card bg-white p-2"
-                                            ></div>
+                                            
                                         </div>
                                         <p
                                             class="mb-4 text-2lg font-semibold tracking-normal text-deep-black"
                                         >
-                                            Started a new Conversation
+                                            {{activity.heading}}
                                             <Link
                                                 class="link font-normal"
-                                                href="https://laracasts.com/discuss/channels/laravel/laravel-how-do-i-set-focus-on-an-invalid-input-field"
-                                            >Laravel : How do i set focus on an invalid input field</Link>
+                                                :href="activity.subject.path"
+                                            >{{activity.subject.title}}</Link>
                                         </p>
+                                        <div class="content user-content text-[13px] leading-normal text-black" v-html="activity.subject.body">
+                                       
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -116,17 +133,21 @@
                 </div>
             </div>
         </div>
+           <Footer></Footer>
     </div>
 </template>
 
 <script>
 import { Link } from "@inertiajs/inertia-vue"
+import Footer from '@/Components/Footers/Footer'
 export default {
     props: {
-        user: Object
+        user: Object,
+        activities:Object
     },
     components: {
-        Link
+        Link,
+        Footer
     }
 
 }
@@ -174,5 +195,19 @@ a {
     color: rgb(255 255 255 / var(--tw-text-opacity));
     display: inline-flex;
     font-weight: 500;
+}
+
+.timeline-contents-item:first-child .timeline-contents-activity:after {
+    height: calc(100% - 57px);
+}
+.timeline-contents-item:not(:last-child) .timeline-contents-activity:after {
+    background-image: linear-gradient(180deg,transparent,transparent 50%,#fff 0,#fff),linear-gradient(90deg,#6cb2eb,#6cb2eb);
+    background-size: 2px 8px;
+    content: "-";
+    display: block;
+    height: calc(100% - 20px);
+    position: absolute;
+    top: 40px;
+    width: 1px;
 }
 </style>
