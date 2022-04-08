@@ -38,6 +38,7 @@ class LikeCommentEvent  implements ShouldBroadcast
     }
     public function broadcastWith()
     {
+      
         return
             [
                 'id' => $this->replie->id,
@@ -51,7 +52,8 @@ class LikeCommentEvent  implements ShouldBroadcast
                 'solved' => $this->replie->solved,
                 'likes' =>  LikeResource::collection($this->replie->users),
                 'replie_id' => $this->replie->replie_id,
-                'replie_user' => $this->replie->replie_user
+                'replie_user' => $this->replie->replie_user,
+                'user_reply' => $this->replie->user_reply
 
             ];
     }

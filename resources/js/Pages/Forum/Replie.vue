@@ -139,8 +139,8 @@
                   <!-- <p>{{ re_reply.body }}</p> -->
                   <Link
                     class="text-blue"
-                    :href="'/' + re_reply.replie_user"
-                  >{{ re_reply.replie_user }}</Link>
+                    :href="'/@' + re_reply.user_reply.name"
+                  >@{{ re_reply.user_reply.name }}</Link>
                   <span v-html="re_reply.body"></span>
                 </div>
                 <LikeReplyButton :replie="replie" :comment="re_reply" :conversation="conversation"></LikeReplyButton>

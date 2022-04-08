@@ -29,7 +29,7 @@ class ReplieResource extends JsonResource
                 'solved' => $this->solved,
                 'likes' =>  LikeResource::collection($this->users),
                 'replie_id' => $this->replie_id,
-                'replie_user' => $this->reply_user
+                'user_reply' => $this->user_reply
 
             ];
     }

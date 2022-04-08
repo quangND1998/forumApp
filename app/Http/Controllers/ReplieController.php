@@ -29,7 +29,7 @@ class ReplieController extends Controller
     {
         $chanels = Chanels::get();
         $replie_id = $request->input('replyId');
-        $conversation = Conversation::with(['user', 'all_replies', 'initalReplies.user', 'initalReplies.replies.users', 'chanel'])->where('slug', $name)->first();
+        $conversation = Conversation::with(['user', 'all_replies', 'initalReplies.user', 'initalReplies.replies.user_reply', 'chanel'])->where('slug', $name)->first();
      
         // return $conversation;
         // return $conversation;
@@ -79,7 +79,8 @@ class ReplieController extends Controller
             $replie->replie_user = $request->replie_user;
             $replie->save();
         }
-        $replie->load('users','user');
+        $replie->load('users','user','user_reply');
+    
         broadcast(new ReplieCommentEvent($replie,$conversation))->toOthers();;
         $activty= Activities::create([
             'heading' => "Replied to",
@@ -120,7 +121,8 @@ class ReplieController extends Controller
             dispatch(new LikeCommentActivity($conversation,$replie, $activty));
             $replie->users()->attach(Auth::user());
         }
-        $replie->load('users','user');
+        $replie->load('users','user','user_reply');
+        // return $replie;
         broadcast(new LikeCommentEvent($replie))->toOthers();
         return back();
 
@@ -151,7 +153,7 @@ class ReplieController extends Controller
 
         $replie->body = $request->body;
         $replie->save();
-        $replie->load('users','user');
+        $replie->load('users','user','user_reply');
         $activty= $replie->activities->where('type',1)->first();
         $activty->subject->update([
             'body' => $replie->body

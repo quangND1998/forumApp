@@ -62,4 +62,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Activities::class, 'user_id');
     }
+
+    public function reply_user(){
+        return $this->hasMany(Replies::class, 'replie_user');
+    }
 }

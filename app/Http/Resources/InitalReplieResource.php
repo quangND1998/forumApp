@@ -29,7 +29,7 @@ class InitalReplieResource extends JsonResource
                 'solved' => $this->solved,
                 'replies' =>  ReplieResource::collection($this->replies),
                 'likes' =>  LikeResource::collection($this->users)
-
+                
             ];
     }
 }
