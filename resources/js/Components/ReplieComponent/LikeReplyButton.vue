@@ -93,6 +93,14 @@ export default {
                 this.route("admin.replie.like", this.comment.id), this.form,
                 { preserveState: true, preserveScroll: true }
             );
+            //    axios
+            //     .post("/admin/replie/likeReplie/"+ this.comment.id, this.form)
+            //     .then(response => {
+                  
+            //     }).catch(function (error) {
+            //         // handle error
+            //         console.log(error);
+            //     });
         },
         checkIsLike(email) {
             if (email && this.comment.likes.length > 0) {
@@ -123,6 +131,14 @@ export default {
             this.$inertia.post(this.route("admin.replie.bestAnswer"), query, {
                 preserveScroll: true
             });
+            //   axios
+            //     .post("/admin/replie/best_answer", query)
+            //     .then(response => {
+                    
+            //     }).catch(function (error) {
+            //         // handle error
+            //         console.log(error);
+            //     });
         }
 
     }

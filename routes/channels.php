@@ -17,7 +17,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('replie_event', function ($user) {
+Broadcast::channel('replie_event.{id}', function ($user) {
     return true;
 });
 Broadcast::channel('like_event', function ($user) {
@@ -30,5 +30,11 @@ Broadcast::channel('deleteConversation_event', function ($user) {
     return true;
 });
 Broadcast::channel('view_conversation_event', function ($user) {
+    return true;
+});
+Broadcast::channel('update-replie.{id}', function ($user) {
+    return true;
+});
+Broadcast::channel('sovled-conversation', function ($user) {
     return true;
 });

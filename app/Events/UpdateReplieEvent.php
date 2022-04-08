@@ -9,12 +9,10 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 use App\Http\Resources\LikeResource;
 use App\Http\Resources\UserResource;
-
-class ReplieCommentEvent implements ShouldBroadcast
+class UpdateReplieEvent  implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $replie;
@@ -24,7 +22,7 @@ class ReplieCommentEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($replie,$conversation)
+    public function __construct($replie ,$conversation)
     {
         $this->replie = $replie;
         $this->conversation = $conversation;
@@ -37,8 +35,9 @@ class ReplieCommentEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('replie_event.'.$this->conversation->id);
+        return new Channel('update-replie.'.$this->conversation->id);
     }
+
     public function broadcastWith()
     {
         return

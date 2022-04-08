@@ -32,4 +32,7 @@ class Replies extends Model
     {
         return $this->morphMany(Activities::class, 'activitiesable');
     }
+    public function reply_user(){
+        return $this->hasMany(User::class, 'replie_user');
+    }
 }

@@ -19,6 +19,7 @@ use App\Models\Activities;
 use Illuminate\Support\Carbon;
 use App\Events\ReplieCommentEvent;
 use App\Events\LikeCommentEvent;
+use App\Events\UpdateReplieEvent;
 use App\Events\ViewConversationEvent;
 
 class ReplieController extends Controller
@@ -44,7 +45,7 @@ class ReplieController extends Controller
             $initalReplies = InitalReplieResource::collection($conversation->initalReplies);
 
             $conversation = new ConversationResource($conversation);
-            broadcast(new ViewConversationEvent($conversation))->toOthers();
+            // broadcast(new ViewConversationEvent($conversation))->toOthers();
             return Inertia::render('Forum/Replie', compact('conversation', 'chanels', 'initalReplies','replie_id'));
         } else {
             $erros = "Not found conversation !!";
@@ -79,7 +80,7 @@ class ReplieController extends Controller
             $replie->save();
         }
         $replie->load('users','user');
-        broadcast(new ReplieCommentEvent($replie))->toOthers();;
+        broadcast(new ReplieCommentEvent($replie,$conversation))->toOthers();;
         $activty= Activities::create([
             'heading' => "Replied to",
             'icon' => "/images/profiles/replied_to_conversation_icon.svg",
@@ -103,6 +104,7 @@ class ReplieController extends Controller
         if ($replie->users->contains(Auth::user()->id)) {
 
             $replie->users()->detach(Auth::user());
+            $replie->activities->where('type',2)->first()->delete();
         } else {
             $activty= Activities::create([
                 'heading' => "Liked Comment",
@@ -135,6 +137,9 @@ class ReplieController extends Controller
     {
 
         $replie = Replies::findOrFail($id);
+        $conversation = Conversation::findOrFail($replie->conversation_id);
+      
+      
         $this->validate(
             $request,
             [
@@ -147,7 +152,11 @@ class ReplieController extends Controller
         $replie->body = $request->body;
         $replie->save();
         $replie->load('users','user');
-        broadcast(new ReplieCommentEvent($replie))->toOthers();;
+        $activty= $replie->activities->where('type',1)->first();
+        $activty->subject->update([
+            'body' => $replie->body
+        ]);
+        broadcast(new UpdateReplieEvent($replie, $conversation))->toOthers();;
         return back()->with('success', "Update Reply succesffly");
     }
 

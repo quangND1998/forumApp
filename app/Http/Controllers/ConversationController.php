@@ -19,6 +19,9 @@ use Illuminate\Support\Carbon;
 use App\Events\NewConversationEvent;
 use App\Events\DeleteConvsesationEvent;
 use App\Jobs\DeleteConversation;
+use App\Events\SovledConversationEvent;
+use App\Jobs\UpdateSubject;
+
 class ConversationController extends Controller
 {
     public function store(Request $request)
@@ -82,12 +85,18 @@ class ConversationController extends Controller
         ]);
         foreach ($conversation->activities as $activty) {
             $activty->subject->title = $request->title;
+            $activty->subject->body = $request->body;
             $activty->subject->save();
         }
         foreach ($conversation->all_replies as $replie) {
+       
             foreach ($replie->activities as $activty) {
-                $activty->subject->title = $request->title;
-                $activty->subject->save();
+              
+                dispatch(new UpdateSubject($activty->subject, $conversation, $replie));
+                // $activty->subject->title = $request->title;
+                // $activty->subject->body = $request->body;
+                // $activty->subject->body='/question/'.Str::slug($this->conversation->slug);
+                // $activty->subject->save();
             }
         }
        
@@ -130,14 +139,18 @@ class ConversationController extends Controller
     public function makeSolved(Request $request)
     {
     
-        $conversation = Conversation::find($request->id)->update(['solved' => $request->solved]);;
+        $conversation = Conversation::find($request->id);
+        $conversation->update(['solved' => $request->solved]);
+        broadcast(new SovledConversationEvent($conversation));
         return back()->with('success', "Successfully");
     }
 
     public function lockComment(Request $request)
     {
     
-        $conversation = Conversation::find($request->id)->update(['lock_comment' => $request->lock_comment]);;
+        $conversation = Conversation::find($request->id);
+        $conversation->update(['lock_comment' => $request->lock_comment]);
+        broadcast(new SovledConversationEvent($conversation));
         return back()->with('success', "Successfully");
     }
 }

@@ -176,7 +176,7 @@ export default {
         openModalReplie(data, comment) {
             this.visible = true;
             this.reply_to = comment.owner.name
-            this.form.replie_user = `@${comment.owner.name}`
+            this.form.replie_user = comment.owner.id
         },
         miniMize() {
             this.showMize = false;

@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Http\Resources\ActivitiesResources;
+use App\Models\Replies;
 class ForumController extends Controller
 {
     public function index(Request $request)
@@ -27,22 +28,22 @@ class ForumController extends Controller
 
         if ($chanel !== null && $solved !== null) {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('solved', $solved)->where('chanel_id', $chanel->id)->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('solved', $solved)->where('chanel_id', $chanel->id)->orderBy('created_at','desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel == null && $solved !== null) {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('solved', $solved)->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('solved', $solved)->orderBy('created_at','desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel !== null && $solved == null) {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('chanel_id', $chanel->id)->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('chanel_id', $chanel->id)->orderBy('created_at','desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } else {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->orderBy('created_at','desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         }
@@ -105,10 +106,13 @@ class ForumController extends Controller
     public function profile($name)
     {
 
-        $user = User::with(['activities.subject'])->where('name', $name)->first();
+        $user = User::with(['activities.subject', 'activities'=>function($query){
+            $query->whereBetween('created_at',[Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+        }])->where('name', $name)->first();
+      
         $activities = ActivitiesResources::collection($user->activities)->groupBy('date');
         // $activities= User::with()
-      
+       
        
 
         if ($user) {
@@ -125,6 +129,7 @@ class ForumController extends Controller
         $user = User::with('replies.conversation', 'conversations.all_replies')->findOrFail(Auth::user()->id);
         // $activities= User::with()
         $total_replies=0;
+
         foreach($user->conversations as $conversation){
          
                 $total_replies += count($conversation->all_replies);
@@ -136,6 +141,14 @@ class ForumController extends Controller
             $total_view += $conversation->view;
         
         }
+        // $replies = Replies::where('user_id', $user->id)->get();
+        // foreach($replies as $replie){
+        //     if($replie->is_inital ==0){
+        //         $replie->replie_user = "@".$user->name;
+        //         $replie->save();
+        //     }
+
+        // }
         
         
        
