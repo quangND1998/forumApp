@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ReplieController;
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\DeviceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,6 +21,7 @@ use App\Http\Controllers\ConversationController;
 Route::get('/', function () {
     return redirect('/forum');
 });
+
 
 Route::get('language/{language}', function ($language) {
     Session()->put('locale', $language);

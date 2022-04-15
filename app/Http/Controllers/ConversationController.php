@@ -20,6 +20,7 @@ use App\Events\NewConversationEvent;
 use App\Events\DeleteConvsesationEvent;
 use App\Jobs\DeleteConversation;
 use App\Events\SovledConversationEvent;
+use App\Events\UpdateConversation;
 use App\Jobs\UpdateSubject;
 
 class ConversationController extends Controller
@@ -99,7 +100,7 @@ class ConversationController extends Controller
                 // $activty->subject->save();
             }
         }
-       
+        broadcast(new UpdateConversation($conversation));
 
         return back()->with('success', 'Update question successfully');
     }

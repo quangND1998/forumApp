@@ -12,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Carbon\Carbon;
 use App\Http\Resources\LikeResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\ReplieResource;
 class UpdateReplieEvent  implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -53,6 +54,7 @@ class UpdateReplieEvent  implements ShouldBroadcast
                 'solved' => $this->replie->solved,
                 'likes' =>  LikeResource::collection($this->replie->users),
                 'replie_id' => $this->replie->replie_id,
+                'replies' =>  ReplieResource::collection($this->replie->replies),
                 // 'replie_user' => $this->replie->replie_user,
                 'user_reply' => $this->replie->user_reply
             ];

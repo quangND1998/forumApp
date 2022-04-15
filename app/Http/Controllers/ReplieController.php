@@ -153,7 +153,7 @@ class ReplieController extends Controller
 
         $replie->body = $request->body;
         $replie->save();
-        $replie->load('users','user','user_reply');
+        $replie->load('users','user','user_reply','replies');
         $activty= $replie->activities->where('type',1)->first();
         $activty->subject->update([
             'body' => $replie->body

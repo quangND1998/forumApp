@@ -192,6 +192,7 @@ export default {
     this.listenForLikeComment();
     this.listenForUpdateComment();
     this.listenForLockComment();
+    this.listenForUpdateConversation();
   },
   data() {
     return {
@@ -262,6 +263,15 @@ export default {
           this.conversation.lock_comment =e.lock_comment
         }
       });
+    },
+    listenForUpdateConversation(){
+      window.Echo.channel("update-conversation."+ this.conversation.id).listen("UpdateConversation",e=>{
+        // console.log(e);
+        if(this.conversation.id == e.id){
+          this.conversation.body = e.body;
+          this.conversation.title = e.title
+        }
+      })
     }
   }
 };

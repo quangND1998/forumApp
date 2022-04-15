@@ -286,7 +286,10 @@ export default {
         e => {
          
           let index = this.conversations.data.findIndex(x => x.id == e.id);
-          this.conversations.data[index].solved = e.solved
+          if(this.conversations.data[index] !==undefined){
+            this.conversations.data[index].solved = e.solved
+          }
+          // this.conversations.data[index].solved = e.solved
         }
       );
     }

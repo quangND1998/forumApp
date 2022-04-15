@@ -35,6 +35,9 @@ Broadcast::channel('view_conversation_event', function ($user) {
 Broadcast::channel('update-replie.{id}', function ($user) {
     return true;
 });
+Broadcast::channel('update-conversation.{id}', function ($user) {
+    return true;
+});
 Broadcast::channel('sovled-conversation', function ($user) {
     return true;
 });

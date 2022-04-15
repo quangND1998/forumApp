@@ -128,18 +128,13 @@ class ForumController extends Controller
     {
         $user = User::with('replies.conversation', 'conversations.all_replies')->findOrFail(Auth::user()->id);
         // $activities= User::with()
-        $total_replies=0;
-
-        foreach($user->conversations as $conversation){
-         
-                $total_replies += count($conversation->all_replies);
-            
-        }
+        $total_replies=count(Replies::where('user_id', Auth::user()->id)->get());
+        // foreach($user->conversations as $conversation){
+        //         $total_replies += count($conversation->all_replies);
+        // }
         $total_view =0;
         foreach($user->conversations as $conversation){
-         
             $total_view += $conversation->view;
-        
         }
         // $replies = Replies::where('user_id', $user->id)->get();
         // foreach($replies as $replie){
@@ -147,11 +142,7 @@ class ForumController extends Controller
         //         $replie->replie_user = "@".$user->name;
         //         $replie->save();
         //     }
-
         // }
-        
-        
-       
         if ($user) {
             $user = new ProfileResource($user);
             return Inertia::render('Profile/Edit', compact('user','total_replies','total_view'));
