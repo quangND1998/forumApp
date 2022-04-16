@@ -38,6 +38,7 @@ class NewConversationEvent implements ShouldBroadcast
     public function broadcastWith()
     {   
         
+        // dd($this->conversation->lastReplie);
         return
         [
             'id' => $this->conversation->id,
