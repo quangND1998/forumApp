@@ -142,7 +142,7 @@ import Footer from "@/Components/Footers/Footer";
 export default {
   props: {
     user: Object,
-    activities: Object
+    activities: Object|Array
   },
   components: {
     Link,

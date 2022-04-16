@@ -36,6 +36,7 @@ class SovledConversationEvent  implements ShouldBroadcast
 
     public function broadcastWith()
     {   
+
         return
         [
             'id' => $this->conversation->id,
