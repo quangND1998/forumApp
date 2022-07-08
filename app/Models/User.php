@@ -63,7 +63,18 @@ class User extends Authenticatable
         return $this->hasMany(Activities::class, 'user_id');
     }
 
-    public function reply_user(){
+    public function reply_user()
+    {
         return $this->hasMany(Replies::class, 'replie_user');
+    }
+
+    public function zooms()
+    {
+        return $this->hasMany(Zoom::class,   'user_id');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'users_id');
     }
 }

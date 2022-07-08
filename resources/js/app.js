@@ -8,7 +8,7 @@ import {
     ColorPicker,
     ColorPanel
 } from 'one-colorpicker'
-import CKEditor from '@ckeditor/ckeditor5-vue2';
+import CKEditor from 'ckeditor4-vue';
 import vueCountryRegionSelect from 'vue-country-region-select'
 Vue.use(vueCountryRegionSelect)
 Vue.use(ColorPanel)

@@ -40,7 +40,7 @@ class ConversationController extends Controller
             'slug' => Str::slug($request->title),
             'body' => $request->body,
             'chanel_id' => $request->chanel_id,
-            'user_id' => Auth::user()->id
+            // 'user_id' => Auth::user()->id
         ]);
         // $heading= "Started a new Conversation";
         // $icon= "/images/profiles/started_conversation_icon.svg";
@@ -52,7 +52,6 @@ class ConversationController extends Controller
             'icon' => "/images/profiles/started_conversation_icon.svg",
             "pointsEarned" => 50, 
             'type' => 0,
-            'user_id' =>Auth::user()->id
         ]);
         $activty->date = Carbon::createFromFormat('Y-m-d H:i:s', $activty->created_at)->format('Y-m-d');
         $activty->save();

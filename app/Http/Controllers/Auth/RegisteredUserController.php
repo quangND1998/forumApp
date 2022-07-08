@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ConformAfterRegister;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\URL;
@@ -53,7 +55,9 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+        Mail::to($user->email)->send(new ConformAfterRegister($user));
 
-        return redirect(RouteServiceProvider::HOME);
+
+        return redirect(RouteServiceProvider::HOME)->with('warning', 'Please check your email to activate your account');
     }
 }

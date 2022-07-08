@@ -1,12 +1,16 @@
 <?php
 
 use App\Http\Controllers\ChanelController;
+use App\Http\Controllers\ConfirmController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ReplieController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ZoomController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,10 +36,23 @@ Route::get('/solved', [ForumController::class, 'getSolved'])->name('solved');
 Route::get('/Unsolved', [ForumController::class, 'getUnsolved'])->name('Unsolved');
 
 Route::get('/question/{name}', [ReplieController::class, 'getDetail'])->name('question.getDetail');
+Route::get('commercial/confirm', [ConfirmController::class, 'createAccountCommercial'])->name('commercial.confirm');
 
 // Route::get('/')
 Route::middleware(['auth', 'verified'])->group(function () {
+
     Route::prefix('admin')->as('admin.')->group(function () {
+        Route::prefix('device')->as('device.')->group(function () {
+            Route::get('', [DeviceController::class, 'getDevice'])->name('index');
+        });
+
+        Route::prefix('session')->as('session.')->group(function () {
+            Route::get('', [ZoomController::class, 'getZoom'])->name('zoom');
+            Route::get('/{code}', [ZoomController::class, 'getZoomCode'])->name('getZoomCode');
+            Route::get('store', [ZoomController::class, 'store'])->name('store');
+            Route::delete('delete/{id}', [ZoomController::class, 'deleteZoom'])->name('delete');
+            Route::delete('deleteAll', [ZoomController::class, 'deleteAll'])->name('deleteAll');
+        });
         Route::prefix('chanels')->as('chanels.')->group(function () {
             Route::get('', [ChanelController::class, 'index'])->name('index');
             Route::post('store', [ChanelController::class, 'store'])->name('store');
@@ -62,7 +79,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     Route::get('myThread', [ConversationController::class, 'myConversation'])->name('myThread');
     Route::get('setting/account/update', [ForumController::class, 'editProfile'])->name('editProfile');
-    Route::post('saveProfile',[ForumController::class, 'saveProfile'])->name('saveProfile');
+    Route::post('saveProfile', [ForumController::class, 'saveProfile'])->name('saveProfile');
 });
 Route::get('@' . '{name}', [ForumController::class, 'profile'])->name('profile');
 
@@ -79,4 +96,7 @@ Route::get('/getList', function () {
     return Inertia::render('Link');
 })->name('getList');
 
+
+
+Route::get('/post', [PostController::class, 'index']);
 require __DIR__ . '/auth.php';

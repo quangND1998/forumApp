@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\ZoomController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,4 +19,5 @@ use App\Http\Controllers\DeviceController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('devices',[DeviceController::class, 'store']);
+Route::post('devices', [DeviceController::class, 'store']);
+Route::post('joinZoom', [ZoomController::class, 'joinZoom']);

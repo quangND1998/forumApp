@@ -20,8 +20,9 @@ class UserSeeder extends Seeder
         $user1 = User::create([
             'name' => 'Admin',
             'email' => 'tungpm@holomia.com',
-            'password' => bcrypt('Abcd1234')
+            'password' => bcrypt('Abcd1234'),
         ]);
+        $user1->active = 1;
         $user1->assignRole('administrator');
     }
 }

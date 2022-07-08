@@ -17,6 +17,10 @@ class CreateDevicesTable extends Migration
             $table->id();
             $table->string('deviceName')->nullable();
             $table->string('deviceID')->nullable();
+            $table->boolean('state')->default(false);
+            $table->string('serial')->nullable();
+            $table->string('os_version')->nullable();
+            $table->float('battery')->nullable();
             $table->timestamps();
         });
     }

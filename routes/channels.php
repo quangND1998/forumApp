@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Conversation;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -39,5 +40,11 @@ Broadcast::channel('update-conversation.{id}', function ($user) {
     return true;
 });
 Broadcast::channel('sovled-conversation', function ($user) {
+    return true;
+});
+Broadcast::channel('active-device', function ($user) {
+    return true;
+});
+Broadcast::channel('device-session.{code}', function ($user) {
     return true;
 });

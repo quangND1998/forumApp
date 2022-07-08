@@ -125,7 +125,7 @@ export default {
             editor: ClassicEditor,
             editorData: "<p>Content of the editor.</p>",
             editorConfig: {
-                toolbar: ['bold', 'italic', '|', 'link']
+            
             }
         };
     },

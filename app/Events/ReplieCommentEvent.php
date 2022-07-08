@@ -24,7 +24,7 @@ class ReplieCommentEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($replie,$conversation)
+    public function __construct($replie, $conversation)
     {
         $this->replie = $replie;
         $this->conversation = $conversation;
@@ -37,7 +37,7 @@ class ReplieCommentEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('replie_event.'.$this->conversation->id);
+        return new Channel('replie_event.' . $this->conversation->id);
     }
     public function broadcastWith()
     {
@@ -55,7 +55,8 @@ class ReplieCommentEvent implements ShouldBroadcast
                 'likes' =>  LikeResource::collection($this->replie->users),
                 'replie_id' => $this->replie->replie_id,
                 // 'replie_user' => $this->replie->replie_user,
-                'user_reply' => $this->replie->user_reply
+                'user_reply' => $this->replie->user_reply,
+
 
             ];
     }
