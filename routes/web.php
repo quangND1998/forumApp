@@ -96,7 +96,8 @@ Route::get('/getList', function () {
     return Inertia::render('Link');
 })->name('getList');
 
-
+Route::get('send', [ForumController::class, 'send']);
+Route::post('postMessage', [ForumController::class, 'postMessage'])->name('poss.message');
 
 Route::get('/post', [PostController::class, 'index']);
 require __DIR__ . '/auth.php';

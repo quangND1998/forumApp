@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SendMessage;
 use Illuminate\Http\Request;
 use App\Models\Chanels;
 use Inertia\Inertia;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Http\Resources\ActivitiesResources;
 use App\Models\Replies;
+
 class ForumController extends Controller
 {
     public function index(Request $request)
@@ -28,22 +30,22 @@ class ForumController extends Controller
 
         if ($chanel !== null && $solved !== null) {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('solved', $solved)->where('chanel_id', $chanel->id)->orderBy('created_at','desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('solved', $solved)->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel == null && $solved !== null) {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('solved', $solved)->orderBy('created_at','desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('solved', $solved)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel !== null && $solved == null) {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('chanel_id', $chanel->id)->orderBy('created_at','desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } else {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->orderBy('created_at','desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie')->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         }
@@ -106,18 +108,18 @@ class ForumController extends Controller
     public function profile($name)
     {
 
-        $user = User::with(['activities.subject', 'activities'=>function($query){
-            $query->whereBetween('created_at',[Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+        $user = User::with(['activities.subject', 'activities' => function ($query) {
+            $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
         }])->where('name', $name)->first();
-      
+
         $activities = ActivitiesResources::collection($user->activities)->groupBy('date');
         // $activities= User::with()
-       
-       
+
+
 
         if ($user) {
             $user = new ProfileResource($user);
-            return Inertia::render('Profile/Index', compact('user','activities'));
+            return Inertia::render('Profile/Index', compact('user', 'activities'));
         } else {
             $erros = "Not found user !!";
             return Inertia::render('Erros/401', ['erros' => $erros]);
@@ -128,12 +130,12 @@ class ForumController extends Controller
     {
         $user = User::with('replies.conversation', 'conversations.all_replies')->findOrFail(Auth::user()->id);
         // $activities= User::with()
-        $total_replies=count(Replies::where('user_id', Auth::user()->id)->get());
+        $total_replies = count(Replies::where('user_id', Auth::user()->id)->get());
         // foreach($user->conversations as $conversation){
         //         $total_replies += count($conversation->all_replies);
         // }
-        $total_view =0;
-        foreach($user->conversations as $conversation){
+        $total_view = 0;
+        foreach ($user->conversations as $conversation) {
             $total_view += $conversation->view;
         }
         // $replies = Replies::where('user_id', $user->id)->get();
@@ -145,16 +147,17 @@ class ForumController extends Controller
         // }
         if ($user) {
             $user = new ProfileResource($user);
-            return Inertia::render('Profile/Edit', compact('user','total_replies','total_view'));
+            return Inertia::render('Profile/Edit', compact('user', 'total_replies', 'total_view'));
         } else {
             $erros = "Not found user !!";
             return Inertia::render('Erros/401', ['erros' => $erros]);
         }
     }
 
-    public function saveProfile(Request $request){
+    public function saveProfile(Request $request)
+    {
         $user = Auth::user();
- 
+
         $this->validate(
             $request,
             [
@@ -168,22 +171,21 @@ class ForumController extends Controller
         );
 
         $public_setting =  'avatar/';
-       
+
         if (!file_exists($public_setting)) {
             mkdir($public_setting, 0777, true);
         }
 
         $user = Auth::user();
-        $time= time();
-        $user->name= $request->name;
+        $time = time();
+        $user->name = $request->name;
         $user->email = $request->email;
-        $user->country= $request->country;
+        $user->country = $request->country;
         $user->address = $request->address;
-        $user->about_you= $request->about_you;
-        $user->avatar = $request->hasFile('avatar') ? $this->update_image($request->file('avatar'), $time, $public_setting, $user->avatar): $user->avatar;
+        $user->about_you = $request->about_you;
+        $user->avatar = $request->hasFile('avatar') ? $this->update_image($request->file('avatar'), $time, $public_setting, $user->avatar) : $user->avatar;
         $user->save();
         return back()->with('success', 'Update successfully');
-
     }
 
     public function update_image($file, $name, $middlepath, $attribute)
@@ -210,5 +212,16 @@ class ForumController extends Controller
         }
 
         return $path;
+    }
+    public function send()
+    {
+        return Inertia::render('Index');
+    }
+
+    public function postMessage(Request $request)
+    {
+
+        broadcast(new SendMessage($request->message));
+        return back();
     }
 }

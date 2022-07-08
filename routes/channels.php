@@ -48,3 +48,7 @@ Broadcast::channel('active-device', function ($user) {
 Broadcast::channel('device-session.{code}', function ($user) {
     return true;
 });
+
+Broadcast::channel('message-send', function ($user) {
+    return true;
+});

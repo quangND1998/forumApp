@@ -1,17 +1,59 @@
 <template>
-    <div>
-        <h1>aaaaaaaaaaaaaaa</h1>
-        <Link :href="route('getList')" as="button" type="button">Logout</Link>
-    </div>
+  <div>
+    <h1>{{data}}</h1>
+    <form @submit.prevent="submit">
+      <input type="text" v-model="form.message" />
+    </form>
+
+    <Link :href="route('getList')" as="button" type="button">Logout</Link>
+  </div>
 </template>
 <script>
-import { Link } from '@inertiajs/inertia-vue'
+import { Link } from "@inertiajs/inertia-vue";
 export default {
-    components: {
-        Link
+  components: {
+    Link
+  },
+  data() {
+    return {
+      data: [],
+      form: this.$inertia.form({
+        message: null
+      })
+    };
+  },
+  mounted() {
+    this.listenForNewConverstion();
+  },
+  methods: {
+    listenForNewConverstion() {
+        var self = this;
+      // window.Echo.channel("message-send").listen("SendMessage", e => {
+      //   this.data.push(e.message);
+      // });
+      window.socketio.on(
+        "message-send:App\\Events\\SendMessage",
+        function(e) {
+          self.data.push(e.message);
+        }
+      );
+    },
+    submit() {
+      this.form.post(this.route("poss.message"), {
+        preserveState: true,
+        onError: errors => {
+          if (Object.keys(errors).length > 0) {
+            this.visible = true;
+          }
+        },
+        onSuccess: page => {
+          this.visible = false;
+          // this.reset();
+        }
+      });
     }
-
-}
+  }
+};
 </script>
 
 <style>
