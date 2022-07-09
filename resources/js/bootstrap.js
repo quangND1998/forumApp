@@ -27,7 +27,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: true
 // });
 import Echo from 'laravel-echo'
-import io from 'socket.io-client'
+import socket from 'socket.io-client'
 window.io = require('socket.io-client');
 window.Echo = new Echo({
     broadcaster: 'socket.io',
@@ -35,5 +35,5 @@ window.Echo = new Echo({
 })
 
 
-window.socketio = io(`${window.location.protocol}//${window.location.hostname}:6001`);
+window.socketio = socket(`${window.location.protocol}//${window.location.hostname}:6001`);
 console.log(`${window.location.protocol}//${window.location.hostname}:6001`)
