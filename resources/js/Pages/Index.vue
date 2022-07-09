@@ -27,16 +27,24 @@ export default {
   },
   methods: {
     listenForNewConverstion() {
-        var self = this;
+      var self = this;
       // window.Echo.channel("message-send").listen("SendMessage", e => {
       //   this.data.push(e.message);
       // });
-      window.socketio.on(
-        "message-send:App\\Events\\SendMessage",
-        function(e) {
-          self.data.push(e.message);
-        }
-      );
+      socketio
+        .emit("subscribe", {
+          channel: "message-send"
+        })
+        .on("App\\Events\\SendMessage", function(channel, data) {
+          console.log(data.message);
+          self.data.push(data.message);
+        });
+      // window.socketio.on(
+      //   "message-send:App\\Events\\SendMessage",
+      //   function(e) {
+      //     self.data.push(e.message);
+      //   }
+      // );
     },
     submit() {
       this.form.post(this.route("poss.message"), {
@@ -48,8 +56,13 @@ export default {
         },
         onSuccess: page => {
           this.visible = false;
-          // this.reset();
+          this.reset();
         }
+      });
+    },
+    reset() {
+      this.form = this.$inertia.form({
+        message: null
       });
     }
   }
