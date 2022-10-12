@@ -86,7 +86,7 @@
 
                             <div class="pt-4">
                                 <ckeditor
-                                    :editor="editor"
+                                   
                                     v-model="form.body"
                                     :config="editorConfig"
                                 ></ckeditor>
@@ -116,13 +116,11 @@
 <script>
 
 import { events } from '../../event'
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 // import Discussion from '../Discussion'
 import Editor from '@/Components/editor/Editor'
 export default {
-    components: {
-        ClassicEditor
-    },
+
     data() {
         return {
             visible: false,
@@ -133,7 +131,7 @@ export default {
                 body: null,
                 chanel_id: null
             }),
-            editor: ClassicEditor,
+        
             editorData: "<p>Content of the editor.</p>",
             editorConfig: {
                 // The configuration of the editor.

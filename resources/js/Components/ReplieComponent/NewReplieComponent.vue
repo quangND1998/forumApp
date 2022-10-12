@@ -56,7 +56,6 @@
                                             style="min-height: 150px; max-height: 45vh; overflow: hidden; overflow-wrap: break-word; resize: none; height: 150px;"
                                             data-tribute="true"
                                             v-model="form.body"
-                                            :editor="editor"
                                             :config="editorConfig"
                                             tag-name="textarea"
                                         ></ckeditor>
@@ -92,11 +91,9 @@
 
 <script>
 import EditorVue from "@/Components/editor/Editor";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { events } from "../../event";
 export default {
     components: {
-        ClassicEditor,
         EditorVue
     },
 
@@ -122,7 +119,6 @@ export default {
                 replie_id: null,
                 replie_user: null
             }),
-            editor: ClassicEditor,
             editorData: "<p>Content of the editor.</p>",
             editorConfig: {
             

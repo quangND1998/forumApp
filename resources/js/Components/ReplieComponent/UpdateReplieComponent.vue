@@ -56,7 +56,7 @@
                                             style="min-height: 150px; max-height: 45vh; overflow: hidden; overflow-wrap: break-word; resize: none; height: 150px;"
                                             data-tribute="true"
                                             v-model="form.body"
-                                            :editor="editor"
+                                           
                                             :config="editorConfig"
                                             tag-name="textarea"
                                         ></ckeditor>
@@ -91,11 +91,10 @@
 
 <script>
 import EditorVue from "@/Components/editor/Editor";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 import { events } from "../../event";
 export default {
     components: {
-        ClassicEditor,
         EditorVue
     },
 
@@ -121,20 +120,19 @@ export default {
                 replie_id: null,
                 reply_user: null
             }),
-            editor: ClassicEditor,
             editorData: "<p>Content of the editor.</p>",
             editorConfig: {
-                toolbar: ['bold', 'italic', '|', 'link']
+                // toolbar: ['bold', 'italic', '|', 'link']
             }
         };
     },
     mounted() {
-        var self = this;
+        // var self = this;
 
         window.ChatterEvents.$on("editReplyEvent", e => {
-            self.form.id = e.id;
-            self.form.body = e.body
-            self.openModalReplie(e);
+            this.form.id = e.id;
+            this.form.body = e.body
+            this.openModalReplie(e);
         })
     },
     methods: {
@@ -152,7 +150,7 @@ export default {
                 },
                 onSuccess: page => {
                     this.visible = false;
-                    this.form.reset();
+                    this.reset();
 
                 }
             })
@@ -164,7 +162,7 @@ export default {
         closeModal() {
 
             this.visible = false;
-            this.form.reset();
+            this.reset();
         },
         openModal() {
             this.visible = true;
@@ -194,6 +192,15 @@ export default {
                 transition: '1s',
             }
             // console.log(this.StyleCss);
+        },
+        reset(){
+            this.form=this.$inertia.form({
+                id: null,
+                body: null,
+                user_id: null,
+                replie_id: null,
+                reply_user: null
+            })
         }
     }
 };

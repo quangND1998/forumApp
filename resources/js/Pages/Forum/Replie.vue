@@ -17,9 +17,9 @@
         </div>
       </div>
       <Conversation :conversation="conversation"></Conversation>
-      <div v-for="replie in initalReplies" :key="replie.id" class="flex flex-wrap md:py-2 mt-1 ml-8">
+      <div v-for="replie in initalReplies" :key="replie.id" class="flex flex-wrap md:py-2 mt-1 ml-8" :id="replie.id" >
         <div
-          class="forum-comment w-full is-reply relative mb-2 rounded-xl bg-white hover:border hover:border-grey-400 border border-deep-black/4">
+          class="forum-comment w-full is-reply relative mb-2 rounded-xl bg-white hover:border hover:border-grey-400 border border-deep-black/4" :class="replie.id== replie_id ? 'hover:border-grey-400 border-2 border-deep-black/4 border-blue-500':''">
           <div class="flex px-6 py-4 lg:p-5">
             <div class="mr-5 hidden text-left md:block">
               <a class="relative flex items-start mb-2" style="width: 32px; height: 32px; padding: 2px;">
@@ -60,9 +60,9 @@
             </div>
           </div>
         </div>
-        <div v-for="re_reply in replie.replies" :key="re_reply.id" class="flex flex-wrap md:py-2 mt-1 ml-8 w-full">
+        <div v-for="re_reply in replie.replies" :key="re_reply.id" class="flex flex-wrap md:py-2 mt-1 ml-8 w-full" :id="re_reply.id" >
           <div
-            class="forum-comment w-full is-reply relative mb-2 rounded-xl bg-white hover:border hover:border-grey-400 border border-deep-black/4">
+            class="forum-comment w-full is-reply relative mb-2 rounded-xl bg-white hover:border hover:border-grey-400 border border-deep-black/4" :class="re_reply.id== replie_id ? 'hover:border-blue-400 border-2 border-deep-black/4 border-blue-500':''" >
             <div class="flex px-6 py-4 lg:p-5">
               <div class="mr-5 hidden text-left md:block">
                 <a class="relative flex items-start mb-2" style="width: 32px; height: 32px; padding: 2px;">
@@ -146,6 +146,10 @@ export default {
     this.listenForUpdateComment();
     this.listenForLockComment();
     this.listenForUpdateConversation();
+    this.$nextTick(() =>{
+      const element = document.getElementById(this.replie_id);
+        element.scrollIntoView();
+    })
   },
   data() {
     return {
@@ -282,6 +286,10 @@ export default {
           this.conversation.title = e.title
         }
       })
+    },
+    scrollToReply(){
+      const element = document.getElementById(this.replie_id);
+      element.scrollIntoView();
     }
   }
 };

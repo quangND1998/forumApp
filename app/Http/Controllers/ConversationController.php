@@ -72,7 +72,7 @@ class ConversationController extends Controller
         $this->validate(
             $request,
             [
-                'title' => 'required|max:255|unique:chanels,title,' . $conversation->id,
+                'title' => 'required|max:255|unique:conversation,title,' . $conversation->id,
                 'body' => 'nullable',
                 'chanel_id' => 'required'
             ]

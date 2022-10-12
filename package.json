@@ -46,7 +46,7 @@
         "moment": "^2.29.2",
         "one-colorpicker": "^1.0.12",
         "socket.io": "^2.4.1",
-        "socket.io-client": "^2.4.0",
+        "socket.io-client": "^2.3.0",
         "tiptap": "^1.32.2",
         "tiptap-extensions": "^1.35.2",
         "vue": "^2.6.14",
