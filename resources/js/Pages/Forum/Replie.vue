@@ -147,8 +147,11 @@ export default {
     this.listenForLockComment();
     this.listenForUpdateConversation();
     this.$nextTick(() =>{
-      const element = document.getElementById(this.replie_id);
+      if(this.replie_id !== null){
+        const element = document.getElementById(this.replie_id);
         element.scrollIntoView();
+      }
+
     })
   },
   data() {
@@ -299,7 +302,7 @@ export default {
 <style>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.05s;
 }
 
 .fade-enter,

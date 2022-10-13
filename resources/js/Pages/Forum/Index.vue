@@ -181,14 +181,14 @@
           <div class="flex items-center justify-center">
             <!-- <a
               :class="`items-center justify-center border hiddentext-white font-medium leading-tight rounded-full py-1 px-3 text-xs uppercase  shadow-md hover:bg-[${post.chanel.color}] hover:shadow-lg focus:bg-[${post.chanel.color}] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[${post.chanel.color}] active:shadow-lg transition duration-150 ease-in-out`"
-              :style="`color: ${post.chanel.color}; border-color: ${post.chanel.color};   `"
-            >{{ post.chanel.title }}</a>-->
+              :style="`background-color: ${post.chanel.color}; border-color: ${post.chanel.color}; color:white  `"
+            >{{ post.chanel.title }}</a> -->
+            <a
+              :class="`items-center justify-center border hiddentext-white font-medium leading-tight rounded-full py-1 px-3 text-xs uppercase  shadow-md hover:bg-[${post.chanel.color}] hover:shadow-lg focus:bg-[${post.chanel.color}] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[${post.chanel.color}] active:shadow-lg transition duration-150 ease-in-out`"
+              :style="`color: ${post.chanel.color}; border-color: ${post.chanel.color};  `"
+            >{{ post.chanel.title }}</a>
 
-            <button
-              type="button"
-              :class="`text-[${post.chanel.color}] hover:text-white border border-[${post.chanel.color}] hover:bg-[${post.chanel.color}] focus:ring-4 focus:outline-none focus:ring-[${post.chanel.color}] font-medium  rounded-full py-1 px-3 text-center mr-2 mb-2 dark:border-[${post.chanel.color}] dark:text-[${post.chanel.color}] dark:hover:text-white dark:hover:bg-[${post.chanel.color}] dark:focus:ring-[${post.chanel.color}]`"
-              :style="`border-color: ${post.chanel.color};   `"
-            >{{ post.chanel.title }}</button>
+           
           </div>
         </div>
       </div>
