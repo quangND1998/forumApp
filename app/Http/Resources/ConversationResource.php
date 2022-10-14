@@ -6,7 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\LastReplieResource;
-
+use Illuminate\Support\Str;
 class ConversationResource extends JsonResource
 {
     /**
@@ -34,6 +34,7 @@ class ConversationResource extends JsonResource
                 'now' => Carbon::now(),
                 'time_ago' => Carbon::parse($this->created_at)->diffForHumans(),
                 'solved' => $this->solved,
+                'sub_body' => Str::words(strip_tags($this->body)),
                 // 'lastReplie' => $this->lastReplie
                 'lastReplie' => new LastReplieResource($this->lastReplie)
 

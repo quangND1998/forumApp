@@ -77,12 +77,14 @@ class ConversationController extends Controller
                 'chanel_id' => 'required'
             ]
         );
+      
         $conversation->update([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'body' => $request->body,
             'chanel_id' => $request->chanel_id,
         ]);
+
         foreach ($conversation->activities as $activty) {
             $activty->subject->title = $request->title;
             $activty->subject->body = $request->body;
@@ -128,7 +130,7 @@ class ConversationController extends Controller
     public function myConversation(Request $request)
     {
         $chanels = Chanels::get();
-        $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user.replies', 'chanel', 'lastReplie')->where('user_id', Auth::user()->id)->where(function ($query) use ($request) {
+        $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('user_id', Auth::user()->id)->where(function ($query) use ($request) {
             $query->where('title', 'LIKE', '%' . $request->term . '%');
         })->paginate(20)->appends(['term' => $request->term]);
         $conversations = ConversationResource::collection($conversations);

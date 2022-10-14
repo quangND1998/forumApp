@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ChanelController;
+use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\ConfirmController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,7 +37,7 @@ Route::get('/Unsolved', [ForumController::class, 'getUnsolved'])->name('Unsolved
 
 Route::get('/question/{name}', [ReplieController::class, 'getDetail'])->name('question.getDetail');
 Route::get('commercial/confirm', [ConfirmController::class, 'createAccountCommercial'])->name('commercial.confirm');
-
+Route::get('channels',[ChannelController::class,'popularChannels'])->name('channels');
 // Route::get('/')
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -53,11 +53,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('delete/{id}', [ZoomController::class, 'deleteZoom'])->name('delete');
             Route::delete('deleteAll', [ZoomController::class, 'deleteAll'])->name('deleteAll');
         });
-        Route::prefix('chanels')->as('chanels.')->group(function () {
-            Route::get('', [ChanelController::class, 'index'])->name('index');
-            Route::post('store', [ChanelController::class, 'store'])->name('store');
-            Route::post('update/{id}', [ChanelController::class, 'update'])->name('update');
-            Route::delete('delete/{id}', [ChanelController::class, 'delete'])->name('delete');
+        Route::prefix('channels')->as('channels.')->group(function () {
+            Route::get('', [ChannelController::class, 'index'])->name('index');
+            Route::post('store', [ChannelController::class, 'store'])->name('store');
+            Route::post('update/{id}', [ChannelController::class, 'update'])->name('update');
+            Route::delete('delete/{id}', [ChannelController::class, 'delete'])->name('delete');
         });
 
         Route::prefix('conversation')->as('conversation.')->group(function () {

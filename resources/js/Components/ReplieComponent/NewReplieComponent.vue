@@ -51,9 +51,10 @@
                                         </button>
                                     </div>
                                     <div class="control">
+                                        <!-- style="min-height: 150px; max-height: 45vh; overflow: hidden; overflow-wrap: break-word; resize: none; height: 150px;" -->
                                         <ckeditor
                                             class="textarea mb-1 w-full border-l-0 border-r-0 px-0 py-4 text-sm focus:border-grey-500 overflow-y"
-                                            style="min-height: 150px; max-height: 45vh; overflow: hidden; overflow-wrap: break-word; resize: none; height: 150px;"
+                                           
                                             data-tribute="true"
                                             v-model="form.body"
                                             :config="editorConfig"

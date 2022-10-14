@@ -200,12 +200,20 @@
             All Thread
             </Link>
           </li>
-          <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
-            <Link :class="[$page.url == '/admin/chanels' ? 'opacity-75 text-blue-300' : '']"
-              :href="route('admin.chanels.index')" target="_blank"
+          <li class="inline-flex" >
+            <Link :class="[$page.url == '/chanels' ? 'opacity-75 text-blue-300' : '']"
+              :href="route('channels')" target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold">
             <i class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"></i>
-            Chanels
+            Channels
+            </Link>
+          </li>
+          <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
+            <Link :class="[$page.url == '/admin/channels' ? 'opacity-75 text-blue-300' : '']"
+              :href="route('admin.channels.index')" target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold">
+            <i class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"></i>
+            Channels
             </Link>
           </li>
           <li class="inline-flex">

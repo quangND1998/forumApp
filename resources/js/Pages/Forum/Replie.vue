@@ -231,17 +231,24 @@ export default {
       //   // $('#power').text(parseInt($('#power').text()) + parseInt(message.data.power));
       // });
       window.Echo.channel("like_event").listen("LikeCommentEvent", e => {
+        
         if (e.replie_id == null) {
-          this.initalReplies.forEach(element => {
+          this.initalReplies.map(element=>{
+            element.best_answer =0;
             if (element.id == e.id) {
               element.likes = e.likes;
               element.best_answer = e.best_answer;
             }
-          });
+            element.replies.map(replie => {
+                replie.best_answer= 0;
+              });
+          })
         } else {
-          this.initalReplies.forEach(element => {
+          this.initalReplies.map(element => {
+            element.best_answer =0;
             if (element.id == e.replie_id) {
-              element.replies.forEach(replie => {
+              element.replies.map(replie => {
+                replie.best_answer= 0;
                 if (replie.id == e.id) {
                   replie.likes = e.likes;
                   replie.best_answer = e.best_answer;

@@ -27,9 +27,10 @@ class ReplieController extends Controller
 
     public function getDetail(Request $request, $name)
     {
-        $chanels = Chanels::get();
+       
+      
         $replie_id = $request->input('replyId');
-        $conversation = Conversation::with(['user', 'all_replies', 'initalReplies.user', 'initalReplies.replies.user_reply', 'chanel'])->where('slug', $name)->first();
+        $conversation = Conversation::with(['user', 'all_replies', 'initalReplies.user','initalReplies.users','initalReplies.replies.users','initalReplies.replies.user', 'initalReplies.replies.user_reply', 'chanel','lastReplie.user'])->where('slug', $name)->first();
 
         // return $conversation;
         // return $conversation;
@@ -46,7 +47,7 @@ class ReplieController extends Controller
 
             $conversation = new ConversationResource($conversation);
             // broadcast(new ViewConversationEvent($conversation))->toOthers();
-            return Inertia::render('Forum/Replie', compact('conversation', 'chanels', 'initalReplies', 'replie_id'));
+            return Inertia::render('Forum/Replie', compact('conversation', 'initalReplies', 'replie_id'));
         } else {
             $erros = "Not found conversation !!";
             return Inertia::render('Erros/401', ['erros' => $erros]);
@@ -163,10 +164,13 @@ class ReplieController extends Controller
 
     public function bestAnswer(Request $request)
     {
-        $replie = Replies::with('users', 'user')->find($request->id);
-        $replie->update(['best_answer' => $request->best_answer]);
-
-        broadcast(new LikeCommentEvent($replie))->toOthers();
+        $best_replie = Replies::with('conversation.all_replies')->with('users', 'user')->find($request->id);
+        foreach($best_replie->conversation->all_replies as $replie){
+            $replie->update(['best_answer' =>  0]);
+        }
+        $best_replie->update(['best_answer' => $request->best_answer]);
+        $best_replie->load('users', 'user', 'user_reply');
+        broadcast(new LikeCommentEvent($best_replie))->toOthers();
         return back()->with('success', "Successfully");
     }
 }

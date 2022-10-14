@@ -36,17 +36,20 @@ class UpdateSubject implements ShouldQueue
     {
        
                 $this->subject->title =   $this->conversation->title;
-                $this->subject->body =   $this->conversation->body;
+              
                 if($this->subject->type ==0){
+                    $this->subject->body =   $this->conversation->body;
                     $this->subject->path = '/question/'.Str::slug($this->conversation->slug);
                    
         
                 }
                 else if($this->subject->type ==1){
+                    $this->subject->body =   $this->replie->body;
                     $this->subject->path = '/question/'.Str::slug($this->conversation->slug).'?replyId='.$this->replie->id;
                   
         
                 }else if($this->subject->type ==2){
+                    $this->subject->body =   $this->replie->body;
                     $this->subject->path = '/question/'.Str::slug($this->conversation->slug).'?replyId='.$this->replie->id;
                    
         

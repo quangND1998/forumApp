@@ -47,7 +47,10 @@
                     class="mb-2 rounded-xl px-6 py-4 text-2lg font-semibold text-black md:mb-6 bg-blue-100"
                 >{{ conversation.title }}</h1>
                 <div class="content user-content text-[13px] text-black">
-                    <div v-html="conversation.body"></div>
+                    <div v-html="conversation.body">    
+                    </div>
+                    
+                   
                 </div>
             </div>
         </div>
@@ -68,6 +71,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style  >
+ pre,code {
+  padding: 10px;
+  display: block;
+  white-space: pre;
+  background-color: lightgray ;
+}
 </style>

@@ -5,7 +5,7 @@
             <admin-navbar />
             <header-stats />
 
-            <div class="flex-1 overflow-hidden px-4 py-8 md:p-4 overflow-y-auto" scroll-region>
+            <div class="flex-1 overflow-hidden px-4 py-8 md:p-4 overflow-y-auto bg-gray-600" scroll-region>
                 <transition name="fade">
                       <slot />
                     </transition>
@@ -43,7 +43,7 @@ export default {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.75s;
 }
 
 .fade-enter,

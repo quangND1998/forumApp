@@ -54,6 +54,14 @@
                                         >{{ errors.title }}</div>
                                     </div>
                                     <div class="mb-2">
+                                        <span class="text-sm">Description</span>
+                                        <textarea  v-model="form.description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your SubTitle..."></textarea>
+                                        <div
+                                            class="text-red-500"
+                                            v-if="errors.description"
+                                        >{{ errors.description }}</div>
+                                    </div>
+                                    <div class="mb-2">
                                         <span class="text-sm">Color</span>
                                         <div class="one-colorpicker" ref="colorpicker">
                                             <div
@@ -115,6 +123,7 @@
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">ID</th>
                     <th class="px-6 pt-6 pb-4">Name</th>
+                    <th class="px-6 pt-6 pb-4">SubTitle</th>
                     <th class="px-6 pt-6 pb-4">Color</th>
                     <th class="px-6 pt-6 pb-4" colspan="2">{{ __('action') }}</th>
                 </tr>
@@ -125,6 +134,7 @@
                 >
                     <td class="border-t">{{ index }}</td>
                     <td class="border-t">{{ element.title }}</td>
+                    <td class="border-t crop-content ">{{ element.description }}</td>
                     <td class="border-t">
                         <div
                             class="text-sm text-gray-900"
@@ -178,6 +188,7 @@ export default {
             form: this.$inertia.form({
                 id: null,
                 title: null,
+                description:null,
                 color: null,
 
             }),
@@ -195,7 +206,7 @@ export default {
         },
         save() {
             this.form.post(
-                this.route("admin.chanels.store"),
+                this.route("admin.channels.store"),
                 {
                     preserveState: true,
                     onError: errors => {
@@ -223,6 +234,7 @@ export default {
                 id: null,
                 title: null,
                 color: null,
+                description:null
 
             });
         },
@@ -231,11 +243,12 @@ export default {
             this.form.id = data.id;
             this.form.title = data.title;
             this.form.color = data.color;
+            this.form.description= data.description,
             this.editMode = true;
             this.toggleModal();
         },
         update: function () {
-            this.form.post(this.route("admin.chanels.update", this.form.id), {
+            this.form.post(this.route("admin.channels.update", this.form.id), {
                 preserveState: true,
                 onError: errors => {
                     if (Object.keys(errors).length > 0) {
@@ -253,7 +266,7 @@ export default {
         deleteRow: function (id) {
             if (!confirm("Are you sure want to remove?")) return;
             this.$inertia.delete(
-                this.route("admin.chanels.delete", id),
+                this.route("admin.channels.delete", id),
                 null,
                 {
                     preserveState: true
@@ -275,5 +288,21 @@ export default {
 }
 .color-panel {
     display: none;
+}
+.crop-content {
+  max-width: 200px;
+  overflow-x: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clamp {
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+}
+.two-lines {
+    -webkit-line-clamp: 2;
 }
 </style>
