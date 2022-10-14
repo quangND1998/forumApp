@@ -102,7 +102,7 @@
           <div class="lg:pr-10">
             <Link
               :href="route('question.getDetail', post.slug)"
-              class="mb-3 md:mb-1 text-base md:text-lg font-bold md:font-semibold tracking-tight text-white hover:text-white"
+              class="mb-3 md:mb-1 text-base md:text-lg font-bold md:font-semibold tracking-tight text-white no-underline hover:underline"
               style="word-break: break-word;"
             >
               {{ post.title }}
@@ -117,7 +117,7 @@
 
             <div v-if="post.lastReplie" class="text-xs font-semibold leading-none tracking-tight text-grey-800 dark:text-grey-100 mt-3">
               <Link
-                class="text-blue-600 uppercase font-bold"
+                class="text-blue-600 uppercase font-bold no-underline hover:underline"
                 v-if="$page.props.auth.user"
                 :href="route('profile',  post.lastReplie.user.name)"
               >{{ post.lastReplie.user.name }}</Link>replied
