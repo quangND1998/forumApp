@@ -32,22 +32,22 @@ class ForumController extends Controller
 
             $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('solved', $solved)->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
-            })->paginate(5)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
+            })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel == null && $solved !== null) {
 
             $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('solved', $solved)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
-            })->paginate(5)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
+            })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel !== null && $solved == null) {
 
             $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
-            })->paginate(5)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
+            })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } else {
 
             $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
-            })->paginate(5)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
+            })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         }
         $conversations = ConversationResource::collection($conversations);
 

@@ -3,10 +3,10 @@
         <Notification></Notification>
         <div
             v-on:click="toggleModal()"
-            class="border border-blue-600 text-blue-800 hover:bg-blue-200 w-1/6 font-bold py-2 px-4 mr-1 mb-2 rounded-full text-center cursor-pointer"
+            class="border border-blue-600 text-blue-800 dark:text-gray-700 dark:bg-gray-100 hover:bg-blue-200 w-1/6 font-bold py-2 px-4 mr-1 mb-2 rounded-full text-center cursor-pointer"
         >New Chanel</div>
 
-        <form class="space-y-4 text-gray-700">
+        <form class="space-y-4 text-gray-700 ">
             <div
                 v-if="showModal"
                 class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
@@ -14,7 +14,7 @@
                 <div class="relative w-auto my-6 mx-auto max-w-3xl">
                     <!--content-->
                     <div
-                        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+                        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white  dark:bg-gray-700  dark:text-gray-100 outline-none focus:outline-none"
                     >
                         <!--header-->
                         <div
@@ -45,7 +45,7 @@
                                         <input
                                             type="text"
                                             v-model="form.title"
-                                            class="h-8 px-3 w-full border-gray-200 border rounded focus:outline-none focus:border-gray-300"
+                                            class="h-8 px-3 w-full border-gray-200  border rounded focus:outline-none focus:border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required
                                         />
                                         <div
@@ -95,22 +95,22 @@
                             class="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b"
                         >
                             <button
-                                class="text-green-500 bg-transparent border border-solid border-green-500 hover:text-white hover:bg-green-600 focus:shadow-outline uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                class="w-32 inline-block bg-gray-200 hover:bg-gray-500 font-bold py-2 px-4 rounded-full text-center cursor-pointer mr-2 dark:bg-red-600  dark:text-gra-200 "
+                                type="button"
+                                @click="closeModal()"
+                            >cancel</button>
+                            <button
+                                class="w-32 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full text-center cursor-pointer"
                                 type="submit"
                                 v-show="!editMode"
                                 @click.prevent="save"
                             >save</button>
                             <button
-                                class="text-green-500 bg-transparent border border-solid border-green-500 hover:text-white hover:bg-green-600 focus:shadow-outline uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                class="w-32 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full text-center cursor-pointer"
                                 type="submit"
                                 v-show="editMode"
                                 @click.prevent="update"
                             >update</button>
-                            <button
-                                class="text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                type="button"
-                                @click="closeModal()"
-                            >cancel</button>
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
             <div v-if="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </form>
 
-        <div class="bg-white rounded shadow overflow-x-auto">
+        <div class="bg-white rounded shadow overflow-x-auto dark:text-white dark:bg-gray-600">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">ID</th>
@@ -130,7 +130,7 @@
                 <tr
                     v-for="(element, index) in chanels"
                     :key="index"
-                    class="hover:bg-gray-100 focus-within:bg-gray-100"
+                    class="hover:bg-gray-100 focus-within:bg-gray-100 dark:hover:bg-gray-700 dark:focus-within:bg-gray-700"
                 >
                     <td class="border-t">{{ index }}</td>
                     <td class="border-t">{{ element.title }}</td>

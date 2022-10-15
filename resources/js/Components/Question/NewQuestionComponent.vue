@@ -17,7 +17,7 @@
                     style="z-index:9999;"
                 >
                     <!-- Add margin if you want to see some of the overlay behind the modal-->
-                    <div class="modal-content p-2 px-4 text-left overflow-y-auto" style="max-height: 50vh">
+                    <div class="modal-content p-2 px-4 text-left overflow-y-auto dark:bg-gray-700  dark:text-gray-100 " style="max-height: 50vh">
                         <!--Title-->
                         <div class="flex justify-between items-center">
                             <p class="text-2xl">New discussion</p>
@@ -43,7 +43,7 @@
                                 <input
                                     id="title"
                                     type="text"
-                                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"
+                                    class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     v-model="form.title"
                                     required
                                     autofocus
@@ -60,7 +60,7 @@
                                         v-model="form.chanel_id"
                                         required
                                         autofocus
-                                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                         <option
                                             v-for="c in chanels"
@@ -84,8 +84,8 @@
                                 </div>
                             </div>
 
-                            <div class="pt-4">
-                                <ckeditor
+                            <div class="pt-4 ">
+                                <ckeditor 
                                    
                                     v-model="form.body"
                                     :config="editorConfig"
@@ -97,7 +97,7 @@
                                 <a
                                     type="button"
                                     @click="closeModal()"
-                                    class="w-32 inline-block bg-gray-200 hover:bg-gray-500 font-bold py-2 px-4 rounded-full text-center cursor-pointer mr-2"
+                                    class="w-32 inline-block bg-gray-200 hover:bg-gray-500 font-bold py-2 px-4 rounded-full text-center cursor-pointer mr-2 dark:bg-red-600  dark:text-gra-200 "
                                 >cancel</a>
 
                                 <button

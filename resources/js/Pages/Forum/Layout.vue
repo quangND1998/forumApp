@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div :class="isdark? 'dark':''" :title="isdark" >
+        
         <sidebar />
-        <div class="relative md:ml-64 bg-blueGray-100">
+        <div class="relative md:ml-64 bg-white dark:bg-theme-black">
             <admin-navbar />
             <header-stats />
-
-            <div class="flex-1 overflow-hidden px-4 py-8 md:p-4 overflow-y-auto bg-gray-600" scroll-region>
+            <div class="flex-1 overflow-hidden  px-4 py-8 md:p-4 overflow-y-auto" scroll-region>
                 <transition name="fade">
                       <slot />
                     </transition>
@@ -30,6 +30,11 @@ export default {
         chanels: Array,
         errors: Object
     },
+    data(){
+        return{
+            isdark:true
+        }
+    } ,
     components: {
         AdminNavbar,
         Sidebar,
@@ -37,6 +42,23 @@ export default {
         FooterAdmin,
         NewQuestionComponent
 
+    },
+    mounted() {
+        
+        if (localStorage.isdark === undefined) {
+            
+            localStorage.isdark = true;
+            
+        } else {
+            this.isdark =localStorage.isdark
+        }
+        console.log(this.isdark)
+        window.ChatterEvents.$on('changeMode',e=>{
+            // console.log('changeMode',e)
+            this.isdark= e
+            localStorage.isdark = e;
+        })
+    
     },
 };
 </script>

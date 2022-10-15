@@ -1,13 +1,13 @@
 <template>
   <nav
-    class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+    class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl dark:bg-gray-700 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6 ">
     <div
-      class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
+      class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto dark:md:text-gray-200 dark:md:bg-gray-700">
       <!-- Toggler -->
       <button
-        class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
+        class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent dark:text-white"
         type="button" v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')">
-        <i class="fas fa-bars"></i>
+        <i class="fas fa-bars dark:md:text-gray-200 dark:md:bg-gray-700"></i>
       </button>
       <!-- Brand -->
       <!-- <router-link
@@ -17,7 +17,7 @@
         Vue Notus
       </router-link> -->
       <!-- User -->
-      <ul class="md:hidden items-center flex flex-wrap list-none">
+      <ul class="md:hidden items-center flex flex-wrap list-none dark:md:text-gray-200 dark:md:bg-gray-700">
         <li class="inline-block relative">
           <notification-dropdown />
         </li>
@@ -27,10 +27,11 @@
       </ul>
       <!-- Collapse -->
       <div
-        class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded"
+        class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded dark:bg-gray-700"
         v-bind:class="collapseShow">
         <!-- Collapse header -->
-        <div class="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200">
+        <div
+          class="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200 dark:md:text-gray-200 dark:md:bg-gray-700">
           <div class="flex flex-wrap">
             <div class="w-6/12">
               <!-- <router-link
@@ -42,7 +43,7 @@
             </div>
             <div class="w-6/12 flex justify-end">
               <button type="button"
-                class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
+                class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent dark:text-white"
                 v-on:click="toggleCollapseShow('hidden')">
                 <i class="fas fa-times"></i>
               </button>
@@ -160,14 +161,16 @@
           <ReplyButtom v-if="$page.url.startsWith('/question')"></ReplyButtom>
         </div>
         <!-- Heading -->
-        <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+        <h6
+          class="md:min-w-full text-blueGray-600 dark:text-gray-100  text-xs uppercase font-bold block pt-1 pb-4 no-underline">
           Auth Layout Pages
         </h6>
         <!-- Navigation -->
 
         <ul v-if="$page.props.auth.user == null" class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <link class="items-center">
-          <Link class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
+          <Link
+            class="text-blueGray-700 dark:text-gray-100 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
             :href="route('login')">
           <i class="fas fa-fingerprint text-blueGray-300 mr-2 text-sm"></i>
           Login
@@ -175,60 +178,79 @@
           </li>
 
           <li class="items-center">
-            <Link class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
+            <Link
+              class="text-blueGray-700 dark:text-gray-100 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
               :href="route('register')">
-            <i class="fas fa-clipboard-list text-blueGray-300 mr-2 text-sm"></i>
+            <i class="fas fa-clipboard-list dark:text-gray-100 text-blueGray-300 mr-2 text-sm"></i>
             Register
             </Link>
           </li>
         </ul>
-
-
+        <hr class="my-4 md:min-w-full" />
+        <!-- Heading -->
+        <h6
+          class="md:min-w-full text-blueGray-500 dark:text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+          Documentation
+        </h6>
+        <button  @click="toggleDarkMode" role="switch" :title="isdark==true ?'Switch to Light Mode?':'Switch to Dark Mode'" >
+          <svg   v-if="isdark==true" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+          </svg>
+          <svg    v-else  xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+              clip-rule="evenodd" />
+          </svg>
+        </button>
+       
         <!-- Divider -->
         <hr class="my-4 md:min-w-full" />
         <!-- Heading -->
-        <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+        <h6
+          class="md:min-w-full text-blueGray-500 dark:text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
           Documentation
         </h6>
         <!-- Navigation -->
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="inline-flex">
-            <Link :class="[$page.url == '/forum' ? 'opacity-75 text-blue-300' : '']" :href="route('forum')"
-              target="_blank"
-              class="text-blueGray-700 hover:text-blueGray-400 text-sm block mb-4 no-underline font-semibold">
-            <i class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"></i>
+            <Link :class="[$page.url == '/forum' ? 'opacity-75 text-blue-300  dark:text-blue-500' : '']"
+              :href="route('forum')" target="_blank"
+              class="text-blueGray-700 dark:text-gray-100 hover:text-blueGray-400 text-sm block mb-4 no-underline font-semibold">
+            <i class="fas fa-paint-brush mr-2  text-blueGray-300  dark:text-gray-100 text-base"></i>
             All Thread
             </Link>
           </li>
-          <li class="inline-flex" >
-            <Link :class="[$page.url == '/chanels' ? 'opacity-75 text-blue-300' : '']"
+          <li class="inline-flex">
+            <Link :class="[$page.url == '/chanels' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               :href="route('channels')" target="_blank"
-              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold">
-            <i class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"></i>
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="fas fa-paint-brush mr-2 text-blueGray-300 dark:text-gray-100 text-base"></i>
             Channels
             </Link>
           </li>
           <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
-            <Link :class="[$page.url == '/admin/channels' ? 'opacity-75 text-blue-300' : '']"
+            <Link :class="[$page.url == '/admin/channels' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               :href="route('admin.channels.index')" target="_blank"
-              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold">
-            <i class="fas fa-paint-brush mr-2 text-blueGray-300 text-base"></i>
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="fas fa-paint-brush mr-2 text-blueGray-300 dark:text-gray-100 text-base"></i>
             Channels
             </Link>
           </li>
           <li class="inline-flex">
-            <Link :class="[$page.url.startsWith('/forum?answered=1') ? 'opacity-75 text-blue-300' : '']"
+            <Link
+              :class="[$page.url.startsWith('/forum?answered=1') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               href="/forum?answered=1" target="_blank"
-              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold">
-            <i class="far fa-check-circle mr-2 text-blueGray-300 text-base"></i>
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="far fa-check-circle mr-2 text-blueGray-300 dark:text-gray-100 text-base"></i>
             Solved
             </Link>
           </li>
           <li class="inline-flex">
             <Link href="/forum?answered=0"
-              :class="[$page.url.startsWith('/forum?answered=0') ? 'opacity-75 text-blue-300' : '']" target="_blank"
-              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold">
-            <i class="far fa-times-circle mr-2 text-blueGray-300 text-base"></i>
+              :class="[$page.url.startsWith('/forum?answered=0') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+              target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="far fa-times-circle mr-2 text-blueGray-300 dark:text-gray-100 text-base"></i>
             Unsolved
             </Link>
           </li>
@@ -236,10 +258,10 @@
           <li class="inline-flex" v-if="$page.props.auth.user">
 
             <Link :href="route('myThread')"
-              :class="[$page.url.startsWith('/myThread') ? 'opacity-75 text-blue-300' : '']" target="_blank"
-              class="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold">
-            <i class="far fa-question-circle mr-2  text-base"></i>
-
+              :class="[$page.url.startsWith('/myThread') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+              target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="far fa-question-circle mr-2 text-blueGray-300 dark:text-gray-100 text-base"></i>
             My Question
             </Link>
           </li>
@@ -358,12 +380,29 @@ export default {
   data() {
     return {
       collapseShow: "hidden",
+      isdark:true
     };
+  },
+  mounted(){
+    
+    if (localStorage.isdark === undefined) {
+      localStorage.isdark = true;
+    
+    } else {
+    
+      this.isdark =localStorage.isdark
+    }
   },
   methods: {
     toggleCollapseShow: function (classes) {
       this.collapseShow = classes;
     },
+    toggleDarkMode(){
+      this.isdark = !this.isdark
+      localStorage.isdark = this.isdark;
+      console.log(this.isdark);
+      window.ChatterEvents.$emit('changeMode',this.isdark)
+    }
   },
   components: {
     NotificationDropdown,
@@ -373,5 +412,6 @@ export default {
     ReplyButtom,
     Icon
   },
+
 };
 </script>
