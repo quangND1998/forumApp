@@ -31,7 +31,7 @@ import socket from 'socket.io-client'
 window.io = require('socket.io-client');
 window.Echo = new Echo({
         broadcaster: 'socket.io',
-        host: `${window.location.protocol}//${window.location.hostname}:6003`
+        host: `${window.location.protocol}//${window.location.hostname}:6001`
 
     })
     // window.socketio = socket(`${window.location.protocol}//${window.location.hostname}:6002`);
