@@ -123,7 +123,7 @@
                 :href="route('profile',  post.owner.name)">{{ post.owner.name }}</Link>
              
               <span v-if="post.lastReplie !==null" class="font-bold">replied {{ post.lastReplie.time_ago }}</span>
-              <span v-else class="font-bold">posted {{post.owner.name }}</span>
+              <span v-else class="font-bold">posted {{post.time_ago }}</span>
 
               <div v-if="post.solved == 1"
                 class="ml-2 inline-flex h-5 items-center rounded-full border border-solid border-blue-500 px-2 text-xs font-medium text-white bg-blue-600"
