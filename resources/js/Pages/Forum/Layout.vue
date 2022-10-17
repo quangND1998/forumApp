@@ -1,8 +1,8 @@
 <template>
-    <div :class="isdark? 'dark':''" :title="isdark" >
+    <div :class="isdark =='dark'? 'dark':''"  >
         
         <sidebar />
-        <div class="relative md:ml-64 bg-white dark:bg-theme-black">
+        <div class="relative md:ml-64 bg-gray-100 dark:bg-theme-black">
             <admin-navbar />
             <header-stats />
             <div class="flex-1 overflow-hidden  px-4 py-8 md:p-4 overflow-y-auto" scroll-region>
@@ -32,7 +32,7 @@ export default {
     },
     data(){
         return{
-            isdark:true
+            isdark:'dark'
         }
     } ,
     components: {
@@ -47,12 +47,12 @@ export default {
         
         if (localStorage.isdark === undefined) {
             
-            localStorage.isdark = true;
+            localStorage.isdark = 'dark';
             
         } else {
             this.isdark =localStorage.isdark
         }
-        console.log(this.isdark)
+        // console.log(this.isdark)
         window.ChatterEvents.$on('changeMode',e=>{
             // console.log('changeMode',e)
             this.isdark= e

@@ -3,7 +3,7 @@
     <UpdateQuestionComponent :errors="errors" :chanels="chanels"></UpdateQuestionComponent>
     <div v-for="post in conversations.data" :key="post.id">
       <div
-        class="panel relative transition-colors bg-gray-200 text-gray-700 dark:bg-slate-600 duration-300 dark:text-gray-200 hover:bg-gray-500 px-5 py-4 rounded-2xl conversation-list-item mb-3 flex cursor-pointer flex-col md:flex-row"
+        class="panel relative transition-colors shadow-lg bg-gray-200 text-gray-700 dark:bg-slate-600  dark:hover:bg-slate-700 duration-300 dark:text-gray-200 hover:bg-gray-300 px-5 py-4 rounded-2xl conversation-list-item mb-3 flex cursor-pointer flex-col md:flex-row"
       >
         <div class="w-full md:w-auto md:mr-6 flex items-center md:block mb-4 md:mb-0">
           <span class="icon mr-3 md:mr-0">

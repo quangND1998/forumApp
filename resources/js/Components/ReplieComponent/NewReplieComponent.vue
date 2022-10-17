@@ -100,7 +100,7 @@ export default {
 
     props: {
         conversation: Object,
-        initalReplies: Array,
+        initalReplies: Object,
         errors: Object
     },
     data() {

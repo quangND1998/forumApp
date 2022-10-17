@@ -13,8 +13,8 @@ module.exports = {
     theme: {
         colors: {
             ...colors,
+            'theme-black': '#213154',
 
-            'theme-black': '#151f32'
         },
 
         extend: {

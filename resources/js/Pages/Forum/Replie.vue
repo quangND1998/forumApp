@@ -2,7 +2,7 @@
   <transition name="fade" class="flex flex-wrap p-4 pb-0 w-full">
 
     <div>
-      <div class="sm:hidden relative w-12/12 mx-auto bg-white rounded">
+      <div class="sm:hidden relative w-12/12 mx-auto rounded">
         <div class="w-full pb-2" v-if="$page.props.auth.user !== null">
           <ReplyButtom v-if="$page.url.startsWith('/question')"> </ReplyButtom>
 
@@ -17,7 +17,7 @@
         </div>
       </div>
       <Conversation :conversation="conversation"></Conversation>
-      <div v-for="replie in initalReplies" :key="replie.id" class="flex flex-wrap md:py-2 mt-1 ml-8" :id="replie.id" >
+      <div v-for="replie in initalReplies.data" :key="replie.id" class="flex flex-wrap md:py-2 mt-1 ml-8" :id="replie.id" >
         <div
           class="forum-comment w-full is-reply relative mb-2 rounded-xl bg-white hover:border hover:border-grey-400 border border-deep-black/4" :class="replie.id== replie_id ? 'hover:border-grey-400 border-2 border-deep-black/4 border-blue-500':''">
           <div class="flex px-6 py-4 lg:p-5">
@@ -107,6 +107,7 @@
           </div>
         </div>
       </div>
+      <pagination class="mt-6" :links="initalReplies.meta.links" />
       <NewReplieComponent v-if="conversation.lock_comment == false" :conversation="conversation"
         :initalReplies="initalReplies"></NewReplieComponent>
       <UpdateReplieComponent v-if="conversation.lock_comment == false" :conversation="conversation"
@@ -124,11 +125,12 @@ import NewReplieComponent from "@/Components/ReplieComponent/NewReplieComponent"
 import LikeReplyButton from "@/Components/ReplieComponent/LikeReplyButton";
 import UpdateReplieComponent from "@/Components/ReplieComponent/UpdateReplieComponent";
 import ReplyButtom from "@/Components/ReplieComponent/ReplyButtom";
+import Pagination from "@/Components/Pagination";
 export default {
   layout: LayoutForum,
   props: {
     conversation: Object,
-    initalReplies: Array,
+    initalReplies: Object,
     errors: Object,
     replie_id: String
   },
@@ -138,7 +140,8 @@ export default {
     NewReplieComponent,
     LikeReplyButton,
     UpdateReplieComponent,
-    ReplyButtom
+    ReplyButtom,
+    Pagination
   },
   mounted() {
     this.listenForNewComment();
@@ -187,7 +190,7 @@ export default {
 
       window.Echo.channel("replie_event." + this.conversation.id).listen("ReplieCommentEvent", e => {
         if (e.replie_id == null) {
-          this.initalReplies.push(e);
+          this.initalReplies.data.push(e);
         } else {
           // this.initalReplies.forEach(element => {
           //     if(element.id == e.replie_id){
@@ -195,9 +198,9 @@ export default {
           //     }
 
           // });
-          for (let i = 0; i < this.initalReplies.length; i++) {
-            if (this.initalReplies[i].id == e.replie_id) {
-              this.initalReplies[i].replies.push(e);
+          for (let i = 0; i < this.initalReplies.data.length; i++) {
+            if (this.initalReplies.data[i].id == e.replie_id) {
+              this.initalReplies.data[i].replies.push(e);
             }
           }
         }
@@ -233,7 +236,7 @@ export default {
       window.Echo.channel("like_event").listen("LikeCommentEvent", e => {
         
         if (e.replie_id == null) {
-          this.initalReplies.map(element=>{
+          this.initalReplies.data.map(element=>{
             element.best_answer =0;
             if (element.id == e.id) {
               element.likes = e.likes;
@@ -244,7 +247,7 @@ export default {
               });
           })
         } else {
-          this.initalReplies.map(element => {
+          this.initalReplies.data.map(element => {
             element.best_answer =0;
             if (element.id == e.replie_id) {
               element.replies.map(replie => {
@@ -262,10 +265,10 @@ export default {
     listenForUpdateComment() {
       window.Echo.channel("update-replie." + this.conversation.id).listen("UpdateReplieEvent", e => {
         if (e.replie_id == null) {
-          let index = this.initalReplies.findIndex(x => x.id == e.id);
-          this.initalReplies.splice(index, 1, e);
+          let index = this.initalReplies.data.findIndex(x => x.id == e.id);
+          this.initalReplies.data.splice(index, 1, e);
         } else {
-          this.initalReplies.forEach(element => {
+          this.initalReplies.data.forEach(element => {
             if (element.id == e.replie_id) {
               let index = element.replies.findIndex(x => x.id == e.id);
               element.replies.splice(index, 1, e);

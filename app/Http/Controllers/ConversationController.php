@@ -130,7 +130,7 @@ class ConversationController extends Controller
     public function myConversation(Request $request)
     {
         $chanels = Chanels::get();
-        $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('user_id', Auth::user()->id)->where(function ($query) use ($request) {
+        $conversations = Conversation::with('user',  'chanel', 'lastReplie.user')->withCount('all_replies')->where('user_id', Auth::user()->id)->where(function ($query) use ($request) {
             $query->where('title', 'LIKE', '%' . $request->term . '%');
         })->paginate(20)->appends(['term' => $request->term]);
         $conversations = ConversationResource::collection($conversations);

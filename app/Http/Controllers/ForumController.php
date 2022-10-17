@@ -30,25 +30,26 @@ class ForumController extends Controller
 
         if ($chanel !== null && $solved !== null) {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('solved', $solved)->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user')->withCount('all_replies')->where('solved', $solved)->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel == null && $solved !== null) {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('solved', $solved)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user','chanel', 'lastReplie.user')->withCount('all_replies')->where('solved', $solved)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel !== null && $solved == null) {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user')->withCount('all_replies')->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } else {
 
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user')->withCount('all_replies')->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         }
+       
         $conversations = ConversationResource::collection($conversations);
 
         return Inertia::render('Forum/Index', compact('chanels', 'conversations', 'category', 'solved'));
@@ -63,12 +64,12 @@ class ForumController extends Controller
         $category = $request->input('category');
 
         if ($category == 'all' || $category == null) {
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('solved', 1)->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user', 'chanel', 'lastReplie.user')->withCount('all_replies')->where('solved', 1)->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term]);
         } else {
             $chanel = Chanels::findOrFaiL($category);
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('solved', 1)->where('chanel_id', $chanel->id)->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user')->withCount('all_replies')->where('solved', 1)->where('chanel_id', $chanel->id)->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term]);
         }
@@ -87,12 +88,12 @@ class ForumController extends Controller
         $category = $request->input('category');
         $answered = $request->input('answered');
         if ($category == 'all' || $category == null) {
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('solved', 0)->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user')->withCount('all_replies')->where('solved', 0)->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term]);
         } else {
             $chanel = Chanels::findOrFaiL($category);
-            $conversations = Conversation::with('user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user')->where('solved', 0)->where('chanel_id', $chanel->id)->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user')->withCount('all_replies')->where('solved', 0)->where('chanel_id', $chanel->id)->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term]);
         }

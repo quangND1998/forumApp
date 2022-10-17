@@ -30,8 +30,15 @@ class ReplieController extends Controller
        
       
         $replie_id = $request->input('replyId');
-        $conversation = Conversation::with(['user', 'all_replies', 'initalReplies.user','initalReplies.users','initalReplies.replies.users','initalReplies.replies.user', 'initalReplies.replies.user_reply', 'chanel','lastReplie.user'])->where('slug', $name)->first();
+        $conversation = Conversation::with(['user', 'chanel','lastReplie.user'])->withCount('all_replies')->where('slug', $name)->first();
 
+        if($conversation){
+            $initalReplies = Replies::with('user','users','replies.users','replies.user','replies.user_reply')->where('is_inital', 1)->where('conversation_id',$conversation->id)->paginate(20);
+        }
+        else{
+            $erros = "Not found conversation !!";
+            return Inertia::render('Erros/401', ['erros' => $erros]);
+        }
         // return $conversation;
         // return $conversation;
         // $conversation = new ConversationResource($conversation);
@@ -41,9 +48,9 @@ class ReplieController extends Controller
 
             $conversation->view = $conversation->view + 1;
             $conversation->save();
-
+         
             // return $conversation->initalReplies;
-            $initalReplies = InitalReplieResource::collection($conversation->initalReplies);
+            $initalReplies = InitalReplieResource::collection($initalReplies);
 
             $conversation = new ConversationResource($conversation);
             // broadcast(new ViewConversationEvent($conversation))->toOthers();

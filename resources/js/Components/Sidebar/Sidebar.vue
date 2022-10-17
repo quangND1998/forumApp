@@ -192,8 +192,8 @@
           class="md:min-w-full text-blueGray-500 dark:text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
           Documentation
         </h6>
-        <button  @click="toggleDarkMode" role="switch" :title="isdark==true ?'Switch to Light Mode?':'Switch to Dark Mode'" >
-          <svg   v-if="isdark==true" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+        <button  @click="toggleDarkMode" role="switch" :title="isdark=='dark' ?'Switch to Light Mode?':'Switch to Dark Mode'" >
+          <svg   v-if="isdark=='dark'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
           </svg>
           <svg    v-else  xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -216,15 +216,15 @@
             <Link :class="[$page.url == '/forum' ? 'opacity-75 text-blue-300  dark:text-blue-500' : '']"
               :href="route('forum')" target="_blank"
               class="text-blueGray-700 dark:text-gray-100 hover:text-blueGray-400 text-sm block mb-4 no-underline font-semibold">
-            <i class="fas fa-paint-brush mr-2  text-blueGray-300  dark:text-gray-100 text-base"></i>
+            <i class="fas fa-paint-brush mr-2  text-blueGray-300  dark:text-gray-100 text-base" :class="[$page.url == '/forum' ? 'opacity-75 text-blue-300  dark:text-blue-500' : '']" ></i>
             All Thread
             </Link>
           </li>
           <li class="inline-flex">
-            <Link :class="[$page.url == '/chanels' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+            <Link :class="[$page.url == '/channels' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               :href="route('channels')" target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
-            <i class="fas fa-paint-brush mr-2 text-blueGray-300 dark:text-gray-100 text-base"></i>
+            <i class="fas fa-paint-brush mr-2 text-blueGray-300 dark:text-gray-100 text-base" :class="[$page.url == '/channels' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
             Channels
             </Link>
           </li>
@@ -232,7 +232,7 @@
             <Link :class="[$page.url == '/admin/channels' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               :href="route('admin.channels.index')" target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
-            <i class="fas fa-paint-brush mr-2 text-blueGray-300 dark:text-gray-100 text-base"></i>
+            <i class="fas fa-paint-brush mr-2 text-blueGray-300 dark:text-gray-100 text-base"  :class="[$page.url == '/admin/channels' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
             Channels
             </Link>
           </li>
@@ -241,7 +241,7 @@
               :class="[$page.url.startsWith('/forum?answered=1') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               href="/forum?answered=1" target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
-            <i class="far fa-check-circle mr-2 text-blueGray-300 dark:text-gray-100 text-base"></i>
+            <i class="far fa-check-circle mr-2 text-blueGray-300 dark:text-gray-100 text-base" :class="[$page.url == '/forum?answered=1' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
             Solved
             </Link>
           </li>
@@ -250,7 +250,7 @@
               :class="[$page.url.startsWith('/forum?answered=0') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
-            <i class="far fa-times-circle mr-2 text-blueGray-300 dark:text-gray-100 text-base"></i>
+            <i class="far fa-times-circle mr-2 text-blueGray-300 dark:text-gray-100 text-base" :class="[$page.url == '/forum?answered=0' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
             Unsolved
             </Link>
           </li>
@@ -261,7 +261,7 @@
               :class="[$page.url.startsWith('/myThread') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
-            <i class="far fa-question-circle mr-2 text-blueGray-300 dark:text-gray-100 text-base"></i>
+            <i class="far fa-question-circle mr-2 text-blueGray-300 dark:text-gray-100 text-base"  :class="[$page.url.startsWith('/myThread') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
             My Question
             </Link>
           </li>
@@ -386,7 +386,7 @@ export default {
   mounted(){
     
     if (localStorage.isdark === undefined) {
-      localStorage.isdark = true;
+      localStorage.isdark = 'dark';
     
     } else {
     
@@ -398,9 +398,14 @@ export default {
       this.collapseShow = classes;
     },
     toggleDarkMode(){
-      this.isdark = !this.isdark
+      if(this.isdark == 'dark'){
+        this.isdark= 'light'
+      }
+      else{
+        this.isdark= 'dark'
+      }
       localStorage.isdark = this.isdark;
-      console.log(this.isdark);
+      // console.log(this.isdark);
       window.ChatterEvents.$emit('changeMode',this.isdark)
     }
   },

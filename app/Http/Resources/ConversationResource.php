@@ -29,7 +29,7 @@ class ConversationResource extends JsonResource
                 'chanel_id' => $this->chanel_id,
                 'owner' => new UserResource($this->user),
                 'chanel' => $this->chanel,
-                'count_reply' => count($this->all_replies),
+                'count_reply' => $this->all_replies_count,
                 'created_at' => $this->created_at,
                 'now' => Carbon::now(),
                 'time_ago' => Carbon::parse($this->created_at)->diffForHumans(),
