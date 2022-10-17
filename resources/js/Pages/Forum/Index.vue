@@ -115,11 +115,11 @@
               class="mt-2 conversation-list-excerpt lg:clamp two-lines mb-6 break-words text-[13px] leading-normal  dark:font-medium dark:text-grey-100 lg:mb-0 lg:pr-8"
               v-html="post.sub_body"></div>
 
-            <div
+            <div 
               class="text-xs font-semibold leading-none tracking-tight text-grey-800 dark:text-grey-100 mt-3">
-              <Link class="text-blue-600 uppercase font-bold no-underline hover:underline" v-if="post.lastReplie"
+              <Link class="text-blue-600 uppercase font-bold no-underline hover:underline" v-if="post.lastReplie !==null"
                 :href="route('profile',  post.lastReplie.user.name)">{{ post.lastReplie.user.name }}</Link>replied
-              <span class="font-bold">{{ post.lastReplie.time_ago }}</span>
+              <span v-if="post.lastReplie !==null" class="font-bold">{{ post.lastReplie.time_ago }}</span>
 
               <div v-if="post.solved == 1"
                 class="ml-2 inline-flex h-5 items-center rounded-full border border-solid border-blue-500 px-2 text-xs font-medium text-white bg-blue-600"
