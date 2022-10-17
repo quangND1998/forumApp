@@ -115,9 +115,9 @@
               class="mt-2 conversation-list-excerpt lg:clamp two-lines mb-6 break-words text-[13px] leading-normal  dark:font-medium dark:text-grey-100 lg:mb-0 lg:pr-8"
               v-html="post.sub_body"></div>
 
-            <div v-if="post.lastReplie"
+            <div
               class="text-xs font-semibold leading-none tracking-tight text-grey-800 dark:text-grey-100 mt-3">
-              <Link class="text-blue-600 uppercase font-bold no-underline hover:underline" v-if="$page.props.auth.user"
+              <Link class="text-blue-600 uppercase font-bold no-underline hover:underline" v-if="post.lastReplie"
                 :href="route('profile',  post.lastReplie.user.name)">{{ post.lastReplie.user.name }}</Link>replied
               <span class="font-bold">{{ post.lastReplie.time_ago }}</span>
 
