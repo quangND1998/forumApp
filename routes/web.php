@@ -88,9 +88,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 
-Route::get('/index', function () {
-    return Inertia::render('Index');
-});
+// Route::get('/index', function () {
+//     return Inertia::render('Index');
+// });
 
 Route::get('/getList', function () {
     return Inertia::render('Link');
