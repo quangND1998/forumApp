@@ -12,8 +12,8 @@
         <div class="mobile:mr-4 mr-6 md:hidden lg:block">
           <div class="select-wrap">
             <select v-model="filter" @change="Filter"
-              class="flex cursor-pointer items-center rounded-full bg-grey-400 px-5 py-3 text-xs leading-none text-grey-800 dark:bg-gray-700 dark:text-white"
-              style="width: 115px;">
+              class="flex cursor-pointer items-center rounded-full bg-grey-400 px-5 py-3 text-xs leading-none text-grey-800 bg-blue-opacity text-blue dark:text-white"
+              style="width: fit-content;">
               <option value="all">All</option>
               <option v-for="(chanel, index) in chanels" :key="index" :value="chanel.slug">{{ chanel.title }}</option>
             </select>
@@ -48,11 +48,11 @@
       </div> -->
       <form class="search-form mt-5 h-[40px] w-full rounded-full bg-grey-400 md:mt-0 md:w-52">
         <span
-          class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
+          class="z-10 leading-snug font-normal absolute text-center text-blueGray-300 bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
           <i class="fas fa-search"></i>
         </span>
         <input v-model="term" @keyup="search" type="text" placeholder="Search here..."
-          class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10 dark:bg-gray-700 dark:text-white" />
+          class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10 bg-blue-opacity dark:text-white" />
       </form>
     </div>
 
@@ -115,13 +115,13 @@
               class="mt-2 conversation-list-excerpt lg:clamp two-lines mb-6 break-words text-[13px] leading-normal  dark:font-medium dark:text-grey-100 lg:mb-0 lg:pr-8"
               v-html="post.sub_body"></div>
 
-            <div 
+            <div
               class="text-xs font-semibold leading-none tracking-tight text-grey-800 dark:text-grey-100 mt-3">
               <Link class="text-blue-600 uppercase font-bold no-underline hover:underline" v-if="post.lastReplie !==null"
                 :href="route('profile',  post.lastReplie.user.name)">{{ post.lastReplie.user.name }}</Link>
                 <Link class="text-blue-600 uppercase font-bold no-underline hover:underline" v-else
                 :href="route('profile',  post.owner.name)">{{ post.owner.name }}</Link>
-             
+
               <span v-if="post.lastReplie !==null" class="font-bold">replied {{ post.lastReplie.time_ago }}</span>
               <span v-else class="font-bold">posted {{post.time_ago }}</span>
 
@@ -168,7 +168,7 @@
             }}</span>
           </div>
           <div class="flex items-center justify-center">
-            <a :class="`items-center justify-center border hiddentext-white font-medium leading-tight rounded-full py-1 px-3 text-xs uppercase  shadow-md hover:bg-[${post.chanel.color}] hover:shadow-lg focus:bg-[${post.chanel.color}] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[${post.chanel.color}] active:shadow-lg transition duration-150 ease-in-out`"
+            <a :class="`items-center justify-center border hiddentext-white font-medium leading-tight rounded-full py-1 px-3 text-xs mr-2 shadow-md hover:bg-[${post.chanel.color}] hover:shadow-lg focus:bg-[${post.chanel.color}] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[${post.chanel.color}] active:shadow-lg transition duration-150 ease-in-out`"
               :style="`background-color: ${post.chanel.color}; border-color: ${post.chanel.color}; color:white  `">
               {{
               post.chanel.title }}
@@ -238,7 +238,6 @@ export default {
   methods: {
     Filter(event) {
       if (event.target.value == "all") {
-        this.filter = event.target.value;
         this.$inertia.get(this.route("forum"));
       } else {
         this.filter = event.target.value;

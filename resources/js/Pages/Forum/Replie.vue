@@ -19,11 +19,11 @@
       <Conversation :conversation="conversation"></Conversation>
       <div v-for="replie in initalReplies.data" :key="replie.id" class="flex flex-wrap md:py-2 mt-1 ml-8" :id="replie.id" >
         <div
-          class="forum-comment w-full is-reply relative mb-2 rounded-xl bg-white hover:border hover:border-grey-400 border border-deep-black/4" :class="replie.id== replie_id ? 'hover:border-grey-400 border-2 border-deep-black/4 border-blue-500':''">
+          class="forum-comment w-full is-reply relative mb-2 rounded-xl text-blue-gray dark:bg-slate-600" :class="replie.id== replie_id ? 'hover:border-grey-400 border-2 border-deep-black/4 border-blue-500':''">
           <div class="flex px-6 py-4 lg:p-5">
             <div class="mr-5 hidden text-left md:block">
               <a class="relative flex items-start mb-2" style="width: 32px; height: 32px; padding: 2px;">
-                <img class="relative bg-white ls-is-cached lazyloaded" style="width: 100%; border-radius: 9px;"
+                <img class="relative text-blue-gray ls-is-cached lazyloaded" style="width: 100%; border-radius: 9px;"
                   width="32" height="32" :src="replie.owner.avatar"
                   :alt="`avatar of ${replie.owner.avatar} on ${replie.title}`" />
               </a>
@@ -34,12 +34,12 @@
                   <a href class="relative mr-4 block overflow-hidden rounded-lg">
                     <img :src="replie.owner.avatar"
                       alt="`avatar of ${conversation.owner.avatar} on ${conversation.title}`"
-                      class="lazyload is-circle w-8 bg-white md:w-18" style="border-radius: 9px;" />
+                      class="lazyload is-circle w-8 text-blue-gray md:w-18" style="border-radius: 9px;" />
                   </a>
                 </div>
                 <div class="flex-1 text-left leading-none">
                   <div class="flex items-center">
-                    <a class="font-lg mr-2 block font-bold text-black">{{ replie.owner.name }}</a>
+                    <a class="font-lg mr-2 block font-bold text-blue-gray">{{ replie.owner.name }}</a>
                   </div>
                   <div class="mt-2 flex flex-wrap items-center gap-x-2 text-2xs font-medium">
                     <span class="text-sm text-gray-600">
@@ -53,7 +53,7 @@
                     Answer</span>
                 </div>
               </header>
-              <div class="content user-content text-[13px] text-black">
+              <div class="content user-content text-[13px] text-blue-gray">
                 <div v-html="replie.body"></div>
               </div>
               <LikeReplyButton :replie="replie" :comment="replie" :conversation="conversation"></LikeReplyButton>
@@ -62,11 +62,11 @@
         </div>
         <div v-for="re_reply in replie.replies" :key="re_reply.id" class="flex flex-wrap md:py-2 mt-1 ml-8 w-full" :id="re_reply.id" >
           <div
-            class="forum-comment w-full is-reply relative mb-2 rounded-xl bg-white hover:border hover:border-grey-400 border border-deep-black/4" :class="re_reply.id== replie_id ? 'hover:border-blue-400 border-2 border-deep-black/4 border-blue-500':''" >
+            class="forum-comment w-full is-reply relative mb-2 rounded-xl text-blue-gray hover:border hover:border-grey-400 border border-deep-black/4" :class="re_reply.id== replie_id ? 'hover:border-blue-400 border-2 border-deep-black/4 border-blue-500':''" >
             <div class="flex px-6 py-4 lg:p-5">
               <div class="mr-5 hidden text-left md:block">
                 <a class="relative flex items-start mb-2" style="width: 32px; height: 32px; padding: 2px;">
-                  <img class="relative bg-white ls-is-cached lazyloaded" style="width: 100%; border-radius: 9px;"
+                  <img class="relative text-blue-gray ls-is-cached lazyloaded" style="width: 100%; border-radius: 9px;"
                     width="32" height="32" :src="re_reply.owner.avatar"
                     :alt="`avatar of ${re_reply.owner.avatar} on ${re_reply.title}`" />
                 </a>
@@ -77,12 +77,12 @@
                     <a href class="relative mr-4 block overflow-hidden rounded-lg">
                       <img :src="re_reply.owner.avatar"
                         alt="`avatar of ${conversation.owner.avatar} on ${conversation.title}`"
-                        class="lazyload is-circle w-8 bg-white md:w-18" style="border-radius: 9px;" />
+                        class="lazyload is-circle w-8 text-blue-gray md:w-18" style="border-radius: 9px;" />
                     </a>
                   </div>
                   <div class="flex-1 text-left leading-none">
                     <div class="flex items-center">
-                      <a class="font-lg mr-2 block font-bold text-black">{{ re_reply.owner.name }}</a>
+                      <a class="font-lg mr-2 block font-bold text-blue-gray">{{ re_reply.owner.name }}</a>
                     </div>
                     <div class="mt-2 flex flex-wrap items-center gap-x-2 text-2xs font-medium">
                       <span class="text-sm text-gray-600">
@@ -96,7 +96,7 @@
                       Answer</span>
                   </div>
                 </header>
-                <div class="content user-content text-[13px] text-black">
+                <div class="content user-content text-[13px] text-blue-gray">
                   <!-- <p>{{ re_reply.body }}</p> -->
                   <Link class="text-blue" :href="'/@' + re_reply.user_reply.name">@{{ re_reply.user_reply.name }}</Link>
                   <span v-html="re_reply.body"></span>
@@ -234,7 +234,7 @@ export default {
       //   // $('#power').text(parseInt($('#power').text()) + parseInt(message.data.power));
       // });
       window.Echo.channel("like_event").listen("LikeCommentEvent", e => {
-        
+
         if (e.replie_id == null) {
           this.initalReplies.data.map(element=>{
             element.best_answer =0;

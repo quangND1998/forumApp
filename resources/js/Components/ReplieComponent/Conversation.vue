@@ -1,6 +1,6 @@
 <template>
     <div
-        class="forum-comment is-reply relative mb-2 rounded-xl bg-white hover:border hover:border-grey-400 border border-deep-black/4"
+        class="forum-comment is-reply relative mb-2 rounded-xl  hover:border   border-deep-black/4 dark:bg-slate-600"
     >
         <div class="flex px-6 py-4 lg:p-5">
             <div class="mr-5 hidden text-left md:block">
@@ -33,24 +33,24 @@
                     <div class="flex-1 text-left leading-none">
                         <div class="flex items-center">
                             <a
-                                class="font-lg mr-2 block font-bold text-black"
+                                class="font-lg mr-2 block font-bold text-blue-gray"
                             >{{ conversation.owner.name }}</a>
                         </div>
                         <div class="mt-2 flex flex-wrap items-center gap-x-2 text-2xs font-medium">
                             <span class="text-sm text-gray-600">
-                                <span class="text-sm text-gray-600">Post {{ conversation.time_ago }}</span>
+                                <span class="text-sm text-white">Post {{ conversation.time_ago }}</span>
                             </span>
                         </div>
                     </div>
                 </header>
                 <h1
-                    class="mb-2 rounded-xl px-6 py-4 text-2lg font-semibold text-black md:mb-6 bg-blue-100"
+                    class="mb-2 rounded-xl px-6 py-4 text-2lg font-semibold text-blue md:mb-6 reply-bg"
                 >{{ conversation.title }}</h1>
-                <div class="content user-content text-[13px] text-black">
-                    <div v-html="conversation.body">    
+                <div class="content user-content text-[13px] text-blue-gray">
+                    <div v-html="conversation.body">
                     </div>
-                    
-                   
+
+
                 </div>
             </div>
         </div>
