@@ -28,7 +28,9 @@ class InitalReplieResource extends JsonResource
                 'time_ago' => Carbon::parse($this->created_at)->diffForHumans(),
                 'solved' => $this->solved,
                 'replies' =>  ReplieResource::collection($this->replies),
-                'likes' =>  LikeResource::collection($this->users)
+                'likes' =>  LikeResource::collection($this->users),
+                'images' => $this->images,
+                'videos'=> $this->videos
                 
             ];
     }

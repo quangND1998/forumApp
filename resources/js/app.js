@@ -10,6 +10,20 @@ import {
 } from 'one-colorpicker'
 import CKEditor from 'ckeditor4-vue';
 import vueCountryRegionSelect from 'vue-country-region-select'
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+import moment from 'moment';
+Vue.use(VueToast);
+createInertiaApp({
+    resolve: name => require(`./Pages/${name}`),
+    setup({ el, App, props, plugin }) {
+        Vue.use(plugin)
+
+        new Vue({
+            render: h => h(App, props),
+        }).$mount(el)
+    },
+})
 Vue.use(vueCountryRegionSelect)
 Vue.use(ColorPanel)
 Vue.use(ColorPicker)
@@ -18,7 +32,7 @@ Vue.mixin({
         route: window.route,
     }
 })
-import moment from 'moment';
+
 Vue.use(CKEditor);
 Vue.mixin(require('./base'))
 Vue.mixin({
@@ -52,16 +66,7 @@ Vue.mixin({
 })
 
 
-createInertiaApp({
-    resolve: name => require(`./Pages/${name}`),
-    setup({ el, App, props, plugin }) {
-        Vue.use(plugin)
 
-        new Vue({
-            render: h => h(App, props),
-        }).$mount(el)
-    },
-})
 window.ChatterEvents = new Vue();
 
 

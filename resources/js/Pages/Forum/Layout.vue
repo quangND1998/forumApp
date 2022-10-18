@@ -5,11 +5,13 @@
         <div class="relative md:ml-64 bg-gray-100 dark:bg-theme-black">
             <admin-navbar />
             <header-stats />
+    
             <div class="flex-1 overflow-hidden  px-4 py-8 md:p-4 overflow-y-auto" scroll-region>
+                <Notification />
                 <transition name="fade">
+                      
                       <slot />
                     </transition>
-                <NewQuestionComponent :chanels="chanels" :errors="errors"></NewQuestionComponent>
             </div>
         </div>
         
@@ -21,7 +23,7 @@ import AdminNavbar from "@/Components/Navbars/AdminNavbar.vue";
 import Sidebar from "@/Components/Sidebar/Sidebar.vue";
 import HeaderStats from "@/Components/Headers/HeaderStats.vue";
 import FooterAdmin from "@/Components/Footers/FooterAdmin.vue";
-import NewQuestionComponent from "@/Components/Question/NewQuestionComponent"
+import Notification from "@/Components/Notification";
 
 
 export default {
@@ -40,7 +42,8 @@ export default {
         Sidebar,
         HeaderStats,
         FooterAdmin,
-        NewQuestionComponent
+        Notification
+      
 
     },
     mounted() {

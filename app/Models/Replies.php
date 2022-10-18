@@ -37,6 +37,16 @@ class Replies extends Model
     {
         return $this->belongsTo(User::class, 'replie_user');
     }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function videos()
+    {
+        return $this->morphMany(Video::class, 'videoable');
+    }
    
    
 }

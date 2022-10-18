@@ -22,9 +22,24 @@ use App\Jobs\DeleteConversation;
 use App\Events\SovledConversationEvent;
 use App\Events\UpdateConversation;
 use App\Jobs\UpdateSubject;
-
+use App\Http\Controllers\Traits\FileUploadTrait;
+use App\Models\Image;
+use App\Models\Video;
+use Illuminate\Http\Response;
 class ConversationController extends Controller
 {
+    use FileUploadTrait;
+
+    public function create(){
+        $chanels = Chanels::get();
+        return Inertia::render('Question/NewQuestionComponent',compact('chanels'));
+    }
+
+    public function edit($id){
+        $conversation = Conversation::with('images','videos')->findOrFail($id);
+        $chanels = Chanels::get();
+        return Inertia::render('Question/UpdateQuestionComponent',compact('chanels', 'conversation'));
+    }
     public function store(Request $request)
     {
         $this->validate(
@@ -32,7 +47,9 @@ class ConversationController extends Controller
             [
                 'title' => 'required|max:255|unique:conversation,title',
                 'body' => 'nullable',
-                'chanel_id' => 'required'
+                'chanel_id' => 'required',
+                'image' => 'nullable|mimes:png,jpg,jpeg,svg',
+                'video' =>  'nullable|mimetypes:video/mp4|max:10000'
             ]
         );
         $conversation= Conversation::create([
@@ -46,7 +63,22 @@ class ConversationController extends Controller
         // $icon= "/images/profiles/started_conversation_icon.svg";
         // $pointsEarned= 50;
         // $type="Forum\Conversation";
-
+        $image_path = 'images/';
+        $video_path = 'videos/';
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $image = new Image();
+            $image->name =  $file->getClientOriginalName();
+            $image->image = $request->hasFile('image') ? $this->image($request->file('image'), $image_path) : null;
+            $conversation->images()->save($image);
+        }
+        if($request->hasFile('video')){
+            $file = $request->file('video');
+            $video = new Video();
+            $video->name =  $file->getClientOriginalName();
+            $video->video = $request->hasFile('video') ? $this->image($request->file('video'), $video_path) : null;
+            $conversation->videos()->save($video);
+        }
         $activty= Activities::create([
             'heading' => "Started a new Conversation",
             'icon' => "/images/profiles/started_conversation_icon.svg",
@@ -59,22 +91,21 @@ class ConversationController extends Controller
         dispatch(new ListenUserAcivity($conversation, $activty));
         $conversation->load('user','chanel','all_replies', 'lastReplie.user');
         broadcast(new NewConversationEvent($conversation))->toOthers();;
-        
-
-        
-
-        return back()->with('success', 'Create question successfully');
+        return redirect('/myThread')->with('success', 'Create question successfully');
     }
 
     public function update(Request $request, $id)
     {
-        $conversation = Conversation::with('activities.subject','all_replies.activities.subject')->findOrFail($id);
+        $conversation = Conversation::with('activities.subject','images','videos','all_replies.activities.subject')->findOrFail($id);
+      
         $this->validate(
             $request,
             [
                 'title' => 'required|max:255|unique:conversation,title,' . $conversation->id,
                 'body' => 'nullable',
-                'chanel_id' => 'required'
+                'chanel_id' => 'required',
+                'image' => 'nullable|mimes:png,jpg,jpeg,svg',
+                'video' =>  'nullable|mimetypes:video/mp4|max:10000'
             ]
         );
       
@@ -84,7 +115,42 @@ class ConversationController extends Controller
             'body' => $request->body,
             'chanel_id' => $request->chanel_id,
         ]);
+        $image_path = 'images/';
+        $video_path = 'videos/';
+        $name = time();
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            if(count($conversation->images) >0){
+                $conversation->images[0]->update([
+                    'name'=>  $file->getClientOriginalName().'-'.$name,
+                    'image' => $request->hasFile('image') ? $this->update_image($request->file('image'),$name ,$image_path, $conversation->images[0]->image) :  $conversation->image[0]->image
 
+                ]);
+            }
+            else{
+                $image = new Image();
+                $image->name =  $file->getClientOriginalName();
+                $image->image = $request->hasFile('image') ? $this->image($request->file('image'), $image_path) : null;
+                $conversation->images()->save($image);
+            }
+
+        }
+        if($request->hasFile('video')){
+            $file = $request->file('video');
+            if(count($conversation->videos) >0){
+                $conversation->videos[0]->update([
+                    'name'=>  $file->getClientOriginalName().'-'.$name,
+                    'video' => $request->hasFile('video') ? $this->update_image($request->file('video'),$name ,$video_path, $conversation->videos[0]->video) :  $conversation->image[0]->image
+
+                ]);
+            }
+            else{
+                $video = new Video();
+                $video->name =  $file->getClientOriginalName();
+                $video->video = $request->hasFile('video') ? $this->image($request->file('video'), $video_path) : null;
+                $conversation->videos()->save($video);
+            }
+        }
         foreach ($conversation->activities as $activty) {
             $activty->subject->title = $request->title;
             $activty->subject->body = $request->body;
@@ -103,7 +169,7 @@ class ConversationController extends Controller
         }
         broadcast(new UpdateConversation($conversation));
 
-        return back()->with('success', 'Update question successfully');
+        return redirect('/myThread')->with('success', 'Update question successfully');
     }
 
     public  function delete($id)
@@ -154,5 +220,20 @@ class ConversationController extends Controller
         $conversation->update(['lock_comment' => $request->lock_comment]);
         broadcast(new SovledConversationEvent($conversation));
         return back()->with('success', "Successfully");
+    }
+
+    public function deleteImage($id){
+        $image= Image::findOrFail($id);
+        $extension=" ";
+        $this->DeleteFolder($image->image,$extension);
+        $image->delete();
+        return response()->json('Delete successfully', Response::HTTP_OK);
+    }
+    public function deleteVideo($id){
+        $video= Video::findOrFail($id);
+        $extension=" ";
+        $this->DeleteFolder($video->video,$extension);
+        $video->delete();
+        return response()->json('Delete successfully', Response::HTTP_OK);
     }
 }

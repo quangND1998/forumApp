@@ -1,6 +1,5 @@
 <template>
   <div>
-    <UpdateQuestionComponent :errors="errors" :chanels="chanels"></UpdateQuestionComponent>
     <div v-for="post in conversations.data" :key="post.id">
       <div
         class="panel relative transition-colors shadow-lg bg-gray-200 text-gray-700 dark:bg-slate-600  dark:hover:bg-slate-700 duration-300 dark:text-gray-200 hover:bg-gray-300 px-5 py-4 rounded-2xl conversation-list-item mb-3 flex cursor-pointer flex-col md:flex-row"
@@ -29,10 +28,10 @@
             >{{ post.chanel.title }}s</span>
 
             <span class="text-gray-800 text-xs dark:text-gray-100">posted {{ post.time_ago }}</span>
-            <i
-              @click="onEdit(post)"
+            <Link
+              :href="route('conversation.edit',post.id)"
               class="fas fa-edit cursor-pointer rounded-md px-2 py-2 m-2 border-1 border-green-400"
-            ></i>
+            ></Link>
             <i
               @click="onDelete(post.id)"
               class="fas fa-trash-alt cursor-pointer md:hover:bg-red-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
@@ -47,10 +46,10 @@
               class="mb-3 md:mb-1 text-base md:text-lg font-bold md:font-semibold tracking-tight text-gray-900 hover:text-gray-900"
               style="word-break: break-word;"
             >{{ post.title }}</Link>
-            <i
-              @click="onEdit(post)"
+            <Link :href="route('conversation.edit',post.id)"
+
               class="fas fa-edit cursor-pointer md:hover:bg-green-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
-            ></i>
+            ></Link>
             <i
               @click="onDelete(post.id)"
               class="fas fa-trash-alt cursor-pointer md:hover:bg-red-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
@@ -186,7 +185,7 @@
 import { Link } from "@inertiajs/inertia-vue";
 import Pagination from "@/Components/Pagination";
 import LayoutForum from "@/Pages/Forum/Layout";
-import UpdateQuestionComponent from "@/Components/Question/UpdateQuestionComponent";
+
 export default {
   layout: LayoutForum,
   props: {
@@ -196,8 +195,7 @@ export default {
   },
   components: {
     Pagination,
-    Link,
-    UpdateQuestionComponent
+    Link
   },
   data() {
     return {

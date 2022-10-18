@@ -53,4 +53,14 @@ class Conversation extends Model
             $model->user_id = auth()->user()->id;
         });
     }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function videos()
+    {
+        return $this->morphMany(Video::class, 'videoable');
+    }
 }

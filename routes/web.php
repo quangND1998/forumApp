@@ -73,9 +73,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::post('store/{id}', [ReplieController::class, 'store'])->name('store');
             Route::post('likeReplie/{id}', [ReplieController::class, 'likeRelie'])->name('like');
-            Route::put('update/{id}', [ReplieController::class, 'update'])->name('update');
+            Route::post('update/{id}', [ReplieController::class, 'update'])->name('update');
             Route::post('best_answer', [ReplieController::class, 'bestAnswer'])->name('bestAnswer');
         });
+    });
+    Route::prefix('conversation')->as('conversation.')->group(function () {
+        Route::get('create', [ConversationController::class, 'create'])->name('create');
+        Route::get('edit/{id}', [ConversationController::class, 'edit'])->name('edit');
+
+    });
+    Route::prefix('delete')->group(function(){
+        Route::delete('deleteImage/{id}', [ConversationController::class, 'deleteImage'])->name('deleteImage');
+        Route::delete('deleteVideo/{id}', [ConversationController::class, 'deleteVideo'])->name('deleteVideo');
     });
     Route::get('myThread', [ConversationController::class, 'myConversation'])->name('myThread');
     Route::get('setting/account/update', [ForumController::class, 'editProfile'])->name('editProfile');
