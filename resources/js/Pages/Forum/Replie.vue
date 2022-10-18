@@ -29,7 +29,7 @@
       >
         <div
           class="forum-comment w-full is-reply relative mb-2 rounded-xl bg-white hover:border hover:border-grey-400 border border-deep-black/4"
-          :class="replie.id== replie_id ? 'hover:border-grey-400 border-2 border-deep-black/4 border-blue-500':''"
+          :class="replie.id== replie_id ? 'hover:border-blue-400 dark:border-indigo-700 border-4 border-deep-black/4 border-blue-500':''"
         >
           <div class="flex px-6 py-4 lg:p-5">
             <div class="mr-5 hidden text-left md:block">
@@ -113,7 +113,7 @@
         >
           <div
             class="forum-comment w-full is-reply relative mb-2 rounded-xl bg-white hover:border hover:border-grey-400 border border-deep-black/4"
-            :class="re_reply.id== replie_id ? 'hover:border-blue-400 border-2 border-deep-black/4 border-blue-500':''"
+            :class="re_reply.id== replie_id ? 'hover:border-blue-400 dark:border-indigo-700 border-4 border-deep-black/4 border-blue-500':''"
           >
             <div class="flex px-6 py-4 lg:p-5">
               <div class="mr-5 hidden text-left md:block">

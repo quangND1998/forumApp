@@ -91,7 +91,7 @@ class ChannelController extends Controller
         // 'user', 'all_replies', 'initalReplies.user', 'initalReplies.replies', 'chanel', 'lastReplie.user'
         // return Chanels::with('lastConversation.user','lastConversation.all_replies','lastConversation.initalReplies.user','lastConversation.initalReplies.replies','lastConversation.lastReplie.user'
         // )->withCount('conversations')->get();
-        $channels =ChanelResource::collection(Chanels::withCount('conversations')->with('lastConversation.user','lastConversation.chanel','lastConversation.all_replies','lastConversation.initalReplies.user','lastConversation.initalReplies.replies','lastConversation.lastReplie.user'
+        $channels =ChanelResource::collection(Chanels::withCount('conversations')->with('lastConversation.user','lastConversation.images','lastConversation.videos','lastConversation.chanel','lastConversation.all_replies','lastConversation.initalReplies.user','lastConversation.lastReplie.user','lastConversation.initalReplies.images','lastConversation.initalReplies.videos',
         )->orderBy('conversations_count','desc')->get());  
         return Inertia::render('Forum/Chanels/PopularChannel', compact('channels'));
     }

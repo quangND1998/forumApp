@@ -174,15 +174,35 @@ class ConversationController extends Controller
 
     public  function delete($id)
     {
-        $conversation = Conversation::with('all_replies.activities','activities')->findOrFail($id);
+        $conversation = Conversation::with('all_replies.activities','activities','all_replies.images','all_replies.videos')->findOrFail($id);
       
-     
+        $extension=" ";
         foreach ($conversation->activities as $activty) {
             $activty->delete();
         }
         foreach ($conversation->all_replies as $replie) {
             foreach ($replie->activities as $activty) {
                 $activty->delete();
+            }
+        }
+        foreach ($conversation->images as $image) {
+            $this->DeleteFolder($image->image,$extension);
+            $image->delete();
+        }
+        foreach ($conversation->videos as $video) {
+            $this->DeleteFolder($video->video,$extension);
+            $video->delete();
+        }
+        foreach ($conversation->all_replies as $replie) {
+            foreach ($replie->images as $image) {
+             
+                $this->DeleteFolder($image->image,$extension);
+                $image->delete();
+            }
+            foreach ($replie->videos as $video) {
+             
+                $this->DeleteFolder($video->video,$extension);
+                $video->delete();
             }
         }
         broadcast(new DeleteConvsesationEvent($conversation));
@@ -196,7 +216,7 @@ class ConversationController extends Controller
     public function myConversation(Request $request)
     {
         $chanels = Chanels::get();
-        $conversations = Conversation::with('user',  'chanel', 'lastReplie.user')->withCount('all_replies')->where('user_id', Auth::user()->id)->where(function ($query) use ($request) {
+        $conversations = Conversation::with('user',  'chanel', 'lastReplie.user','images','videos')->withCount('all_replies')->where('user_id', Auth::user()->id)->where(function ($query) use ($request) {
             $query->where('title', 'LIKE', '%' . $request->term . '%');
         })->paginate(20)->appends(['term' => $request->term]);
         $conversations = ConversationResource::collection($conversations);
