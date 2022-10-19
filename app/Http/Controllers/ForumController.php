@@ -25,6 +25,9 @@ class ForumController extends Controller
         $category = null;
         $chanels = Chanels::get();
         $category = $request->input('category');
+        // if($category=='all'){
+        //     $category =null;
+        // }
         $chanel = Chanels::with('conversations')->where('slug', $category)->first();
         $solved = $request->input('answered');
 
@@ -44,12 +47,12 @@ class ForumController extends Controller
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } else {
-
+            $category ='all';
             $conversations = Conversation::with('user',  'chanel', 'lastReplie.user','images','videos')->withCount('all_replies')->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         }
-       
+
         $conversations = ConversationResource::collection($conversations);
 
         return Inertia::render('Forum/Index', compact('chanels', 'conversations', 'category', 'solved'));

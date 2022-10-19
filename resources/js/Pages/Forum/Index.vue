@@ -12,8 +12,8 @@
         <div class="mobile:mr-4 mr-6 md:hidden lg:block">
           <div class="select-wrap">
             <select v-model="filter" @change="Filter"
-              class="flex cursor-pointer items-center rounded-full bg-grey-400 px-5 py-3 text-xs leading-none text-grey-800 dark:bg-gray-700 dark:text-white"
-              style="width: 115px;">
+              class="flex cursor-pointer items-center rounded-full bg-grey-400 px-5 py-3 text-xs leading-none text-grey-800 dark:bg-[#233153] text-blue dark:text-white"
+              style="width: fit-content;">
               <option value="all">All</option>
               <option v-for="(chanel, index) in chanels" :key="index" :value="chanel.slug">{{ chanel.title }}</option>
             </select>
@@ -46,13 +46,32 @@
           </svg>
         </button>
       </div> -->
-      <form class="search-form mt-5 h-[40px] w-full rounded-full bg-grey-400 md:mt-0 md:w-52">
+      <div class="hidden gap-x-3 md:flex md:items-center mr-3">
+          <button  @click="changeExcerpt(false)" class="forum-excerpt-toggle  hover:bg-gray-400 dark:hover:bg-gray-500 bg-gray-200 dark:bg-[#172741] " >
+            <svg width="15" height="15" viewBox="0 0 15 15" class="mx-2">
+              <g class="forum-excerpt-toggle-lines fill-current text-black/50 text-gray-400 " fill-rule="evenodd" >
+                <rect class="forum-excerpt-toggle-line " width="15"  height="6" rx="2"  :class="[show_forum_excerpts=== false ? 'text-black dark:text-white dark:bg-white' : '']"   ></rect>
+                <rect class="forum-excerpt-toggle-line" width="15"  height="6" y="9" rx="2"  :class="[show_forum_excerpts=== false ? 'text-black dark:text-white dark:bg-white' : '']" ></rect>
+              </g>
+            </svg>
+          </button>
+          <button  @click="changeExcerpt(true)" class="forum-excerpt-toggle hover:bg-gray-400 dark:hover:bg-gray-500 bg-gray-200 dark:bg-[#172741]" :class="[show_forum_excerpts== true ? 'bg-gray-200 dark:bg-gray-100' : '']">
+            <svg width="15" height="15" viewBox="0 0 15 15" class="mx-2">
+              <g class="forum-excerpt-toggle-lines fill-current  text-black/50 text-gray-400 " fill-rule="evenodd">
+                <rect class="forum-excerpt-toggle-line" width="15"  height="4" rx="2"  :class="[show_forum_excerpts ===true ? 'text-black dark:text-white dark:bg-gray-100' : '']" ></rect>
+                <rect class="forum-excerpt-toggle-line" width="8"  height="4" y="11" rx="2"  :class="[show_forum_excerpts ===true ? 'text-black dark:text-white dark:bg-white' : '']" ></rect>
+                <rect class="forum-excerpt-toggle-line" width="15"  height="4" y="5.5" rx="2" :class="[show_forum_excerpts ===true ? 'text-black dark:text-white dark:bg-white' : '']" ></rect>
+              </g>
+            </svg>
+          </button>
+      </div>
+      <form class="search-form mt-5 h-[40px] w-full rounded-full bg-grey-400 md:mt-0 md:w-52 ">
         <span
-          class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
+          class="z-10 leading-snug font-normal absolute text-center text-blueGray-300 bg-transparent  rounded text-base items-center justify-center w-8 pl-3 py-3">
           <i class="fas fa-search"></i>
         </span>
         <input v-model="term" @keyup="search" type="text" placeholder="Search here..."
-          class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10 dark:bg-gray-700 dark:text-white" />
+          class="border-1 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white dark:bg-[#233153] rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10 bg-blue-opacity  dark:text-white" />
       </form>
     </div>
 
@@ -111,17 +130,17 @@
             <span class=" text-xs font-bold">posted {{ post.time_ago }}</span>
             </Link>
 
-            <div
+            <div v-if="show_forum_excerpts"
               class="mt-2 conversation-list-excerpt lg:clamp two-lines mb-6 break-words text-[13px] leading-normal  dark:font-medium dark:text-grey-100 lg:mb-0 lg:pr-8"
               v-html="post.sub_body"></div>
 
-            <div 
+            <div
               class="text-xs font-semibold leading-none tracking-tight text-grey-800 dark:text-grey-100 mt-3">
               <Link class="text-blue-600 uppercase font-bold no-underline hover:underline" v-if="post.lastReplie !==null"
                 :href="route('profile',  post.lastReplie.user.name)">{{ post.lastReplie.user.name }}</Link>
                 <Link class="text-blue-600 uppercase font-bold no-underline hover:underline" v-else
                 :href="route('profile',  post.owner.name)">{{ post.owner.name }}</Link>
-             
+
               <span v-if="post.lastReplie !==null" class="font-bold">replied {{ post.lastReplie.time_ago }}</span>
               <span v-else class="font-bold">posted {{post.time_ago }}</span>
 
@@ -168,7 +187,7 @@
             }}</span>
           </div>
           <div class="flex items-center justify-center">
-            <a :class="`items-center justify-center border hiddentext-white font-medium leading-tight rounded-full py-1 px-3 text-xs uppercase  shadow-md hover:bg-[${post.chanel.color}] hover:shadow-lg focus:bg-[${post.chanel.color}] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[${post.chanel.color}] active:shadow-lg transition duration-150 ease-in-out`"
+            <a :class="`items-center justify-center border hiddentext-white font-medium leading-tight rounded-full py-1 px-3 text-xs mr-2 shadow-md hover:bg-[${post.chanel.color}] hover:shadow-lg focus:bg-[${post.chanel.color}] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[${post.chanel.color}] active:shadow-lg transition duration-150 ease-in-out`"
               :style="`background-color: ${post.chanel.color}; border-color: ${post.chanel.color}; color:white  `">
               {{
               post.chanel.title }}
@@ -209,11 +228,18 @@ export default {
     Notification
   },
   mounted() {
+    if (localStorage.show_forum_excerpts === undefined) {
+
+      localStorage.show_forum_excerpts = true;
+      this.show_forum_excerpts =true
+    } else {
+      this.show_forum_excerpts = JSON.parse(localStorage.show_forum_excerpts)
+    }
 
     if (localStorage.isdark === undefined) {
 
       localStorage.isdark = 'dark';
-
+      this.isdark=  'dark'
     } else {
       this.isdark = localStorage.isdark
     }
@@ -229,7 +255,8 @@ export default {
   },
   data() {
     return {
-      isdark: true,
+      show_forum_excerpts:true,
+      isdark: 'dark',
       term: null,
       filter: this.category,
       answered: this.solved
@@ -238,7 +265,6 @@ export default {
   methods: {
     Filter(event) {
       if (event.target.value == "all") {
-        this.filter = event.target.value;
         this.$inertia.get(this.route("forum"));
       } else {
         this.filter = event.target.value;
@@ -336,6 +362,10 @@ export default {
           // this.conversations.data[index].solved = e.solved
         }
       );
+    },
+    changeExcerpt(e){
+      this.show_forum_excerpts= e;
+      localStorage.show_forum_excerpts=e;
     }
   }
 };
@@ -414,5 +444,21 @@ export default {
   .lg\:mb-0 {
     margin-bottom: 0;
   }
+}
+.forum-excerpt-toggle {
+    align-items: center;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+}
+.forum-excerpt-toggle .forum-excerpt-toggle-lines {
+    opacity: .402;
+}
+
+.bg-grey-400 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(235 237 241/var(--tw-bg-opacity));
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="md:grid md:gap-6">
+    <div class="md:grid md:gap-6 ">
       <h1 class="dark:text-white">Create conversation</h1>
       <div class="mt-5 md:mt-0 md:col-span-2">
         <form @submit.prevent="submit()">

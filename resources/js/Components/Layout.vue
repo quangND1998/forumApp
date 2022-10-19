@@ -43,7 +43,7 @@
             :url="url()"
             class="bg-indigo-800 flex-shrink-0 w-56 p-4 hidden md:block overflow-y-auto"
           />
-          <div class="flex-1 overflow-hidden px-4 py-8 md:p-4 overflow-y-auto" scroll-region>
+            <div class="flex-1 overflow-hidden px-4 py-8 md:p-4 overflow-y-auto" scroll-region>
             <slot />
           </div>
         </div>

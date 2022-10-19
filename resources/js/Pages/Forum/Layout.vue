@@ -1,8 +1,8 @@
 <template>
     <div :class="isdark =='dark'? 'dark':''"  >
-        
+
         <sidebar />
-        <div class="relative md:ml-64 bg-gray-100 dark:bg-theme-black">
+        <div class="relative md:ml-64 bg-gray-100 dark:bg-theme-black bg-height">
             <admin-navbar />
             <header-stats />
     
@@ -14,7 +14,7 @@
                     </transition>
             </div>
         </div>
-        
+
     </div>
 </template>
 <script>
@@ -47,11 +47,11 @@ export default {
 
     },
     mounted() {
-        
+
         if (localStorage.isdark === undefined) {
-            
+
             localStorage.isdark = 'dark';
-            
+
         } else {
             this.isdark =localStorage.isdark
         }
@@ -61,7 +61,7 @@ export default {
             this.isdark= e
             localStorage.isdark = e;
         })
-    
+
     },
 };
 </script>
@@ -86,4 +86,7 @@ section {
     padding: 20px;
     position: relative;
 }
+.bg-height{
+    min-height: 100%;
+ }
 </style>

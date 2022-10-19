@@ -1,13 +1,13 @@
 <template>
     <div
-        class="forum-comment-edit-links relative mt-4 -mb-1 flex justify-end gap-x-2 md:leading-none lg:justify-start justify-start"
+        class="forum-comment-edit-links relative mt-4 -mb-1 flex justify-end gap-x-2 md:leading-none lg:justify-start "
         style="height: 34px;"
     >
         <button
             v-if="$page.props.auth.user"
             @click="LikeReply()"
             :class="checkIsLike($page.props.auth.user.email) ? 'hover:border hover:bg-blue-200' : 'hover:border hover:border-gray-400 bg-gray-200'"
-            class="rounded-md inline-flex items-center border border-solid border-deep-black/3 bg-gray-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs reply-likes mobile:text-sm has-none border-deep-black/3 bg-grey-200 mr-auto md:mr-0"
+            class="rounded-md inline-flex items-center border dark:bg-[#213154]  border-solid border-deep-black/3 bg-gray-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs reply-likes mobile:text-sm has-none border-deep-black/3 bg-grey-200 mr-auto md:mr-0"
         >
             <svg
                 :class="checkIsLike($page.props.auth.user.email) ? 'cursor-pointer fill-current text-blue-500' : 'cursor-pointer fill-current text-gray-300'"
@@ -16,6 +16,7 @@
                 viewBox="0 0 14 13"
             >
                 <path
+                    fill="#db0f0f"
                     fill-rule="nonzero"
                     d="M13.59 1.778c-.453-.864-3.295-3.755-6.59.431C3.54-1.977.862.914.41 1.778c-.825 1.596-.33 4.014.823 5.18L7.001 13l5.767-6.043c1.152-1.165 1.647-3.582.823-5.18z"
                 />
@@ -26,7 +27,7 @@
             <button
                 v-if="$page.props.auth.user && $page.props.auth.user.id !== comment.owner.id"
                 @click="onClickReply"
-                class="rounded-md inline-flex items-center hover:border hover:border-gray-400 border border-solid border-deep-black/3 bg-grey-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs mr-2 text-grey-800"
+                class="rounded-md inline-flex items-center dark:bg-[#213154]  hover:border hover:border-gray-400 border border-solid border-deep-black/3 bg-grey-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs mr-2 text-grey-800"
             >
                 <svg width="12" height="13" viewBox="0 0 12 13" class="mr-1 lg:hidden">
                     <path
@@ -43,7 +44,7 @@
         <i
             v-if="$page.props.auth.user && $page.props.auth.user.id == comment.owner.id"
             @click="onEdit(comment)"
-            class="fas fa-edit cursor-pointer rounded-md inline-flex items-center border border-solid border-deep-black/3 bg-gray-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs reply-likes mobile:text-sm has-none border-deep-black/3 bg-grey-200 mr-auto md:mr-0"
+            class="fas fa-edit cursor-pointer dark:bg-[#213154] rounded-md inline-flex items-center border border-solid border-deep-black/3 bg-gray-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs reply-likes mobile:text-sm has-none border-deep-black/3 bg-grey-200 mr-auto md:mr-0"
         ></i>
         <div
             v-if="$page.props.auth.user && $page.props.auth.user.id == conversation.owner.id && $page.props.auth.user.id !== comment.owner.id"
