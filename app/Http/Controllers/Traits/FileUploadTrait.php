@@ -72,4 +72,11 @@ trait FileUploadTrait
             }
         }
     }
+
+    public function checkFolder($destinationpath){
+        if (!file_exists($destinationpath)) {
+            mkdir($destinationpath, 0777, true);
+        }
+
+    }
 }

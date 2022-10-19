@@ -65,13 +65,13 @@
             </svg>
           </button>
       </div>
-      <form class="search-form mt-5 h-[40px] w-full rounded-full bg-grey-400 md:mt-0 md:w-52 ">
+      <form class="search-form mt-5 h-[40px] w-full rounded-full bg-grey-400 md:mt-0 md:w-52 relative ">
         <span
           class="z-10 leading-snug font-normal absolute text-center text-blueGray-300 bg-transparent  rounded text-base items-center justify-center w-8 pl-3 py-3">
           <i class="fas fa-search"></i>
         </span>
         <input v-model="term" @keyup="search" type="text" placeholder="Search here..."
-          class="border-1 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white dark:bg-[#233153] rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10 bg-blue-opacity  dark:text-white" />
+          class="border-1 px-3 py-3 placeholder-blueGray-300 text-blueGray-600  bg-white dark:bg-[#233153] rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10 bg-blue-opacity  dark:text-white" />
       </form>
     </div>
 
