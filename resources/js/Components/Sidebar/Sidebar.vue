@@ -386,7 +386,7 @@ export default {
 
     if (localStorage.isdark === undefined) {
       localStorage.isdark = 'dark';
-
+      this.isdark= 'dark';
     } else {
 
       this.isdark =localStorage.isdark
