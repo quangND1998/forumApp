@@ -55,7 +55,7 @@
               </g>
             </svg>
           </button>
-          <button  @click="changeExcerpt(true)" class="forum-excerpt-toggle hover:bg-gray-400 dark:hover:bg-gray-500 bg-gray-200 dark:bg-[#172741]" :class="[show_forum_excerpts== true ? 'bg-gray-200 dark:bg-gray-100' : '']">
+          <button  @click="changeExcerpt(true)" class="forum-excerpt-toggle hover:bg-gray-400 dark:hover:bg-gray-500 bg-gray-200 dark:bg-[#172741]">
             <svg width="15" height="15" viewBox="0 0 15 15" class="mx-2">
               <g class="forum-excerpt-toggle-lines fill-current  text-black/50 text-gray-400 " fill-rule="evenodd">
                 <rect class="forum-excerpt-toggle-line" width="15"  height="4" rx="2"  :class="[show_forum_excerpts ===true ? 'text-black dark:text-white dark:bg-gray-100' : '']" ></rect>
