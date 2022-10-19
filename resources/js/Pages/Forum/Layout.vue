@@ -8,7 +8,9 @@
     
             <div class="flex-1 overflow-hidden  px-4 py-8 md:p-4 overflow-y-auto" scroll-region>
                 <Notification />
-                <transition name="fade">
+                <transition   name="custom-classes-transition"
+                enter-active-class="animated pulse"
+              >
                       
                       <slot />
                     </transition>
@@ -66,18 +68,9 @@ export default {
 };
 </script>
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.75s;
-}
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
 
-.fade-enter,
-.fade-leave-to
-
-/* .fade-leave-active below version 2.1.8 */
-  {
-  opacity: 0;
-}
 .section,
 section {
     margin-left: auto;

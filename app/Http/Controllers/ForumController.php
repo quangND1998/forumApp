@@ -149,7 +149,6 @@ class ForumController extends Controller
         //     }
         // }
         if ($user) {
-            $user = new ProfileResource($user);
             return Inertia::render('Profile/Edit', compact('user', 'total_replies', 'total_view'));
         } else {
             $erros = "Not found user !!";

@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="backend/css/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="backend/css/font-awesome/6.0.0/css/all.min.css" />
 
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
 
 
      <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
