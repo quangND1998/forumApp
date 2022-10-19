@@ -353,7 +353,7 @@ export default {
       window.Echo.channel("sovled-conversation").listen(
         "SovledConversationEvent",
         e => {
-          console.log(e);
+          // console.log(e);
 
           let index = this.conversations.data.findIndex(x => x.id == e.id);
           if (this.conversations.data[index] !== undefined) {
