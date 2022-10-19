@@ -21,7 +21,7 @@ class ConversationResource extends JsonResource
             [
                 'id' => $this->id,
                 'title' => $this->title,
-                'body' =>Str::words(strip_tags($this->body)),
+                'body' =>$this->body,
                 'slug' => $this->slug,
                 'view' => $this->view,
                 'lock_comment' => $this->lock_comment ==0? false: true,

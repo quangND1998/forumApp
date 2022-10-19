@@ -81,11 +81,11 @@ export default {
 </script>
 
 <style  >
-pre,
+/* pre,
 code {
   padding: 10px;
   display: block;
   white-space: pre;
   background-color: lightgray;
-}
+} */
 </style>

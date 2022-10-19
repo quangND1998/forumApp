@@ -48,19 +48,19 @@
         ></i>
         <div
             v-if="$page.props.auth.user && $page.props.auth.user.id == conversation.owner.id && $page.props.auth.user.id !== comment.owner.id"
-            class="rounded-md inline-flex items-center hover:border hover:border-gray-400 border border-solid border-deep-black/3 bg-grey-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs mr-2 text-grey-800"
+            class="rounded-md inline-flex items-center hover:border hover:border-gray-400  border border-solid border-deep-black/3 bg-grey-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs mr-2 text-grey-800"
         >
             <div class="flex justify-center" >
                 <div class="form-check">
                     <input
-                        class=" flex justify-center form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                        class=" flex justify-center form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white  checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                         type="checkbox"
                         value
                         :checked="comment.best_answer == 1 ? true : false"
                         @change="onChangeBestAnswer(comment, $event)"
                     />
                     <label
-                        class="form-check-label inline-block text-gray-800"
+                        class="form-check-label inline-block text-gray-800 dark:text-white"
                         for="flexCheckChecked"
                     >Best Answer</label>
                 </div>

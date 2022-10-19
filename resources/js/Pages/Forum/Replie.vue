@@ -71,7 +71,7 @@
                 </div>
                 <div v-if="replie.best_answer == 1" class="relative ml-3 flex" style="top: -5px;">
                   <span
-                    class="inline-flex items-center rounded-full bg-blue-500 px-3 py-1 text-2xs font-bold uppercase text-white md:text-2xs"
+                    class="inline-flex items-center rounded-full bg-blue-500 dark:text-white px-3 py-1 text-2xs font-bold uppercase text-white md:text-2xs"
                   >
                     Best
                     Answer
@@ -161,7 +161,7 @@
                     style="top: -5px;"
                   >
                     <span
-                      class="inline-flex items-center rounded-full bg-blue-500 px-3 py-1 text-2xs font-bold uppercase text-white md:text-2xs"
+                      class="inline-flex items-center rounded-full bg-blue-500 dark:text-white px-3 py-1 text-2xs font-bold uppercase text-white md:text-2xs"
                     >
                       Best
                       Answer
@@ -276,7 +276,6 @@ export default {
       //     //     if(element.id == e.replie_id){
       //     //         element.replies.push(e);
       //     //     }
-
       //     // });
       //     for (let i = 0; i < self.initalReplies.length; i++) {
       //       if (self.initalReplies[i].id == e.replie_id) {
@@ -284,9 +283,7 @@ export default {
       //       }
       //     }
       //   }
-
       // });
-
       window.Echo.channel("replie_event." + this.conversation.id).listen(
         "ReplieCommentEvent",
         e => {
@@ -297,7 +294,6 @@ export default {
             //     if(element.id == e.replie_id){
             //         element.replies.push(e);
             //     }
-
             // });
             for (let i = 0; i < this.initalReplies.data.length; i++) {
               if (this.initalReplies.data[i].id == e.replie_id) {
@@ -383,7 +379,6 @@ export default {
     listenForLockComment() {
       // var self = this;
       // window.socketio.on("sovled-conversation:App\\Events\\SovledConversationEvent", function (e) {
-
       //   if (self.conversation.id == e.id) {
       //     self.conversation.lock_comment = e.lock_comment
       //   }
@@ -423,39 +418,31 @@ export default {
 .fade-leave-active {
   transition: opacity 0.05s;
 }
-
 .fade-enter,
 .fade-leave-to
-
 /* .fade-leave-active below version 2.1.8 */
  {
   opacity: 0;
 }
-
 .post.body h1 {
   font-size: 2.25rem;
 }
-
 .post.body h2 {
   font-size: 2rem;
 }
-
 .post.body h3 {
   font-size: 1.75rem;
 }
-
 .post.body ul {
   list-style-type: disc !important;
   margin-top: 10px;
   margin-left: 30px;
 }
-
 .post.body ol {
   list-style-type: decimal !important;
   margin-top: 10px;
   margin-left: 30px;
 }
-
 .post.body blockquote {
   margin-top: 10px;
   margin-left: 30px;
@@ -464,26 +451,20 @@ export default {
   padding-bottom: 10px;
   border-left: solid #ccc 4px !important;
 }
-
 @media (min-width: 992px) {
 }
-
 .forum-comment .show-on-hover {
   visibility: hidden;
 }
-
 @media (min-width: 768px) {
 }
-
 .md\:text-xs {
   font-size: 0.834rem;
 }
-
 .hover\:border-grey-400:hover {
   --tw-border-opacity: 1;
   border-color: rgb(235 237 241 / var(--tw-border-opacity));
 }
-
 .text-blue {
   --tw-text-opacity: 1;
   color: rgb(50 138 241 / var(--tw-text-opacity));
