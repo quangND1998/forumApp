@@ -52,7 +52,7 @@ class ReplieCommentEvent implements ShouldBroadcast
                 'owner' => new UserResource($this->replie->user),
                 'time_ago' => Carbon::parse($this->replie->created_at)->diffForHumans(),
                 'solved' => $this->replie->solved,
-                'likes' =>  LikeResource::collection($this->replie->users),
+                'likes' =>  $this->replie->users->pluck('name'),
                 'replie_id' => $this->replie->replie_id,
                 // 'replie_user' => $this->replie->replie_user,
                 'user_reply' => $this->replie->user_reply,

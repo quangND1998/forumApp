@@ -29,7 +29,7 @@ class ForumController extends Controller
         $trending = $request->input('trending');
         $solved = $request->input('answered');
         $chanel = Chanels::with('conversations')->where('slug', $category)->first();
-        
+
         if ($chanel !== null && $solved !== null) {
 
             $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->where('solved', $solved)->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
