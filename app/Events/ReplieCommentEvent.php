@@ -56,6 +56,8 @@ class ReplieCommentEvent implements ShouldBroadcast
                 'replie_id' => $this->replie->replie_id,
                 // 'replie_user' => $this->replie->replie_user,
                 'user_reply' => $this->replie->user_reply,
+                'images' => $this->replie->images,
+                'videos' => $this->replie->videos,
 
 
             ];

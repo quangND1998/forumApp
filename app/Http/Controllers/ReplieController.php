@@ -106,7 +106,7 @@ class ReplieController extends Controller
             $replie->replie_user = $request->replie_user;
             $replie->save();
         }
-        $replie->load('users', 'user', 'user_reply');
+        $replie->load('users', 'user', 'user_reply','images','videos');
 
         broadcast(new ReplieCommentEvent($replie, $conversation))->toOthers();;
         $activty = Activities::create([
