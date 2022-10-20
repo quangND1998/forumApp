@@ -276,7 +276,7 @@
           </li>
 
           <li class="inline-flex" v-if="$page.props.auth.user">
-            <Link :href="route('/form')"
+            <Link :href="route('/myThread')"
               :class="[$page.url.startsWith('/myThread') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
