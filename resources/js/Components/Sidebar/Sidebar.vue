@@ -253,10 +253,30 @@
             Unsolved
             </Link>
           </li>
+          <li class="inline-flex" >
+
+            <Link  href="/forum?trending=1"
+              :class="[$page.url.startsWith('/forum?trending=1') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+              target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="fa-solid fa-arrow-trend-up mr-2 text-blueGray-300 dark:text-gray-100 text-base"  :class="[$page.url.startsWith('/forum?trending=1') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
+            Popular This Week
+            </Link>
+            </li>
+
+          <li class="inline-flex" >
+
+            <Link  href="/forum?popular=1"
+              :class="[$page.url.startsWith('/forum?popular=1') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+              target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="fa-solid fa-arrow-trend-up mr-2 text-blueGray-300 dark:text-gray-100 text-base"  :class="[$page.url.startsWith('/forum?popular=1') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
+            Popular All Time
+            </Link>
+          </li>
 
           <li class="inline-flex" v-if="$page.props.auth.user">
-
-            <Link :href="route('myThread')"
+            <Link :href="route('/form')"
               :class="[$page.url.startsWith('/myThread') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
