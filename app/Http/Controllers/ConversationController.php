@@ -90,7 +90,7 @@ class ConversationController extends Controller
         $conversation->activities()->save($activty);
         dispatch(new ListenUserAcivity($conversation, $activty));
         $conversation->load('user','chanel','all_replies', 'lastReplie.user');
-        broadcast(new NewConversationEvent($conversation))->toOthers();;
+        broadcast(new NewConversationEvent($conversation))->toOthers();
         return redirect('/myThread')->with('success', 'Create question successfully');
     }
 
@@ -167,7 +167,7 @@ class ConversationController extends Controller
                 // $activty->subject->save();
             }
         }
-        broadcast(new UpdateConversation($conversation));
+        broadcast(new UpdateConversation($conversation))->toOthers();
 
         return redirect('/myThread')->with('success', 'Update question successfully');
     }
@@ -205,7 +205,7 @@ class ConversationController extends Controller
                 $video->delete();
             }
         }
-        broadcast(new DeleteConvsesationEvent($conversation));
+        broadcast(new DeleteConvsesationEvent($conversation))->toOthers();
         
         // dispatch(new DeleteConversation($conversation));
         $conversation->delete();
@@ -229,7 +229,7 @@ class ConversationController extends Controller
     
         $conversation = Conversation::find($request->id);
         $conversation->update(['solved' => $request->solved]);
-        broadcast(new SovledConversationEvent($conversation));
+        broadcast(new SovledConversationEvent($conversation))->toOthers();
         return back()->with('success', "Successfully");
     }
 
@@ -238,7 +238,7 @@ class ConversationController extends Controller
     
         $conversation = Conversation::find($request->id);
         $conversation->update(['lock_comment' => $request->lock_comment]);
-        broadcast(new SovledConversationEvent($conversation));
+        broadcast(new SovledConversationEvent($conversation))->toOthers();;
         return back()->with('success', "Successfully");
     }
 
