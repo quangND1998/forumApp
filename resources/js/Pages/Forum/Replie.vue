@@ -28,7 +28,7 @@
         :id="replie.id"
       >
         <div
-          class="forum-comment rounded-xl  shadow-lg bg-white hover:border hover:border-grey-400 border border-deep-black/4 w-full is-reply relative mb-2   dark:bg-[#213154] dark:text-white "
+          class="forum-comment rounded-xl  shadow-lg bg-white dark:border-[#18273f] dark:hover:bg-[#1b2d46] hover:border border-deep-black/4 w-full is-reply relative mb-2   dark:bg-[#18273f] dark:text-white "
           :class="replie.id== replie_id ? 'hover:border-blue-400 dark:border-indigo-700 border-4 border-deep-black/4 border-blue-500':''"
         >
           <div class="flex px-6 py-4 lg:p-5">
@@ -112,7 +112,7 @@
           :id="re_reply.id"
         >
           <div
-            class="forum-comment shadow-lg w-full is-reply relative mb-2 rounded-xl bg-white  hover:border hover:border-grey-400 border border-deep-black/4 dark:bg-[#213154] dark:text-white"
+            class="forum-comment shadow-lg w-full is-reply relative mb-2 rounded-xl bg-white dark:border-[#18273f]  dark:hover:bg-[#1b2d46]   border border-deep-black/4 dark:bg-[#18273f] dark:text-white"
             :class="re_reply.id== replie_id ? 'hover:border-blue-400 dark:border-indigo-700 border-4 border-deep-black/4 border-blue-500':''"
           >
             <div class="flex px-6 py-4 lg:p-5">
@@ -226,6 +226,7 @@ import LikeReplyButton from "@/Components/ReplieComponent/LikeReplyButton";
 import UpdateReplieComponent from "@/Components/ReplieComponent/UpdateReplieComponent";
 import ReplyButtom from "@/Components/ReplieComponent/ReplyButtom";
 import Pagination from "@/Components/Pagination";
+
 export default {
   layout: LayoutForum,
   props: {

@@ -1,6 +1,7 @@
 <template>
   <div>
     <Notification></Notification>
+
     <div class="sm:hidden relative w-12/12 mx-auto  rounded">
       <div class="w-full pb-2" v-if="$page.props.auth.user !== null">
         <NewQuestionButton v-if="$page.url.startsWith('/forum')"></NewQuestionButton>
