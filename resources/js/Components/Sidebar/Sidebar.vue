@@ -160,10 +160,10 @@
           <ReplyButtom v-if="$page.url.startsWith('/question')"></ReplyButtom>
         </div>
         <!-- Heading -->
-        <h6
+        <!-- <h6
           class="md:min-w-full text-blueGray-600 dark:text-gray-100  text-xs uppercase font-bold block pt-1 pb-4 no-underline">
           Auth Layout Pages
-        </h6>
+        </h6> -->
         <!-- Navigation -->
 
         <ul v-if="$page.props.auth.user == null" class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
@@ -189,7 +189,7 @@
         <!-- Heading -->
         <h6
           class="md:min-w-full text-blueGray-500 dark:text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-          Documentation
+          Theme
         </h6>
         <button  @click="toggleDarkMode" role="switch" :title="isdark=='dark' ?'Switch to Light Mode?':'Switch to Dark Mode'" >
           <svg   v-if="isdark=='dark'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -207,7 +207,7 @@
         <!-- Heading -->
         <h6
           class="md:min-w-full text-blueGray-500 dark:text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-          Documentation
+          Forum
         </h6>
         <!-- Navigation -->
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">

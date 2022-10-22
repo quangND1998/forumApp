@@ -1,7 +1,7 @@
 <template>
   <!-- Header -->
   <div
-    style=" background: top no-repeat url('logo/MX_CoverSQ.png');
+    style=" background: top no-repeat url('logo/MX_Cover.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: auto;"
