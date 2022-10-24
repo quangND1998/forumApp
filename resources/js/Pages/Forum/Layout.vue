@@ -5,9 +5,15 @@
         <div class="relative md:ml-64 bg-gray-100 dark:bg-theme-black bg-height">
             <admin-navbar />
             <header-stats />
+    
             <div class="flex-1 overflow-hidden  px-4 py-8 md:p-4 overflow-y-auto" scroll-region>
+                <Notification />
+                <transition   name="custom-classes-transition"
+                enter-active-class="animated pulse"
+              >
+                      
                       <slot />
-                <NewQuestionComponent :chanels="chanels" :errors="errors"></NewQuestionComponent>
+                    </transition>
             </div>
         </div>
 
@@ -19,7 +25,7 @@ import AdminNavbar from "@/Components/Navbars/AdminNavbar.vue";
 import Sidebar from "@/Components/Sidebar/Sidebar.vue";
 import HeaderStats from "@/Components/Headers/HeaderStats.vue";
 import FooterAdmin from "@/Components/Footers/FooterAdmin.vue";
-import NewQuestionComponent from "@/Components/Question/NewQuestionComponent"
+import Notification from "@/Components/Notification";
 
 
 export default {
@@ -38,7 +44,8 @@ export default {
         Sidebar,
         HeaderStats,
         FooterAdmin,
-        NewQuestionComponent
+        Notification
+      
 
     },
     mounted() {
@@ -61,18 +68,9 @@ export default {
 };
 </script>
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.75s;
-}
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
 
-.fade-enter,
-.fade-leave-to
-
-/* .fade-leave-active below version 2.1.8 */
-  {
-  opacity: 0;
-}
 .section,
 section {
     margin-left: auto;

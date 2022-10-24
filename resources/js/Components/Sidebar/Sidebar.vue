@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="nav md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl  flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6 bg-blue">
+    class="nav md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden  shadow-xl dark:bg-[#1a263f]  flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6 bg-blue">
     <div
       class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto dark:md:text-gray-200 ">
       <!-- Toggler -->
@@ -27,7 +27,7 @@
       </ul>
       <!-- Collapse -->
       <div
-        class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded "
+        class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 dark:bg-[#1a263f]  md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded "
         v-bind:class="collapseShow">
         <!-- Collapse header -->
         <div
@@ -51,12 +51,12 @@
           </div>
         </div>
         <!-- Form -->
-        <form class="mt-6 mb-4 md:hidden">
+        <!-- <form class="mt-6 mb-4 md:hidden">
           <div class="mb-3 pt-0">
             <input type="text" placeholder="Search"
               class="border-0 px-3 py-2 h-12 border border-solid border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal" />
           </div>
-        </form>
+        </form> -->
 
         <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
@@ -155,14 +155,14 @@
 
         <!-- Divider -->
 
-        <div class="w-full pb-2" v-if="$page.props.auth.user !== null">
+        <div class="w-full pb-2 mt-12" v-if="$page.props.auth.user !== null">
           <NewQuestionButton v-if="$page.url.startsWith('/forum')"></NewQuestionButton>
           <ReplyButtom v-if="$page.url.startsWith('/question')"></ReplyButtom>
         </div>
         <!-- Heading -->
-        <h6
+        <h6  v-if="$page.props.auth.user  == null" 
           class="md:min-w-full text-blueGray-600 dark:text-gray-100  text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-          Auth Layout Pages
+          For MissionX Account Only
         </h6>
         <!-- Navigation -->
 
@@ -176,20 +176,20 @@
           </Link>
           </li>
 
-          <li class="items-center">
+          <!-- <li class="items-center">
             <Link
               class="text-blueGray-700 dark:text-gray-100 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
               :href="route('register')">
             <i class="fas fa-clipboard-list dark:text-gray-100 text-blueGray-300 mr-2 text-sm"></i>
             Register
             </Link>
-          </li>
+          </li> -->
         </ul>
         <hr class="my-4 md:min-w-full line-hr" />
         <!-- Heading -->
         <h6
           class="md:min-w-full text-blueGray-500 dark:text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-          Documentation
+          Theme
         </h6>
         <button  @click="toggleDarkMode" role="switch" :title="isdark=='dark' ?'Switch to Light Mode?':'Switch to Dark Mode'" >
           <svg   v-if="isdark=='dark'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -204,13 +204,42 @@
 
         <!-- Divider -->
         <hr class="my-4 md:min-w-full line-hr"/>
-        <!-- Heading -->
-        <h6
+        <h6 v-if="hasAnyPermission(['users_manage'])"
           class="md:min-w-full text-blueGray-500 dark:text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-          Documentation
+          Admin
+       
         </h6>
-        <!-- Navigation -->
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
+        <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
+            <Link :class="[$page.component === 'Admin/Permission' ? 'opacity-75 text-blue-300  dark:text-blue-500' : '']"
+              :href="route('admin.permissions.index')" target="_blank"
+              class="text-blueGray-700 dark:text-gray-100 hover:text-blueGray-400 text-sm block mb-4 no-underline font-semibold">
+            <i class="fas fa-shield mr-2  text-blueGray-300  dark:text-gray-100 text-base" :class="[$page.component === 'Admin/Permission' ? 'opacity-75 text-blue-300  dark:text-blue-500' : '']" ></i>
+            Permissions
+            </Link>
+          </li>
+          <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
+            <Link :class="[$page.component === 'Admin/Roles' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+              :href="route('admin.roles.index')" target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="fa-solid fa-circle-check mr-2 text-blueGray-300 dark:text-gray-100 text-base" :class="[$page.component === 'Admin/Roles'  ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
+            Roles
+            </Link>
+          </li>
+          <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
+            <Link :class="[$page.component === 'Admin/User' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+              :href="route('admin.users.index')" target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="fas fa-users mr-2 text-blueGray-300 dark:text-gray-100 text-base"  :class="[$page.component === 'Admin/User' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
+            Users
+            </Link>
+          </li>
+
+        <hr class="my-4 md:min-w-full line-hr"/>
+        <!-- Heading -->
+        <h6 
+          class="md:min-w-full text-blueGray-500 dark:text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+          Forum
+        </h6>
           <li class="inline-flex">
             <Link :class="[$page.url == '/forum' ? 'opacity-75 text-blue-300  dark:text-blue-500' : '']"
               :href="route('forum')" target="_blank"
@@ -232,7 +261,7 @@
               :href="route('admin.channels.index')" target="_blank"
               class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
             <i class="fas fa-paint-brush mr-2 text-blueGray-300 dark:text-gray-100 text-base"  :class="[$page.url == '/admin/channels' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
-            Channels
+            Manager Channels
             </Link>
           </li>
           <li class="inline-flex">
@@ -253,9 +282,29 @@
             Unsolved
             </Link>
           </li>
+          <li class="inline-flex" >
+
+            <Link  href="/forum?trending=1"
+              :class="[$page.url.startsWith('/forum?trending=1') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+              target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="fa-solid fa-arrow-trend-up mr-2 text-blueGray-300 dark:text-gray-100 text-base"  :class="[$page.url.startsWith('/forum?trending=1') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
+            Popular This Week
+            </Link>
+            </li>
+
+          <li class="inline-flex" >
+
+            <Link  href="/forum?popular=1"
+              :class="[$page.url.startsWith('/forum?popular=1') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+              target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="fa-solid fa-arrow-trend-up mr-2 text-blueGray-300 dark:text-gray-100 text-base"  :class="[$page.url.startsWith('/forum?popular=1') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
+            Popular All Time
+            </Link>
+          </li>
 
           <li class="inline-flex" v-if="$page.props.auth.user">
-
             <Link :href="route('myThread')"
               :class="[$page.url.startsWith('/myThread') ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
               target="_blank"
@@ -386,7 +435,7 @@ export default {
 
     if (localStorage.isdark === undefined) {
       localStorage.isdark = 'dark';
-
+      this.isdark= 'dark';
     } else {
 
       this.isdark =localStorage.isdark

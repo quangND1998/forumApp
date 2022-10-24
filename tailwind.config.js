@@ -3,6 +3,7 @@ const plugin = require("tailwindcss/plugin");
 const colors = require("tailwindcss/colors");
 
 module.exports = {
+    content: ['./src/**/*.{html,js}', './node_modules/tw-elements/dist/js/**/*.js'],
     purge: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
@@ -14,6 +15,7 @@ module.exports = {
         colors: {
             ...colors,
             'theme-black': '#213154',
+            'theme-dark': '#1a263f'
 
         },
 
@@ -24,6 +26,7 @@ module.exports = {
                 "screen-75": "75vh",
 
             },
+
 
             fontSize: {
 
@@ -166,7 +169,7 @@ module.exports = {
     plugins: [
 
         require("@tailwindcss/forms"),
-
+        require('tw-elements/dist/plugin'),
         plugin(function({ addComponents, theme }) {
 
             const screens = theme("screens", {});

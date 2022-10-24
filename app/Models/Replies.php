@@ -18,7 +18,9 @@ class Replies extends Model
     }
     public function user()
     {
+        // dd($this);
         return $this->belongsTo(User::class, 'user_id');
+
     }
     public function replies()
     {
@@ -26,7 +28,9 @@ class Replies extends Model
     }
     public function users()
     {
-        return $this->belongsToMany(User::class,  'replie_user', 'replie_id', 'user_id');
+
+        return $this->belongsToMany(User::class, 'forumApp.replie_user', 'replie_id', 'user_id');
+        // DB::connection('mysql')->table('replie_user')->where('id','user_id')->first();
     }
 
     public function activities()
@@ -36,8 +40,17 @@ class Replies extends Model
 
     public function user_reply()
     {
-        // return $this->belongsTo(User::class, 'replie_user');
-        return  DB::connection('mysql2')->table('users')->select('');
+        return $this->belongsTo(User::class, 'replie_user');
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function videos()
+    {
+        return $this->morphMany(Video::class, 'videoable');
     }
 
 

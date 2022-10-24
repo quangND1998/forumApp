@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\DB;
 class Conversation extends Model
 {
     use HasFactory;
@@ -14,7 +14,8 @@ class Conversation extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+         return $this->belongsTo(User::class, 'user_id');
+        // return DB::connection('mysql2')->table('users')->where('id',$this->user_id);
     }
     public function chanel()
     {
@@ -53,5 +54,15 @@ class Conversation extends Model
 
             $model->user_id = auth()->user()->id;
         });
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function videos()
+    {
+        return $this->morphMany(Video::class, 'videoable');
     }
 }

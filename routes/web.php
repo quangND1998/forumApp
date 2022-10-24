@@ -11,6 +11,9 @@ use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ZoomController;
 
+use App\Http\Controllers\Admin\PermisionsController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,6 +45,30 @@ Route::get('channels',[ChannelController::class,'popularChannels'])->name('chann
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('admin')->as('admin.')->group(function () {
+
+        
+        Route::prefix('permissions')->as('permissions.')->group(function () {
+            Route::get('', [PermisionsController::class, 'index'])->name('index');
+            Route::post('', [PermisionsController::class, 'store'])->name('store');
+            Route::put('/update/{id}', [PermisionsController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [PermisionsController::class, 'delete'])->name('delete');
+        });
+
+        Route::prefix('roles')->as('roles.')->group(function () {
+            Route::get('', [RoleController::class, 'index'])->name('index');
+            Route::post('', [RoleController::class, 'store'])->name('store');
+            Route::put('/update/{id}', [RoleController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [RoleController::class, 'delete'])->name('delete');
+        });
+
+        Route::prefix('users')->as('users.')->group(function () {
+            Route::get('', [UserController::class, 'index'])->name('index');
+
+            Route::post('', [UserController::class, 'store'])->name('store');
+            Route::put('/update/{id}', [UserController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('destroy');
+            // Route::post('import/user',  [UserController::class, 'import'])->name('import');
+        });
         Route::prefix('device')->as('device.')->group(function () {
             Route::get('', [DeviceController::class, 'getDevice'])->name('index');
         });
@@ -73,12 +100,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::post('store/{id}', [ReplieController::class, 'store'])->name('store');
             Route::post('likeReplie/{id}', [ReplieController::class, 'likeRelie'])->name('like');
-            Route::put('update/{id}', [ReplieController::class, 'update'])->name('update');
+            Route::post('update/{id}', [ReplieController::class, 'update'])->name('update');
             Route::post('best_answer', [ReplieController::class, 'bestAnswer'])->name('bestAnswer');
         });
     });
+    Route::prefix('conversation')->as('conversation.')->group(function () {
+        Route::get('create', [ConversationController::class, 'create'])->name('create');
+        Route::get('edit/{id}', [ConversationController::class, 'edit'])->name('edit');
+
+    });
+    Route::prefix('delete')->group(function(){
+        Route::delete('deleteImage/{id}', [ConversationController::class, 'deleteImage'])->name('deleteImage');
+        Route::delete('deleteVideo/{id}', [ConversationController::class, 'deleteVideo'])->name('deleteVideo');
+    });
     Route::get('myThread', [ConversationController::class, 'myConversation'])->name('myThread');
-    Route::get('setting/account/update', [ForumController::class, 'editProfile'])->name('editProfile');
+    // Route::get('setting/account/update', [ForumController::class, 'editProfile'])->name('editProfile');
     Route::post('saveProfile', [ForumController::class, 'saveProfile'])->name('saveProfile');
 });
 Route::get('@' . '{name}', [ForumController::class, 'profile'])->name('profile');

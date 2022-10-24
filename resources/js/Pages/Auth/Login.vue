@@ -55,10 +55,10 @@
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <Link
+        <!-- <Link
           :href="route('register')"
           class="underline text-sm mr-3 text-gray-600 hover:text-gray-900 text-left link ml"
-        >Register ?</Link>
+        >Register ?</Link> -->
         <Link
           v-if="canResetPassword"
           :href="route('password.request')"

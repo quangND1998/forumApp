@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\DB;
 class Activities extends Model
 {
     use HasFactory;
@@ -14,6 +14,7 @@ class Activities extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+        // return DB::connection('mysql2')->table('users',$this->user_id);
     }
     public function activitiesable()
     {

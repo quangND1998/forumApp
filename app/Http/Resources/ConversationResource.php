@@ -21,7 +21,7 @@ class ConversationResource extends JsonResource
             [
                 'id' => $this->id,
                 'title' => $this->title,
-                'body' => $this->body,
+                'body' =>$this->body,
                 'slug' => $this->slug,
                 'view' => $this->view,
                 'lock_comment' => $this->lock_comment ==0? false: true,
@@ -36,8 +36,9 @@ class ConversationResource extends JsonResource
                 'solved' => $this->solved,
                 'sub_body' => Str::words(strip_tags($this->body)),
                 // 'lastReplie' => $this->lastReplie
-                'lastReplie' => new LastReplieResource($this->lastReplie)
-
+                'lastReplie' => new LastReplieResource($this->lastReplie),
+                'images' => $this->images,
+                'videos' => $this->videos
 
 
             ];

@@ -27,9 +27,11 @@ class ReplieResource extends JsonResource
                 'owner' => new UserResource($this->user),
                 'time_ago' => Carbon::parse($this->created_at)->diffForHumans(),
                 'solved' => $this->solved,
-                'likes' =>  LikeResource::collection($this->users),
+                'likes' =>  $this->users->pluck('name'),
                 'replie_id' => $this->replie_id,
-                'user_reply' => $this->user_reply
+                'user_reply' => $this->user_reply,
+                'images' => $this->images,
+                'videos'=> $this->videos
 
             ];
     }

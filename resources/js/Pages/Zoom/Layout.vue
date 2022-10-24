@@ -19,7 +19,6 @@ import AdminNavbar from "@/Components/Navbars/AdminNavbar.vue";
 import Sidebar from "@/Components/Sidebar/Sidebar.vue";
 import HeaderStats from "@/Components/Headers/HeaderStats.vue";
 import FooterAdmin from "@/Components/Footers/FooterAdmin.vue";
-import NewQuestionComponent from "@/Components/Question/NewQuestionComponent"
 
 
 export default {
@@ -33,8 +32,6 @@ export default {
         Sidebar,
         HeaderStats,
         FooterAdmin,
-        NewQuestionComponent
-
     },
 };
 </script>

@@ -21,19 +21,26 @@ use App\Events\ReplieCommentEvent;
 use App\Events\LikeCommentEvent;
 use App\Events\UpdateReplieEvent;
 use App\Events\ViewConversationEvent;
-
+use App\Models\Image;
+use App\Models\Video;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Traits\FileUploadTrait;
 class ReplieController extends Controller
 {
+    use FileUploadTrait;
 
+    public function __construct()
+    {
+        // $this->middleware('permission:comment-reply', ['only' => ['store','likeRelie','update','delete']]);
+    }
     public function getDetail(Request $request, $name)
     {
 
         $replie_id = $request->input('replyId');
-        $conversation = Conversation::with(['user', 'chanel','lastReplie.user'])->withCount('all_replies')->where('slug', $name)->first();
+        $conversation = Conversation::with(['user', 'chanel','lastReplie.user','images','videos'])->withCount('all_replies')->where('slug', $name)->first();
 
         if($conversation){
-            $initalReplies = Replies::with('replies.users','replies.user','replies.user_reply')->where('is_inital', 1)->where('conversation_id',$conversation->id)->paginate(20);
-            // dd($initalReplies);
+            $initalReplies = Replies::with(['user','users','replies.users','replies.user','replies.user_reply'])->where('is_inital', 1)->where('conversation_id',$conversation->id)->paginate(20);
         }
         else{
             $erros = "Not found conversation !!";
@@ -50,10 +57,13 @@ class ReplieController extends Controller
             $conversation->save();
 
             // return $conversation->initalReplies;
+            // dd($initalReplies);
             $initalReplies = InitalReplieResource::collection($initalReplies);
 
             $conversation = new ConversationResource($conversation);
+            // dd($conversation);
             // broadcast(new ViewConversationEvent($conversation))->toOthers();
+            //  dd($initalReplies);
             return Inertia::render('Forum/Replie', compact('conversation', 'initalReplies', 'replie_id'));
         } else {
             $erros = "Not found conversation !!";
@@ -69,6 +79,8 @@ class ReplieController extends Controller
             $request,
             [
                 'body' => 'required',
+                'image' => 'nullable|mimes:png,jpg,jpeg,svg',
+                'video' =>  'nullable|mimetypes:video/mp4|max:10000'
             ]
         );
 
@@ -77,6 +89,24 @@ class ReplieController extends Controller
             'user_id' => Auth::user()->id,
             'conversation_id' => $conversation->id
         ]);
+        // dd($replie);
+
+        $image_path = 'images/';
+        $video_path = 'videos/';
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $image = new Image();
+            $image->name =  $file->getClientOriginalName();
+            $image->image = $request->hasFile('image') ? $this->image($request->file('image'), $image_path) : null;
+            $replie->images()->save($image);
+        }
+        if($request->hasFile('video')){
+            $file = $request->file('video');
+            $video = new Video();
+            $video->name =  $file->getClientOriginalName();
+            $video->video = $request->hasFile('video') ? $this->image($request->file('video'), $video_path) : null;
+            $replie->videos()->save($video);
+        }
         if ($request->replie_id == null) {
             $replie->is_inital = 1;
             $replie->save();
@@ -86,7 +116,7 @@ class ReplieController extends Controller
             $replie->replie_user = $request->replie_user;
             $replie->save();
         }
-        $replie->load('users', 'user', 'user_reply');
+        $replie->load('users', 'user', 'user_reply','images','videos');
 
         broadcast(new ReplieCommentEvent($replie, $conversation))->toOthers();;
         $activty = Activities::create([
@@ -144,22 +174,56 @@ class ReplieController extends Controller
 
     public function update(Request $request, $id)
     {
-
-        $replie = Replies::findOrFail($id);
+        $replie = Replies::with('images', 'videos')->findOrFail($id);
         $conversation = Conversation::findOrFail($replie->conversation_id);
-
-
         $this->validate(
             $request,
             [
 
                 'body' => 'required',
-
+                'image' => 'nullable|mimes:png,jpg,jpeg,svg',
+                'video' =>  'nullable|mimetypes:video/mp4|max:10000'
             ]
         );
 
         $replie->body = $request->body;
         $replie->save();
+        $image_path = 'images/';
+        $video_path = 'videos/';
+        $name = time();
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            if(count($conversation->images) >0){
+                $replie->images[0]->update([
+                    'name'=>  $file->getClientOriginalName().'-'.$name,
+                    'image' => $request->hasFile('image') ? $this->update_image($request->file('image'),$name ,$image_path, $replie->images[0]->image) :  $conversation->image[0]->image
+
+                ]);
+            }
+            else{
+                $image = new Image();
+                $image->name =  $file->getClientOriginalName();
+                $image->image = $request->hasFile('image') ? $this->image($request->file('image'), $image_path) : null;
+                $replie->images()->save($image);
+            }
+
+        }
+        if($request->hasFile('video')){
+            $file = $request->file('video');
+            if(count($conversation->videos) >0){
+                $conversation->videos[0]->update([
+                    'name'=>  $file->getClientOriginalName().'-'.$name,
+                    'video' => $request->hasFile('video') ? $this->update_image($request->file('video'),$name ,$video_path, $replie->videos[0]->video) :  $conversation->image[0]->image
+
+                ]);
+            }
+            else{
+                $video = new Video();
+                $video->name =  $file->getClientOriginalName();
+                $video->video = $request->hasFile('video') ? $this->image($request->file('video'), $video_path) : null;
+                $replie->videos()->save($video);
+            }
+        }
         $replie->load('users', 'user', 'user_reply', 'replies');
         $activty = $replie->activities->where('type', 1)->first();
         $activty->subject->update([

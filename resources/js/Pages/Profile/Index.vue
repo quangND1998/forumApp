@@ -24,11 +24,11 @@
                         />
                       </Link>
                       <div class="flex justify-between gap-x-1">
-                        <Link
+                        <!-- <Link
                           v-if="$page.props.auth.user"
                           :href="route('editProfile')"
                           class="btn btn-dark-blue rounded-md px-2 py-1 text-[12px] normal-case"
-                        >Edit</Link>
+                        >Edit</Link> -->
                       </div>
                     </div>
                   </div>
