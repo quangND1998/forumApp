@@ -81,14 +81,14 @@
         class="panel relative transition-colors shadow-lg bg-gray-200 text-gray-700 dark:bg-slate-600  dark:hover:bg-slate-700 duration-300 dark:text-gray-200 hover:bg-gray-300 px-5 py-4 rounded-2xl conversation-list-item mb-3 flex cursor-pointer flex-col md:flex-row">
         <div class="w-full md:w-auto md:mr-6 flex items-center md:block mb-4 md:mb-0">
           <span class="icon mr-3 md:mr-0">
-            <img :alt="post.owner.username" width="50" height="50" class="bg-white relative rounded-full"
+            <img :alt="post.owner.name" width="50" height="50" class="bg-white relative rounded-full"
               style="max-width: none; max-height: 50px;" :src="post.owner.avatar" />
           </span>
           <!-- <div class="inline-block">
                         <span class="font-bold">{{ post.owner.name }}</span>
                         <span class="text-sm -600">| {{ post.time_ago }}</span>
           </div>-->
-          <strong class="uppercase md:hidden">{{ post.owner.username }}</strong>
+          <strong class="uppercase md:hidden">{{ post.owner.name }}</strong>
 
           <div class="flex md:hidden items-center justify-center ml-auto">
             <span class="mr-1 btn btn-channel rounded-md ml-5 block w-24 py-1 px-2 text-center text-xs is-eloquent"

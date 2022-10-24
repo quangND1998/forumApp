@@ -17,11 +17,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Http\Resources\ActivitiesResources;
 use App\Models\Replies;
-
+use Illuminate\Support\Facades\DB;
 class ForumController extends Controller
 {
     public function index(Request $request)
     {
+        // $user = DB::connection('mysql2')->table('users')->get();
+        // dd($user);
         $category = null;
         $chanels = Chanels::get();
         $category = $request->input('category');

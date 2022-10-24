@@ -14,9 +14,10 @@ class ConfirmController extends Controller
         $user->active = 1;
         $user->save();
         Auth::login($user);
+        dd($user);
         return redirect('/forum');
     }
 
 
-    
+
 }

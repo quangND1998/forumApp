@@ -12,10 +12,10 @@ use Inertia\Inertia;
 
 class RoleController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'delete']]);
-    }
+    // function __construct()
+    // {
+    //     $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'delete']]);
+    // }
     public function index()
     {
         if (Gate::allows(config('constants.USER_PERMISSION'))) {

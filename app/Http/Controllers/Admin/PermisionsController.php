@@ -12,14 +12,15 @@ use Spatie\Permission\Models\Permission;
 use App\TextToSpeech\TextToSpeechFactory;
 class PermisionsController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'delete']]);
-    }
+    // function __construct()
+    // {
+    //     $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'delete']]);
+    // }
     public function index()
     {
       
         $permissions = Permission::paginate(10);
+    
         // $texToSpeech= TextToSpeechFactory::getTypeTextToSpeech('Viettel',$permissions, 'en','aaaaa');
         // return $texToSpeech->toSpeech('Viettel');
         return Inertia::render('Admin/Permission', compact('permissions'));
@@ -27,7 +28,7 @@ class PermisionsController extends Controller
 
     public function store(Request $request)
     {
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+       
 
             $this->validate($request, [
                 'name' => 'required|unique:permissions',
@@ -36,14 +37,11 @@ class PermisionsController extends Controller
             Permission::create($request->all());
 
             return back()->with('success', 'Create permission successfully');
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+  
     }
     public function update(Request $request, $id)
     {
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+        
             $permission = Permission::findOrFail($id);
             $this->validate($request, [
                 'name' => 'required|unique:permissions,name,' . $permission->id,
@@ -53,15 +51,12 @@ class PermisionsController extends Controller
             $permission->save();
 
             return redirect()->back()->with('success', 'Update permission successfully');
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+      
     }
     public function delete($id)
     {
 
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+       
             $permission = Permission::find($id);
 
             if ($permission == null) {
@@ -72,9 +67,6 @@ class PermisionsController extends Controller
             }
             $permission->delete();
             return redirect()->back()->with('success', `Delete {{$permission->name}} permission successfully`);
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+      
     }
 }

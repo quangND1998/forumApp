@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ReplytoReply;
-
+use Illuminate\Support\Facades\DB;
 class Replies extends Model
 {
     use HasFactory;
@@ -36,6 +36,7 @@ class Replies extends Model
     public function user_reply()
     {
         return $this->belongsTo(User::class, 'replie_user');
+        //return  DB::connection('mysql2')->table('users')->select('');
     }
 
     public function images()

@@ -15,10 +15,10 @@ use App\Models\User;
 class UserController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'destroy']]);
+    // }
     public function index(Request $request)
     {
 
