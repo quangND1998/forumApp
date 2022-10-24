@@ -27,13 +27,13 @@ class ReplieController extends Controller
 
     public function getDetail(Request $request, $name)
     {
-       
-      
+
         $replie_id = $request->input('replyId');
         $conversation = Conversation::with(['user', 'chanel','lastReplie.user'])->withCount('all_replies')->where('slug', $name)->first();
 
         if($conversation){
-            $initalReplies = Replies::with('user','users','replies.users','replies.user','replies.user_reply')->where('is_inital', 1)->where('conversation_id',$conversation->id)->paginate(20);
+            $initalReplies = Replies::with('replies.users','replies.user','replies.user_reply')->where('is_inital', 1)->where('conversation_id',$conversation->id)->paginate(20);
+            // dd($initalReplies);
         }
         else{
             $erros = "Not found conversation !!";
@@ -48,7 +48,7 @@ class ReplieController extends Controller
 
             $conversation->view = $conversation->view + 1;
             $conversation->save();
-         
+
             // return $conversation->initalReplies;
             $initalReplies = InitalReplieResource::collection($initalReplies);
 
@@ -94,7 +94,7 @@ class ReplieController extends Controller
             'icon' => "/images/profiles/replied_to_conversation_icon.svg",
             "pointsEarned" => 10,
             'type' => 1,
-         
+
         ]);
         $activty->date = Carbon::createFromFormat('Y-m-d H:i:s', $activty->created_at)->format('Y-m-d');
         $activty->save();
@@ -119,7 +119,7 @@ class ReplieController extends Controller
                 'icon' => "/images/profiles/liked_comment_icon.svg",
                 "pointsEarned" => 50,
                 'type' => 2,
-               
+
             ]);
             $activty->date = Carbon::createFromFormat('Y-m-d H:i:s', $activty->created_at)->format('Y-m-d');
             $activty->save();

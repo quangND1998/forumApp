@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Zoom extends Model
 {
     use HasFactory;
+    protected $connection = 'mysql';
     protected $table = 'zoom';
     protected $fillable = ['id', 'code', 'created_at', 'user_id', 'updated_at'];
 

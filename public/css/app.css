@@ -1093,6 +1093,9 @@ select {
 .max-w-3xl {
   max-width: 48rem;
 }
+.max-w-xl {
+  max-width: 36rem;
+}
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1353,6 +1356,9 @@ select {
 }
 .border-t-0 {
   border-top-width: 0px;
+}
+.border-r {
+  border-right-width: 1px;
 }
 .border-solid {
   border-style: solid;
@@ -1948,6 +1954,9 @@ select {
 }
 .tracking-normal {
   letter-spacing: 0em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
 }
 .text-gray-500 {
   --tw-text-opacity: 1;
@@ -3022,7 +3031,7 @@ select {
   }
 
   .md\:max-h-80 {
-    max-height: 50rem;
+    max-height: 20rem;
   }
 
   .md\:min-h-full {

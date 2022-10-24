@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ReplytoReply;
-
+use Illuminate\Support\Facades\DB;
 class Replies extends Model
 {
     use HasFactory;
+    protected $connection = 'mysql';
     protected $table = 'replies';
     protected $fillable = ['id', 'body', 'best_answer', 'body_in_markdown', 'conversation_id', 'is_inital', 'replie_id',  'user_id', 'created_at', 'updated_at'];
     public function conversation()
@@ -35,8 +36,9 @@ class Replies extends Model
 
     public function user_reply()
     {
-        return $this->belongsTo(User::class, 'replie_user');
+        // return $this->belongsTo(User::class, 'replie_user');
+        return  DB::connection('mysql2')->table('users')->select('');
     }
-   
-   
+
+
 }

@@ -9,6 +9,7 @@ class Subject extends Model
 {
 
     use HasFactory;
+    protected $connection = 'mysql';
     protected $table = 'subject';
     protected $fillable = ['id',    'title',    'body',    'path',    'type',   'activities_id', 'created_at',    'updated_at'];
     public function activitie()

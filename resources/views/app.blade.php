@@ -8,7 +8,7 @@
     <base href="{{ asset('') }}">
     <title>Forum</title>
     <link rel="stylesheet" type="text/css" href="backend/css/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="backend/css/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="backend/css/font-awesome/4.7.0/css/all.min.css" />
 
 
 
