@@ -12,15 +12,14 @@ use Spatie\Permission\Models\Permission;
 use App\TextToSpeech\TextToSpeechFactory;
 class PermisionsController extends Controller
 {
-    // function __construct()
-    // {
-    //     $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'delete']]);
-    // }
+    function __construct()
+    {
+        $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'delete']]);
+    }
     public function index()
     {
       
         $permissions = Permission::paginate(10);
-    
         // $texToSpeech= TextToSpeechFactory::getTypeTextToSpeech('Viettel',$permissions, 'en','aaaaa');
         // return $texToSpeech->toSpeech('Viettel');
         return Inertia::render('Admin/Permission', compact('permissions'));
