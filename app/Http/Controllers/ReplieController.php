@@ -27,6 +27,11 @@ use App\Http\Controllers\Traits\FileUploadTrait;
 class ReplieController extends Controller
 {
     use FileUploadTrait;
+
+    public function __construct()
+    {
+        $this->middleware('permission:comment-reply', ['only' => ['store','likeRelie','update','delete']]);
+    }
     public function getDetail(Request $request, $name)
     {
        

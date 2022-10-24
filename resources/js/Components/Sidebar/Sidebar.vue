@@ -160,10 +160,10 @@
           <ReplyButtom v-if="$page.url.startsWith('/question')"></ReplyButtom>
         </div>
         <!-- Heading -->
-        <!-- <h6
+        <h6  v-if="$page.props.auth.user  == null" 
           class="md:min-w-full text-blueGray-600 dark:text-gray-100  text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-          Auth Layout Pages
-        </h6> -->
+          For MissionX Account Only
+        </h6>
         <!-- Navigation -->
 
         <ul v-if="$page.props.auth.user == null" class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
@@ -176,14 +176,14 @@
           </Link>
           </li>
 
-          <li class="items-center">
+          <!-- <li class="items-center">
             <Link
               class="text-blueGray-700 dark:text-gray-100 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
               :href="route('register')">
             <i class="fas fa-clipboard-list dark:text-gray-100 text-blueGray-300 mr-2 text-sm"></i>
             Register
             </Link>
-          </li>
+          </li> -->
         </ul>
         <hr class="my-4 md:min-w-full line-hr" />
         <!-- Heading -->
@@ -204,13 +204,42 @@
 
         <!-- Divider -->
         <hr class="my-4 md:min-w-full line-hr"/>
+        <h6 v-if="hasAnyPermission(['users_manage'])"
+          class="md:min-w-full text-blueGray-500 dark:text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+          Admin
+       
+        </h6>
+        <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
+            <Link :class="[$page.component === 'Admin/Permission' ? 'opacity-75 text-blue-300  dark:text-blue-500' : '']"
+              :href="route('admin.permissions.index')" target="_blank"
+              class="text-blueGray-700 dark:text-gray-100 hover:text-blueGray-400 text-sm block mb-4 no-underline font-semibold">
+            <i class="fas fa-shield mr-2  text-blueGray-300  dark:text-gray-100 text-base" :class="[$page.component === 'Admin/Permission' ? 'opacity-75 text-blue-300  dark:text-blue-500' : '']" ></i>
+            Permissions
+            </Link>
+          </li>
+          <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
+            <Link :class="[$page.component === 'Admin/Roles' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+              :href="route('admin.roles.index')" target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="fa-solid fa-circle-check mr-2 text-blueGray-300 dark:text-gray-100 text-base" :class="[$page.component === 'Admin/Roles'  ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
+            Roles
+            </Link>
+          </li>
+          <li class="inline-flex" v-if="hasAnyPermission(['users_manage'])">
+            <Link :class="[$page.component === 'Admin/User' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"
+              :href="route('admin.users.index')" target="_blank"
+              class="text-blueGray-700 hover:text-blueGray-500 dark:text-gray-100 text-sm block mb-4 no-underline font-semibold">
+            <i class="fas fa-users mr-2 text-blueGray-300 dark:text-gray-100 text-base"  :class="[$page.component === 'Admin/User' ? 'opacity-75 text-blue-300 dark:text-blue-500' : '']"></i>
+            Users
+            </Link>
+          </li>
+
+        <hr class="my-4 md:min-w-full line-hr"/>
         <!-- Heading -->
-        <h6
+        <h6 
           class="md:min-w-full text-blueGray-500 dark:text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
           Forum
         </h6>
-        <!-- Navigation -->
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="inline-flex">
             <Link :class="[$page.url == '/forum' ? 'opacity-75 text-blue-300  dark:text-blue-500' : '']"
               :href="route('forum')" target="_blank"

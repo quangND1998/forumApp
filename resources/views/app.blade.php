@@ -7,11 +7,11 @@
     <meta name="locale" content="{{ App::getLocale() }}" />
     <base href="{{ asset('') }}">
     <title>Forum</title>
+    
     <link rel="stylesheet" type="text/css" href="backend/css/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="backend/css/font-awesome/6.0.0/css/all.min.css" />
 
     <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
-
 
      <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet" />
@@ -24,7 +24,14 @@
 
 <body >
     @inertia
-    <script src="backend/js/jquery.3.2.1.min.js"></script>
+    <script src="/static/js/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+    <script src="./TW-ELEMENTS-PATH/dist/js/index.min.js"></script>
+    {{--  <script src="/static/js/plugins/bootstrap/bootstrap.min.js"></script>  --}}
+    {{--  <script src="/static/js/plugins/AdminLTE/app.min.js"></script>  --}}
+    {{--  <script src="/static/js/plugins/pace/pace.min.js"></script>
+    <script src="//d2wy8f7a9ursnm.cloudfront.net/v4/bugsnag.min.js"></script>
+    <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-plugins/v1/bugsnag-vue.min.js"></script>  --}}
+
 </body>
 <style>
     .dark {

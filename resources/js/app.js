@@ -1,5 +1,5 @@
 require('./bootstrap');
-
+import 'tw-elements';
 
 import Vue from 'vue'
 import { createInertiaApp } from '@inertiajs/inertia-vue'
@@ -11,6 +11,7 @@ import {
 import CKEditor from 'ckeditor4-vue';
 import vueCountryRegionSelect from 'vue-country-region-select'
 import VueToast from 'vue-toast-notification';
+import VueCompositionAPI from '@vue/composition-api'
 import 'vue-toast-notification/dist/theme-sugar.css';
 import moment from 'moment';
 Vue.use(VueToast);
@@ -32,7 +33,7 @@ Vue.mixin({
         route: window.route,
     }
 })
-
+Vue.use(VueCompositionAPI)
 Vue.use(CKEditor);
 Vue.mixin(require('./base'))
 Vue.mixin({

@@ -29,7 +29,10 @@ use Illuminate\Http\Response;
 class ConversationController extends Controller
 {
     use FileUploadTrait;
-
+    public function __construct()
+    {
+        $this->middleware('permission:create-question', ['only' => ['store','update','edit','create','delete']]);
+    }
     public function create(){
         $chanels = Chanels::get();
         return Inertia::render('Question/NewQuestionComponent',compact('chanels'));
