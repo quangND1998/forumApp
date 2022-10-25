@@ -31,7 +31,7 @@ class ConversationController extends Controller
     use FileUploadTrait;
     public function __construct()
     {
-        $this->middleware('permission:create-question', ['only' => ['store','update','edit','create','delete']]);
+        $this->middleware('role_user:default', ['only' => ['store','update','edit','create','delete']]);
     }
     public function create(){
         $chanels = Chanels::get();
@@ -208,6 +208,11 @@ class ConversationController extends Controller
                 $video->delete();
             }
         }
+        foreach ($conversation->all_replies as $replie) {
+          
+                $replie->delete();
+            
+        }
         broadcast(new DeleteConvsesationEvent($conversation))->toOthers();
         
         // dispatch(new DeleteConversation($conversation));
@@ -222,6 +227,7 @@ class ConversationController extends Controller
         $conversations = Conversation::with('user',  'chanel', 'lastReplie.user','images','videos')->withCount('all_replies')->where('user_id', Auth::user()->id)->where(function ($query) use ($request) {
             $query->where('title', 'LIKE', '%' . $request->term . '%');
         })->paginate(20)->appends(['term' => $request->term]);
+        // return $conversations;
         $conversations = ConversationResource::collection($conversations);
 
         return Inertia::render('Forum/MyConversation', compact('conversations', 'chanels'));

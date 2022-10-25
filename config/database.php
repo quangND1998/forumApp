@@ -32,6 +32,8 @@ return [
     | choice installed on your machine before you begin development.
     |
     */
+    'DB_DATABASE' => env('DB_DATABASE'),
+    'DB_DATABASE_SECOND' =>  env('DB_DATABASE_SECOND'),
 
     'connections' => [
 

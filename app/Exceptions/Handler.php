@@ -53,5 +53,9 @@ class Handler extends ExceptionHandler
         $this->renderable(function (AccessDeniedHttpException $e, $request) {
             return Inertia::render('Error', ['status' => $e->getStatusCode()]);
         });
+
+        $this->renderable(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, $request) {
+          return Inertia::render('Error', ['status' => $e->getStatusCode()]);
+        });
     }
 }

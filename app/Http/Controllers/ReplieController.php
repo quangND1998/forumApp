@@ -31,7 +31,7 @@ class ReplieController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('permission:comment-reply', ['only' => ['store','likeRelie','update','delete']]);
+        $this->middleware('role_user:default', ['only' => ['store','likeRelie','update','delete']]);
     }
     public function getDetail(Request $request, $name)
     {
@@ -40,7 +40,7 @@ class ReplieController extends Controller
         $conversation = Conversation::with(['user', 'chanel','lastReplie.user','images','videos'])->withCount('all_replies')->where('slug', $name)->first();
 
         if($conversation){
-            $initalReplies = Replies::with(['user','users','replies.users','replies.user','replies.user_reply'])->where('is_inital', 1)->where('conversation_id',$conversation->id)->paginate(20);
+            $initalReplies = Replies::with('user','users','replies.users','replies.user','replies.user_reply','replies.images', 'replies.videos','images','videos')->where('is_inital', 1)->where('conversation_id',$conversation->id)->paginate(20);
         }
         else{
             $erros = "Not found conversation !!";

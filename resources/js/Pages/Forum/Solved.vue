@@ -43,7 +43,7 @@
                 <div class="w-full md:w-auto md:mr-6 flex items-center md:block mb-4 md:mb-0">
                     <span class="icon mr-3 md:mr-0">
                         <img
-                            :alt="post.owner.username"
+                            :alt="post.owner.name"
                             width="50"
                             height="50"
                             class="bg-white relative rounded-full"
@@ -55,7 +55,7 @@
                         <span class="font-bold">{{ post.owner.name }}</span>
                         <span class="text-sm text-gray-600">| {{ post.time_ago }}</span>
                     </div>-->
-                    <strong class="uppercase md:hidden">{{ post.owner.username }}</strong>
+                    <strong class="uppercase md:hidden">{{ post.owner.name }}</strong>
 
                     <div class="flex md:hidden items-center justify-center ml-auto">
                         <span

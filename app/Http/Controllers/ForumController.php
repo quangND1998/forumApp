@@ -69,9 +69,6 @@ class ForumController extends Controller
             }
         }
 
-
-
-
         $conversations = ConversationResource::collection($conversations);
 
         return Inertia::render('Forum/Index', compact('chanels', 'conversations', 'category', 'solved'));

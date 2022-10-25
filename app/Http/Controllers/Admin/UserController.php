@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Errors\InertiaErrors;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\InertiaController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use Spatie\Permission\Models\Role;
+use App\Models\Roles;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\User;
@@ -15,10 +12,10 @@ use App\Models\User;
 class UserController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'destroy']]);
+    // }
     public function index(Request $request)
     {
 
@@ -28,7 +25,7 @@ class UserController extends Controller
         // if ($user->hasPermissionTo('users_manager')) {
         //     $roles = Role::get();
         // }
-        $roles = Role::get();
+        $roles = Roles::get();
         return Inertia::render('Admin/User', compact('filters', 'users', 'roles'));
     }
 
@@ -60,7 +57,7 @@ class UserController extends Controller
 
         $user = User::create($request->all());
         $roles = $request->input('roles') ? $request->input('roles') : [];
-        $user->assignRole($roles);
+        $user->roles()->sync($roles);
         $user->created_byId = Auth::user()->id;
         $user->save();
         return back()->with('success', 'Create user successfully');
@@ -81,7 +78,7 @@ class UserController extends Controller
 
         $user->update($request->all());
         $roles = $request->input('roles') ? $request->input('roles') : [];
-        $user->syncRoles($roles);
+        $user->roles()->sync($roles);
         // $user->created_byId = Auth::user()->id;
         $user->save();
         return back()->with('success', 'Update user successfully');

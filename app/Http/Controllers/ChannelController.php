@@ -11,21 +11,22 @@ use Illuminate\Support\Str;
 
 class ChannelController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin_role', ['only' => ['index','store','update','delete']]);
+    }
     public function index()
     {
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+    
             $chanels = Chanels::get();
             return Inertia::render("Forum/Chanels/Index", compact('chanels'));
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+      
     }
 
 
     public function store(Request $request)
     {
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+        
             $this->validate(
                 $request,
                 [
@@ -42,15 +43,12 @@ class ChannelController extends Controller
                 'color' => $request->color
             ]);
             return back()->with('success', 'Create category tour successful');
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+     
     }
 
     public function update(Request $request, $id)
     {
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+      
             $chanel = Chanels::findOrFail($id);
 
             $this->validate(
@@ -68,23 +66,17 @@ class ChannelController extends Controller
                 'color' => $request->color
             ]);
             return redirect()->back()->with('success', 'Update category tour successful');
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+     
     }
 
     public function delete(Request $request, $id)
     {
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+        
             $chanel = Chanels::findOrFail($id);
 
             $chanel->delete();
             return redirect()->back()->with('success', 'Update category tour successful');
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+     
     }
 
     public function popularChannels(Request $request){

@@ -8,14 +8,13 @@ use Illuminate\Support\Facades\DB;
 class Conversation extends Model
 {
     use HasFactory;
-    protected $connection = 'mysql';
     protected $table = 'conversation';
     protected $fillable = ['id',    'title',  'slug',  'body', 'solved', 'is_inital',   'body_in_markdown', 'lock_comment',   'chanel_id',    'user_id',    'view',    'created_at',    'updated_at'];
 
     public function user()
     {
          return $this->belongsTo(User::class, 'user_id');
-        // return DB::connection('mysql2')->table('users')->where('id',$this->user_id);
+   
     }
     public function chanel()
     {

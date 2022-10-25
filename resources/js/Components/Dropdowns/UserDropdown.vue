@@ -29,7 +29,7 @@
     >
       <Link
         v-if="$page.props.auth.user"
-        :href="route('profile', $page.props.auth.user.name)"
+
         class="flex items-center text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
         <icon name="profile" class="w-4 h-4 mr-2" />Account

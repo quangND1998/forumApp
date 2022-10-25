@@ -45,8 +45,8 @@ class User extends Authenticatable
     ];
     public function conversations()
     {
-        //return $this->hasMany(Conversation::class, 'user_id');
-        return DB::connection('mysql')->table('conversation')->where('user_id',$this->id);
+        return $this->hasMany(Conversation::class, 'user_id');
+
     }
 
     public function replies()
@@ -55,10 +55,9 @@ class User extends Authenticatable
     }
     public function getPermissionArray()
     {
-        // return $this->getAllPermissions()->mapWithKeys(function ($pr) {
-        //     return [$pr['name'] => true];
-        // });
-        return true;
+        return $this->getAllPermissions()->mapWithKeys(function ($pr) {
+            return [$pr['name'] => true];
+        });
     }
 
     public function activities()
@@ -68,19 +67,23 @@ class User extends Authenticatable
 
     public function reply_user()
     {
-        // return $this->hasMany(Replies::class,'replie_user');
-        return DB::connection('mysql')->table('replie_user')->where('user_id',$this->id);
+        return $this->hasMany(Replies::class,'replie_user');
+
     }
 
     public function zooms()
     {
-        // return $this->hasMany(Zoom::class,   'user_id');
-        return DB::connection('mysql')->table('zoom')->where('user_id',$this->id);
+        return $this->hasMany(Zoom::class,   'user_id');
+
     }
 
     public function posts()
     {
-        // return $this->hasMany(Post::class, 'users_id');
-        return DB::connection('mysql')->table('posts')->where('user_id',$this->id);
+        return $this->hasMany(Post::class, 'users_id');
+
+    }
+
+    public function roles(){
+        return $this->belongsTo(Roles::class,'role_id');
     }
 }

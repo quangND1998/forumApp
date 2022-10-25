@@ -23,8 +23,8 @@
                                 {{channel.description}}
                             </p>
                         </header>
-                        <div class="panel relative transition-colors duration-300  text-gray-700 px-5 rounded-2xl bg-gray-200 dark:text-white dark:bg-gray-500 dark:group-hover:bg-gray-600 py-3 group-hover:hover:bg-grey-500 dark:group-hover:hover:bg-panel-500" style="height: 105px;">
-                            <div v-if="channel.last_conversation" class="flex items-center gap-x-2">
+                        <div v-if="channel.last_conversation" class="panel relative transition-colors duration-300  text-gray-700 px-5 rounded-2xl bg-gray-200 dark:text-white dark:bg-gray-500 dark:group-hover:bg-gray-600 py-3 group-hover:hover:bg-grey-500 dark:group-hover:hover:bg-panel-500" style="height: 105px;">
+                            <div  class="flex items-center gap-x-2">
                                 <img :src="channel.last_conversation.owner.avatar" alt="" class="w-6 rounded-lg">
                                 <div class="flex w-full justify-between text-2xs">
                                     <p class="font-poppins font-semibold tracking-tight text-xs">

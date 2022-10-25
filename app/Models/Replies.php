@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 class Replies extends Model
 {
     use HasFactory;
-    protected $connection = 'mysql';
     protected $table = 'replies';
     protected $fillable = ['id', 'body', 'best_answer', 'body_in_markdown', 'conversation_id', 'is_inital', 'replie_id',  'user_id', 'created_at', 'updated_at'];
     public function conversation()
@@ -29,7 +28,7 @@ class Replies extends Model
     public function users()
     {
 
-        return $this->belongsToMany(User::class, 'forumApp.replie_user', 'replie_id', 'user_id');
+        return $this->belongsToMany(User::class, config('database.DB_DATABASE').'.replie_user', 'replie_id', 'user_id');
         // DB::connection('mysql')->table('replie_user')->where('id','user_id')->first();
     }
 
@@ -41,6 +40,7 @@ class Replies extends Model
     public function user_reply()
     {
         return $this->belongsTo(User::class, 'replie_user');
+        //return  DB::connection('mysql2')->table('users')->select('');
     }
 
     public function images()
@@ -52,6 +52,6 @@ class Replies extends Model
     {
         return $this->morphMany(Video::class, 'videoable');
     }
-
-
+   
+   
 }

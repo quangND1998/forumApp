@@ -12,13 +12,13 @@ use Inertia\Inertia;
 
 class RoleController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'delete']]);
-    }
+    // function __construct()
+    // {
+    //     $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'delete']]);
+    // }
     public function index()
     {
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+        // if (Gate::allows(config('constants.USER_PERMISSION'))) {
             $permissions = Permission::get();
             $roles = Role::with('permissions')->paginate(10);;
 
@@ -26,15 +26,15 @@ class RoleController extends Controller
                 'Admin/Roles',
                 ['permissions' => $permissions, 'roles' => $roles]
             );
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+        // } else {
+        //     $erros = "You don't have permission !!";
+        //     return Inertia::render('Erros/401', ['erros' => $erros]);
+        // }
     }
     public function store(Request $request)
     {
 
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+        // if (Gate::allows(config('constants.USER_PERMISSION'))) {
             $this->validate($request, [
                 'name' => 'required|unique:roles',
                 'permission' =>  'required'
@@ -43,14 +43,14 @@ class RoleController extends Controller
             $permissions = $request->input('permission') ? $request->input('permission') : [];
             $role->givePermissionTo($permissions);
             return redirect()->back()->with('success', 'Create role successfully');
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+        // } else {
+        //     $erros = "You don't have permission !!";
+        //     return Inertia::render('Erros/401', ['erros' => $erros]);
+        // }
     }
     public function update(Request $request, $id)
     {
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+        // if (Gate::allows(config('constants.USER_PERMISSION'))) {
             $role = Role::findOrFail($id);
 
             $this->validate($request, [
@@ -61,23 +61,20 @@ class RoleController extends Controller
 
             $role->syncPermissions($permissions);
             return redirect()->back()->with('success', 'Update role successfully');
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+        // } else {
+        //     $erros = "You don't have permission !!";
+        //     return Inertia::render('Erros/401', ['erros' => $erros]);
+        // }
     }
 
     public function delete($id)
     {
 
-        if (Gate::allows(config('constants.USER_PERMISSION'))) {
+        // if (Gate::allows(config('constants.USER_PERMISSION'))) {
 
             $role = Role::findOrFail($id);
             $role->delete();
             return redirect()->back()->with('success', 'Delete role successfully');
-        } else {
-            $erros = "You don't have permission !!";
-            return Inertia::render('Erros/401', ['erros' => $erros]);
-        }
+        
     }
 }
