@@ -19,7 +19,7 @@
                         <span class="font-bold">{{ post.owner.name }}</span>
                         <span class="text-sm text-gray-600">| {{ post.time_ago }}</span>
           </div>-->
-          <strong class="uppercase md:hidden">{{ post.owner.username }}</strong>
+          <strong class="uppercase md:hidden">{{ post.owner.name }}</strong>
 
           <div class="flex md:hidden items-center justify-center ml-auto">
             <span

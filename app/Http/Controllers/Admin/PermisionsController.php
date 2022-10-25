@@ -12,10 +12,10 @@ use Spatie\Permission\Models\Permission;
 use App\TextToSpeech\TextToSpeechFactory;
 class PermisionsController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'delete']]);
-    }
+    // function __construct()
+    // {
+    //     $this->middleware('permission:users_manage', ['only' => ['index', 'store', 'update', 'delete']]);
+    // }
     public function index()
     {
       

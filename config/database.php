@@ -32,6 +32,8 @@ return [
     | choice installed on your machine before you begin development.
     |
     */
+    'DB_DATABASE' => 'forum_app',
+    'DB_DATABASE_SECOND' => 'missionx_dev',
 
     'connections' => [
 

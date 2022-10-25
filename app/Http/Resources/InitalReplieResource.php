@@ -31,7 +31,7 @@ class InitalReplieResource extends JsonResource
                 'likes' =>  $this->users->pluck('name'),
                 'images' => $this->images,
                 'videos'=> $this->videos
-                
+
             ];
     }
 }

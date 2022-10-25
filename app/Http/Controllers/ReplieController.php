@@ -23,6 +23,7 @@ use App\Events\UpdateReplieEvent;
 use App\Events\ViewConversationEvent;
 use App\Models\Image;
 use App\Models\Video;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Traits\FileUploadTrait;
 class ReplieController extends Controller
 {
@@ -30,7 +31,7 @@ class ReplieController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:comment-reply', ['only' => ['store','likeRelie','update','delete']]);
+        $this->middleware('role_user:default', ['only' => ['store','likeRelie','update','delete']]);
     }
     public function getDetail(Request $request, $name)
     {
@@ -56,10 +57,13 @@ class ReplieController extends Controller
             $conversation->save();
 
             // return $conversation->initalReplies;
+            // dd($initalReplies);
             $initalReplies = InitalReplieResource::collection($initalReplies);
 
             $conversation = new ConversationResource($conversation);
+            // dd($conversation);
             // broadcast(new ViewConversationEvent($conversation))->toOthers();
+            //  dd($initalReplies);
             return Inertia::render('Forum/Replie', compact('conversation', 'initalReplies', 'replie_id'));
         } else {
             $erros = "Not found conversation !!";
@@ -85,6 +89,8 @@ class ReplieController extends Controller
             'user_id' => Auth::user()->id,
             'conversation_id' => $conversation->id
         ]);
+        // dd($replie);
+
         $image_path = 'images/';
         $video_path = 'videos/';
         if($request->hasFile('image')){

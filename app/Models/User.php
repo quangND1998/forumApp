@@ -8,11 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-
+use Illuminate\Support\Facades\DB;
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
-
+    // use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    protected $connection = 'mysql2';
 
     /**
      * The attributes that are mass assignable.
@@ -46,18 +46,18 @@ class User extends Authenticatable
     public function conversations()
     {
         return $this->hasMany(Conversation::class, 'user_id');
+    
     }
 
     public function replies()
     {
-        return $this->belongsToMany(Replies::class, 'replie_user', 'user_id', 'replie_id');
+        return $this->setConnection('mysql')->belongsToMany(Replies::class, 'replie_user', 'user_id', 'replie_id');
     }
     public function getPermissionArray()
     {
         return $this->getAllPermissions()->mapWithKeys(function ($pr) {
             return [$pr['name'] => true];
         });
-        // return true;
     }
 
     public function activities()
@@ -68,15 +68,22 @@ class User extends Authenticatable
     public function reply_user()
     {
         return $this->hasMany(Replies::class,'replie_user');
+       
     }
 
     public function zooms()
     {
         return $this->hasMany(Zoom::class,   'user_id');
+        
     }
 
     public function posts()
     {
         return $this->hasMany(Post::class, 'users_id');
+      
+    }
+
+    public function roles(){
+        return $this->belongsTo(Roles::class,'role_id');
     }
 }
