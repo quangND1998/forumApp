@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'share' => \App\Http\Middleware\ShareDataMiddleware::class,
         'role_user' => \App\Http\Middleware\EnsureUseRole::class,
+        'admin_role' => \App\Http\Middleware\AdminRole::class
         // 'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         // 'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         // 'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,

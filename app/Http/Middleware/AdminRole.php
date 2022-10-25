@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Spatie\Permission\Exceptions\UnauthorizedException;
-class EnsureUseRole
+class AdminRole
 {
     /**
      * Handle an incoming request.
@@ -16,21 +16,19 @@ class EnsureUseRole
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next)
     {
         if (Auth::guest()) {
             throw UnauthorizedException::notLoggedIn();
         }
-
         if(auth()->check() ){
-            $roles = is_array($role)? $role: explode('|', $role);
-            if (in_array(auth()->user()->type, $roles)) {
-              
+            $user = Auth::user();
+            $role_user = $user->roles;
+            if($role_user->name_role == "Admin"){
                 return $next($request);
             }
         }
+
         return Inertia::render('Error', ['status' =>403]);
-    
-       
     }
 }

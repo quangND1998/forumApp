@@ -11,6 +11,10 @@ use Illuminate\Support\Str;
 
 class ChannelController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin_role', ['only' => ['index','store','update','delete']]);
+    }
     public function index()
     {
     
