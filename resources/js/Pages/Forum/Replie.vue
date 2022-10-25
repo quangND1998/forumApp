@@ -332,6 +332,7 @@ export default {
       //   // $('#power').text(parseInt($('#power').text()) + parseInt(message.data.power));
       // });
       window.Echo.channel("like_event").listen("LikeCommentEvent", e => {
+        // console.log(e);
         if (e.replie_id == null) {
           this.initalReplies.data.map(element => {
             element.best_answer = 0;
