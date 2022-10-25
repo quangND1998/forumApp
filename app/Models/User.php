@@ -45,7 +45,7 @@ class User extends Authenticatable
     ];
     public function conversations()
     {
-        // return $this->hasMany(Conversation::class, 'user_id');
+        //return $this->hasMany(Conversation::class, 'user_id');
         return DB::connection('mysql')->table('conversation')->where('user_id',$this->id);
     }
 

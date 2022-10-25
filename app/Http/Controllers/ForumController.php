@@ -133,6 +133,8 @@ class ForumController extends Controller
             $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
         }])->where('name', $name)->first();
 
+        $user = User::with('replies.conversation', 'conversations.all_replies')->findOrFail($user->id);
+        return $user;
         $activities = ActivitiesResources::collection($user->activities)->sortByDesc('created_at')->groupBy('date');
 
         // $activities= User::with()
@@ -151,6 +153,7 @@ class ForumController extends Controller
     public function editProfile()
     {
         $user = User::with('replies.conversation', 'conversations.all_replies')->findOrFail(Auth::user()->id);
+        return $user;
         // $activities= User::with()
         $total_replies = count(Replies::where('user_id', Auth::user()->id)->get());
         // foreach($user->conversations as $conversation){
