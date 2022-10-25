@@ -10,7 +10,7 @@
                   <div class="lg:block">
                     <div class="relative flex flex-col items-center">
                       <Link
-                        :href="route('profile', user.name)"
+                        :href="route('profile', user.email)"
                         class="relative flex items-start mb-2 bg-deep-black/10 p-2"
                         style="width: 112px; height: 112px; padding: 2px; border-radius: 30px;"
                       >
@@ -104,7 +104,7 @@
                           <img :src="activity.icon" alt />
                         </div>
                     </div>
-                      <div  v-if="$page.props.auth.user && $page.props.auth.user.id == activity.owner.id"      class="absolute flex hidden h-full justify-center lg:block" style="top: 60px; left: -130px;">
+                      <div  v-if="$page.props.auth.user && $page.props.auth.user.id == activity.user_id"      class="absolute flex hidden h-full justify-center lg:block" style="top: 60px; left: -130px;">
                           <div
                             class="card flex h-10 w-16 items-center justify-center rounded-xl p-2 text-center text-xs text-black"
                           >

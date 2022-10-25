@@ -124,14 +124,21 @@ class ForumController extends Controller
         return Inertia::render('Forum/Solved', compact('chanels', 'conversations', 'category'));
     }
 
-    public function profile($name)
+    public function profile($email)
     {
-        $user = User::with(['activities.subject', 'activities.user', 'conversations.user', 'conversations.chanel', 'conversations.images', 'conversations.videos', 'conversations.lastReplie.user', 'replies.images', 'replies.videos', 'conversations.all_replies', 'replies.user', 'replies.user_reply', 'replies.users', 'activities' => function ($query) {
-            $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
-        }])->where('name', $name)->first();
 
-        $activities = ActivitiesResources::collection($user->activities)->sortByDesc('created_at')->groupBy('date');
-
+        $user = User::where('email', $email)->first();
+        if($user ==null){
+            return Inertia::render('Error', ['status' => 404]);
+        }
+        
+        // $user = User::with(['activities.subject', 'activities.user', 'conversations.user', 'conversations.chanel', 'conversations.images', 'conversations.videos', 'conversations.lastReplie.user', 'replies.images', 'replies.videos', 'conversations.all_replies', 'replies.user', 'replies.user_reply', 'replies.users', 'activities' => function ($query) {
+        //     $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+        // }])->where('email', $email)->first();
+        $activities = Activities::with('subject')->where('user_id', $user->id)->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->get();
+        // return $activities;
+        $activities = ActivitiesResources::collection($activities)->sortByDesc('created_at')->groupBy('date');
+       
         // $activities= User::with()
 
 

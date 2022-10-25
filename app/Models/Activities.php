@@ -12,7 +12,7 @@ class Activities extends Model
     protected $fillable = ['id',    'date',    'heading',    'icon',    'pointsEarned',  'type', 'user_id', 'conversation_id', 'created_at',    'updated_at'];
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
         // return DB::connection('mysql2')->table('users',$this->user_id);
     }
     public function activitiesable()

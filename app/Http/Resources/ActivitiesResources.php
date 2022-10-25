@@ -24,7 +24,8 @@ class ActivitiesResources extends JsonResource
             'type' => $this->type,
             'createdDiff' => Carbon::parse($this->created_at)->diffForHumans(),
             'subject' => $this->subject,
-            'owner' => new UserResource($this->user),
+            'user_id' => $this->user_id
+            // 'owner' => new UserResource($this->user),
         ];
     }
 }
