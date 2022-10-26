@@ -92,6 +92,7 @@
                             name="image-upload"
                             type="file"
                             class="sr-only"
+                            accept=".png, .jpg, .jpeg"
                           />
                         </label>
                         <p class="pl-1">or drag and drop</p>
@@ -139,6 +140,7 @@
                             @input="form.video  = $event.target.files[0]"
                             type="file"
                             class="sr-only"
+                            accept="video/mp4,video/x-m4v,video/*"
                           />
                         </label>
                         <p class="pl-1">or drag and drop</p>

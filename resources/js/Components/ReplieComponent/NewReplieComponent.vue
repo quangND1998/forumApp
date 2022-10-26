@@ -105,6 +105,7 @@
                           @input="form.image  = $event.target.files[0]"
                           name="image-upload"
                           type="file"
+                          accept=".png, .jpg, .jpeg"
                         />
                         <p class="text-xs text-gray-500">PNG, JPG, GIF up to 2MB</p>
                         <div class="text-red-500" v-if="errors && errors.image">
@@ -142,6 +143,7 @@
                           @input="form.video  = $event.target.files[0]"
                           type="file"
                           class="h-full w-full opacity-0"
+                          accept="video/mp4,video/x-m4v,video/*"
                         />
                         <p class="text-xs text-gray-500">MP4 up to 10MB</p>
                       </div>

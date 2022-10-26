@@ -180,13 +180,10 @@ class ConversationController extends Controller
         $conversation = Conversation::with('all_replies.activities','activities','all_replies.images','all_replies.videos')->findOrFail($id);
       
         $extension=" ";
-        foreach ($conversation->activities as $activty) {
-            $activty->delete();
-        }
+        $conversation->activities()->delete();
+      
         foreach ($conversation->all_replies as $replie) {
-            foreach ($replie->activities as $activty) {
-                $activty->delete();
-            }
+             $replie->activities()->delete();
         }
         foreach ($conversation->images as $image) {
             $this->DeleteFolder($image->image,$extension);
@@ -208,11 +205,8 @@ class ConversationController extends Controller
                 $video->delete();
             }
         }
-        foreach ($conversation->all_replies as $replie) {
-          
-                $replie->delete();
-            
-        }
+        $conversation->all_replies()->delete();
+
         //broadcast(new DeleteConvsesationEvent($conversation))->toOthers();
         
         // dispatch(new DeleteConversation($conversation));

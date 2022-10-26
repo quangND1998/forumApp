@@ -73,6 +73,7 @@
                                                 </div>
                                                 <input id="image-upload" @change="onFileChangeImage"
                                                     class="h-full w-full opacity-0"
+                                                    accept=".png, .jpg, .jpeg"
                                                     @input="form.image  = $event.target.files[0]" name="image-upload"
                                                     type="file" />
                                                 <p class="text-xs text-gray-500">PNG, JPG, GIF up to 2MB</p>
@@ -104,6 +105,7 @@
 
                                                 <input id="video-upload" name="video-upload"
                                                     @input="form.video  = $event.target.files[0]" type="file"
+                                                    accept="video/mp4,video/x-m4v,video/*"
                                                     class="h-full w-full opacity-0" />
                                                 <p class="text-xs text-gray-500">MP4 up to 10MB</p>
                                             </div>

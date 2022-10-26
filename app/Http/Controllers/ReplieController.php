@@ -264,14 +264,10 @@ class ReplieController extends Controller
                     $this->DeleteFolder($video->video,$extension);
                     $video->delete();
                 }
-                foreach ($re->activities as $activty) {
-                    $activty->delete();
-                }
+                $re->activities()->delete();
                 $re->delete();
             }
-            foreach ($reply->activities as $activty) {
-                $activty->delete();
-            }
+            $reply->activities()->delete();
           
         }
         else{
@@ -285,9 +281,7 @@ class ReplieController extends Controller
                 $this->DeleteFolder($video->video,$extension);
                 $video->delete();
             }
-            foreach ($reply->activities as $activty) {
-                $activty->delete();
-            }
+            $reply->activities()->delete();
         }
 
        
