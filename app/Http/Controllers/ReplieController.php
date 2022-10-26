@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BestAnswerEvent;
+use App\Events\DeleteReplieEvent;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\InitalReplieResource;
 use App\Models\Chanels;
@@ -32,6 +34,7 @@ class ReplieController extends Controller
     public function __construct()
     {
         $this->middleware('role_user:default', ['only' => ['store','likeRelie','update','delete']]);
+        $this->middleware('admin_role', ['only' => ['deleteReplie']]);
     }
     public function getDetail(Request $request, $name)
     {
@@ -241,7 +244,55 @@ class ReplieController extends Controller
         }
         $best_replie->update(['best_answer' => $request->best_answer]);
         $best_replie->load('users', 'user', 'user_reply');
-        broadcast(new LikeCommentEvent($best_replie))->toOthers();
+        broadcast(new BestAnswerEvent($best_replie))->toOthers();
         return back()->with('success', "Successfully");
+    }
+
+    public function deleteReplie($id){
+        $reply=Replies::with('replies.images', 'replies.videos', 'replies.activities','activities')->findOrFail($id);
+        $extension=" ";
+        //broadcast(new DeleteReplieEvent($reply))->toOthers();
+        if($reply->is_inital ==1){
+            foreach($reply->replies as $re){
+                foreach ($re->images as $image) {
+             
+                    $this->DeleteFolder($image->image,$extension);
+                    $image->delete();
+                }
+                foreach ($re->videos as $video) {
+                 
+                    $this->DeleteFolder($video->video,$extension);
+                    $video->delete();
+                }
+                foreach ($re->activities as $activty) {
+                    $activty->delete();
+                }
+                $re->delete();
+            }
+            foreach ($reply->activities as $activty) {
+                $activty->delete();
+            }
+          
+        }
+        else{
+            foreach ($reply->images as $image) {
+             
+                $this->DeleteFolder($image->image,$extension);
+                $image->delete();
+            }
+            foreach ($reply->videos as $video) {
+             
+                $this->DeleteFolder($video->video,$extension);
+                $video->delete();
+            }
+            foreach ($reply->activities as $activty) {
+                $activty->delete();
+            }
+        }
+
+       
+        $reply->delete(); 
+        return back()->with('success', 'Delete successfully');
+
     }
 }

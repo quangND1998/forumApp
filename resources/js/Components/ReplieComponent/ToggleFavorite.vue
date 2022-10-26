@@ -1,5 +1,5 @@
 <template>
-  <button class="toggle-favorite rounded-md inline-flex items-center   dark:bg-[#213154] border-deep-black/3 bg-gray-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs reply-likes mobile:text-sm has-none border-deep-black/3 bg-grey-200 mr-auto md:mr-0"  :title="`Liked by ${comment.likes} `" @click="toggle">
+  <button  :disabled="isBlock()"  class="toggle-favorite rounded-md inline-flex items-center   dark:bg-[#213154] border-deep-black/3 bg-gray-200 px-3 font-medium transition-all hover:border-deep-black/10 hover:bg-grey-300 mobile:flex mobile:items-center mobile:p-2 mobile:text-sm md:text-xs reply-likes mobile:text-sm has-none border-deep-black/3 bg-grey-200 mr-auto md:mr-0"  :title="`Liked by ${comment.likes} `" @click="toggle">
     <FavoriteIcon
     :comment="comment" :user="user"
       class="toggle-favorite__icon"

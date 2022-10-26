@@ -61,7 +61,10 @@ Vue.mixin({
         formatNumber(value) {
             let val = (value / 1).toFixed(0).replace('.', ',')
             return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }
+        },
+        isBlock() {
+            return (this.$page.props.auth.user && this.$page.props.auth.user.type == 'block') ? true : false
+        },
 
     },
 })

@@ -22,7 +22,7 @@ class UserResource extends JsonResource
                 'email' => $this->email,
                 'name' => $this->name,
                 'avatar' => $this->avatar ? $this->avatar : 'https://ui-avatars.com/api/?name=' . Str::slug($this->name) . '?background=0D8ABC&color=fff',
-                
+                'type' => $this->type
             ];
     }
 }

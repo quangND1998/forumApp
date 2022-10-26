@@ -3,7 +3,7 @@
     <div>
       <div class="sm:hidden relative w-12/12 mx-auto rounded">
         <div class="w-full pb-2" v-if="$page.props.auth.user !== null">
-          <ReplyButtom v-if="$page.url.startsWith('/question')"></ReplyButtom>
+          <ReplyButtom v-if="$page.url.startsWith('/question')" ></ReplyButtom>
         </div>
       </div>
       <div v-if="conversation.lock_comment" class="bg-indigo-900 text-center py-4 lg:px-4 mb-4">
@@ -172,7 +172,7 @@
                   <!-- <p>{{ re_reply.body }}</p> -->
                   <Link
                     class="text-blue"
-                    :href="'/@' + re_reply.user_reply.name"
+                    :href="'/@' + re_reply.user_reply.id"
                   >@{{ re_reply.user_reply.name }}</Link>
                   <span v-html="re_reply.body"></span>
                   <div class="md:grid md:grid-cols-2 md:gap-2">
@@ -250,6 +250,8 @@ export default {
     this.listenForUpdateComment();
     this.listenForLockComment();
     this.listenForUpdateConversation();
+    this.listenForBestAnswer();
+    // this.listenForDeleteReplie();
     this.$nextTick(() => {
       if (this.replie_id !== null) {
         const element = document.getElementById(this.replie_id);
@@ -296,63 +298,38 @@ export default {
             //         element.replies.push(e);
             //     }
             // });
-            for (let i = 0; i < this.initalReplies.data.length; i++) {
-              if (this.initalReplies.data[i].id == e.replie_id) {
-                this.initalReplies.data[i].replies.push(e);
+            this.initalReplies.data.forEach(element => {
+              if (element.id == e.replie_id) {
+
+                element.replies.push(e);
               }
-            }
+            });
+            // for (let i = 0; i < this.initalReplies.data.length; i++) {
+            //   if (this.initalReplies.data[i].id == e.replie_id) {
+            //     this.initalReplies.data[i].replies.push(e);
+            //   }
+            // }
           }
         }
       );
     },
     listenForLikeComment() {
-      // var self = this;
-      // window.socketio.on("like_event:App\\Events\\LikeCommentEvent", function (e) {
-      //   let index = self.initalReplies.findIndex(x => x.id == e.replie_id);
-      //   if (e.replie_id == null && index == -1) {
-      //     self.initalReplies.forEach(element => {
-      //       if (element.id == e.id) {
-      //         element.likes = e.likes;
-      //         element.best_answer = e.best_answer;
-      //       }
-      //     });
-      //   } else {
-      //     self.initalReplies.forEach(element => {
-      //       if (element.id == e.replie_id) {
-      //         element.replies.forEach(replie => {
-      //           if (replie.id == e.id) {
-      //             replie.likes = e.likes;
-      //             replie.best_answer = e.best_answer;
-      //           }
-      //         });
-      //       }
-      //     });
-      //   }
-      //   // increase the power everytime we load test route
-      //   // $('#power').text(parseInt($('#power').text()) + parseInt(message.data.power));
-      // });
+    
       window.Echo.channel("like_event").listen("LikeCommentEvent", e => {
         // console.log(e);
         if (e.replie_id == null) {
           this.initalReplies.data.map(element => {
-            element.best_answer = 0;
+           
             if (element.id == e.id) {
               element.likes = e.likes;
-              element.best_answer = e.best_answer;
             }
-            element.replies.map(replie => {
-              replie.best_answer = 0;
-            });
           });
         } else {
           this.initalReplies.data.map(element => {
-            element.best_answer = 0;
             if (element.id == e.replie_id) {
               element.replies.map(replie => {
-                replie.best_answer = 0;
                 if (replie.id == e.id) {
                   replie.likes = e.likes;
-                  replie.best_answer = e.best_answer;
                 }
               });
             }
@@ -360,6 +337,39 @@ export default {
         }
       });
     },
+    listenForBestAnswer() {
+    
+    window.Echo.channel("best-answer").listen("BestAnswerEvent", e => {
+      // console.log(e);
+      if (e.replie_id == null) {
+       
+        this.initalReplies.data.map(element => {
+          element.best_answer = 0;
+          if (element.id == e.id) {
+            element.best_answer = e.best_answer;
+          }
+          if(element.replies.length >0){
+            element.replies.map(replie => {
+              replie.best_answer = 0;
+            });
+          }
+       
+        });
+      } else {
+        this.initalReplies.data.map(element => {
+          element.best_answer = 0;
+          if (element.id == e.replie_id) {
+            element.replies.map(replie => {
+              replie.best_answer = 0;
+              if (replie.id == e.id) {
+                replie.best_answer = e.best_answer;
+              }
+            });
+          }
+        });
+      }
+    });
+  },
     listenForUpdateComment() {
       window.Echo.channel("update-replie." + this.conversation.id).listen(
         "UpdateReplieEvent",
@@ -409,6 +419,30 @@ export default {
     scrollToReply() {
       const element = document.getElementById(this.replie_id);
       element.scrollIntoView();
+    },
+    listenForDeleteReplie(){
+      window.Echo.channel("delete-reply").listen(
+        "DeleteReplieEvent",
+        e => {
+          console.log(e);
+          if (e.replie_id == null) {
+            this.initalReplies.data.forEach(element => {
+                element.replies=[];
+            });
+            let index =  this.initalReplies.data.findIndex(x => x.id == e.id);
+            this.initalReplies.data.splice(index, 1);
+          } else {
+            this.initalReplies.data.forEach(element => {
+              if (element.id == e.replie_id) {
+                let index = element.replies.findIndex(x => x.id == e.id);
+                element.replies.splice(index, 1);
+              }
+            });
+            // let index = this.conversations.data.findIndex(x => x.id == e.id);
+            // this.conversations.data.splice(index, 1);
+          }
+        }
+      );
     }
   }
 };

@@ -28,14 +28,21 @@
             >{{ post.chanel.title }}s</span>
 
             <span class="text-gray-800 text-xs dark:text-gray-100">posted {{ post.time_ago }}</span>
-            <Link
+       
+            <button  v-if="isBlock()" :disabled="isBlock()" :title="isBlock() ? 'You account is block':''">
+              <i class="fas fa-edit cursor-pointer rounded-md px-2 py-2 m-2 border-1 border-green-400"></i>
+            </button>
+            <Link v-else 
               :href="route('conversation.edit',post.id)"
               class="fas fa-edit cursor-pointer rounded-md px-2 py-2 m-2 border-1 border-green-400"
             ></Link>
-            <i
-              @click="onDelete(post.id)"
+            <button  :disabled="isBlock()" :title="isBlock() ? 'You account is block':''"     @click="onDelete(post.id)">
+              <i
+           
               class="fas fa-trash-alt cursor-pointer md:hover:bg-red-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
             ></i>
+          </button>
+          
           </div>
         </div>
 
@@ -46,14 +53,20 @@
               class="mb-3 md:mb-1 text-base md:text-lg font-bold md:font-semibold tracking-tight text-gray-900 hover:text-gray-900"
               style="word-break: break-word;"
             >{{ post.title }}</Link>
-            <Link :href="route('conversation.edit',post.id)"
+            <button v-if="isBlock()" :disabled="isBlock()" :title="isBlock() ? 'You account is block':''">
+              <i class="fas fa-edit cursor-pointer rounded-md px-2 py-2 m-2 border-1 border-green-400"></i>
+            </button>
+            <Link v-else :href="route('conversation.edit',post.id)"
 
               class="fas fa-edit cursor-pointer md:hover:bg-green-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
             ></Link>
-            <i
-              @click="onDelete(post.id)"
+            <button :disabled="isBlock()" :title="isBlock() ? 'You account is block':''"  @click="onDelete(post.id)">
+              <i
+             
               class="fas fa-trash-alt cursor-pointer md:hover:bg-red-400 hover:rounded-lg rounded-md px-2 py-2 border border-soild"
             ></i>
+            </button>
+           
             <div v-if="post.lastReplie" class="text-gray-800 text-xs">
               <span class="text-blue-600 uppercase font-bold">{{ post.lastReplie.user.name }}</span>
               replied
@@ -134,6 +147,7 @@
             <input
               type="checkbox"
               name="toggle"
+              :disabled="isBlock()" :title="isBlock() ? 'You account is block':''"
               :checked="post.solved == 1 ? true : false"
               @change="onChangeSolved(post, $event)"
               class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 appearance-none cursor-pointer"
@@ -157,6 +171,7 @@
             <input
               type="checkbox"
               name="toggle"
+              :disabled="isBlock()" :title="isBlock() ? 'You account is block':''"
               :checked="post.lock_comment == 1 ? true : false"
               @change="onChangelooked(post, $event)"
               class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 appearance-none cursor-pointer"

@@ -124,13 +124,13 @@ class ForumController extends Controller
         return Inertia::render('Forum/Solved', compact('chanels', 'conversations', 'category'));
     }
 
-    public function profile($email)
+    public function profile($id)
     {
 
-        $user = User::where('email', $email)->first();
-        if($user ==null){
-            return Inertia::render('Error', ['status' => 404]);
-        }
+        $user = User::findOrFail($id);
+        // if($user ==null){
+        //     return Inertia::render('Error', ['status' => 404]);
+        // }
         
         // $user = User::with(['activities.subject', 'activities.user', 'conversations.user', 'conversations.chanel', 'conversations.images', 'conversations.videos', 'conversations.lastReplie.user', 'replies.images', 'replies.videos', 'conversations.all_replies', 'replies.user', 'replies.user_reply', 'replies.users', 'activities' => function ($query) {
         //     $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
@@ -238,6 +238,8 @@ class ForumController extends Controller
 
         return $path;
     }
+
+  
     public function send()
     {
         return Inertia::render('Index');

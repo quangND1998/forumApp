@@ -45,6 +45,14 @@ Broadcast::channel('sovled-conversation', function ($user) {
 Broadcast::channel('active-device', function ($user) {
     return true;
 });
+Broadcast::channel('delete-reply', function ($user) {
+    return true;
+});
+Broadcast::channel('best-answer', function ($user) {
+    return true;
+});
+
+
 Broadcast::channel('device-session.{code}', function ($user) {
     return true;
 });

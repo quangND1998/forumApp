@@ -40,13 +40,7 @@ class SovledConversationEvent  implements ShouldBroadcast
         return
             [
                 'id' => $this->conversation->id,
-                'title' => $this->conversation->title,
-                'body' => $this->conversation->body,
-                'slug' => $this->conversation->slug,
-                'view' => $this->conversation->view,
                 'lock_comment' => $this->conversation->lock_comment == 0 ? false : true,
-                'body_in_markdown' => $this->conversation->body_in_markdown,
-                'chanel_id' => $this->conversation->chanel_id,
                 'solved' => $this->conversation->solved,
             ];
     }

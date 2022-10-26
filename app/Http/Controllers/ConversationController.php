@@ -213,7 +213,7 @@ class ConversationController extends Controller
                 $replie->delete();
             
         }
-        broadcast(new DeleteConvsesationEvent($conversation))->toOthers();
+        //broadcast(new DeleteConvsesationEvent($conversation))->toOthers();
         
         // dispatch(new DeleteConversation($conversation));
         $conversation->delete();

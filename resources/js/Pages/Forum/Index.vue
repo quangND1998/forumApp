@@ -138,9 +138,9 @@
             <div
               class="text-xs font-semibold leading-none tracking-tight text-grey-800 dark:text-grey-100 mt-3">
               <Link class="text-blue-600 uppercase font-bold no-underline hover:underline" v-if="post.lastReplie !==null"
-                :href="route('profile',  post.lastReplie.user.email)">{{ post.lastReplie.user.name }}</Link>
+                :href="route('profile',  post.lastReplie.user.id)">{{ post.lastReplie.user.name }}</Link>
                 <Link class="text-blue-600 uppercase font-bold no-underline hover:underline" v-else
-                :href="route('profile',  post.owner.email)">{{ post.owner.name }}</Link>
+                :href="route('profile',  post.owner.id)">{{ post.owner.name }}</Link>
 
               <span v-if="post.lastReplie !==null" class="font-bold">replied {{ post.lastReplie.time_ago }}</span>
               <span v-else class="font-bold">posted {{post.time_ago }}</span>

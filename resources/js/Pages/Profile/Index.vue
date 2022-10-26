@@ -10,7 +10,7 @@
                   <div class="lg:block">
                     <div class="relative flex flex-col items-center">
                       <Link
-                        :href="route('profile', user.email)"
+                        :href="route('profile', user.id)"
                         class="relative flex items-start mb-2 bg-deep-black/10 p-2"
                         style="width: 112px; height: 112px; padding: 2px; border-radius: 30px;"
                       >

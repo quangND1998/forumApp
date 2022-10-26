@@ -102,6 +102,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('likeReplie/{id}', [ReplieController::class, 'likeRelie'])->name('like');
             Route::post('update/{id}', [ReplieController::class, 'update'])->name('update');
             Route::post('best_answer', [ReplieController::class, 'bestAnswer'])->name('bestAnswer');
+            Route::delete('deleteReplie/{id}',[ReplieController::class,'deleteReplie'])->name('deleteReplie');
         });
     });
     Route::prefix('conversation')->as('conversation.')->group(function () {

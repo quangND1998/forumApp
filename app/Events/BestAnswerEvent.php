@@ -4,16 +4,11 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Carbon\Carbon;
-use App\Http\Resources\LikeResource;
-use App\Http\Resources\UserResource;
-class LikeCommentEvent  implements ShouldBroadcast
+
+class BestAnswerEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $replie;
@@ -34,8 +29,9 @@ class LikeCommentEvent  implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('like_event');
+        return new Channel('best-answer');
     }
+
     public function broadcastWith()
     {
       
