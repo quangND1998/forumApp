@@ -14,6 +14,9 @@ use App\Http\Controllers\ZoomController;
 use App\Http\Controllers\Admin\PermisionsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Controllers\Api\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,6 +44,10 @@ Route::get('/Unsolved', [ForumController::class, 'getUnsolved'])->name('Unsolved
 Route::get('/question/{name}', [ReplieController::class, 'getDetail'])->name('question.getDetail');
 Route::get('commercial/confirm', [ConfirmController::class, 'createAccountCommercial'])->name('commercial.confirm');
 Route::get('channels',[ChannelController::class,'popularChannels'])->name('channels');
+
+Route::group(['middleware' => ['web']], function () {
+    Route::get('autologin',[AuthController::class,'autologin']);
+});
 // Route::get('/')
 Route::middleware(['auth', 'verified'])->group(function () {
 
