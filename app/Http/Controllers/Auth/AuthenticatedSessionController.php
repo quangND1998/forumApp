@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -37,6 +38,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $response = Http::post(config('api.API_URL').'/api/v1/login', [
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+        $user = Auth::user();
+
+        session(['user-'.$user->id => $response['token']]);
+        
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -53,7 +63,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-
+      
         return redirect('/forum');
     }
 }

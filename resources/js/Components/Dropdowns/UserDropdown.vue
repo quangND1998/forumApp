@@ -27,13 +27,13 @@
         block: dropdownPopoverShow,
       }"
     >
-      <Link
+      <a
         v-if="$page.props.auth.user"
-        :href="route('profile', $page.props.auth.user.id)"
+        :href="`http://localhost/fix_missionx2/public/autologin?token=${$page.props.auth.token}`" target="_blank"
         class="flex items-center text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
         <icon name="profile" class="w-4 h-4 mr-2" />Account
-      </Link>
+      </a>
       <Link
         class="flex items-center text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-blueGray-700"
         :href="route('logout')"

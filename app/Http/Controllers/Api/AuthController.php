@@ -11,10 +11,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 class AuthController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('jwt.verify', ['only' => ['autologin']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('jwt.verify', ['only' => ['autologin']]);
+    // }
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -36,7 +36,6 @@ class AuthController extends Controller
         }
         $user = Auth::user();
         auth()->login($user);
-        Auth::loginUsingId($user->id, true);
         // return redirect()->intended('/forum');
         $response  = [
             'msg' => 'You are logged in!',
@@ -47,11 +46,7 @@ class AuthController extends Controller
     }
 
     public function autologin(Request $request){
-        $user = auth()->user();
-     
-        Auth::loginUsingId($user->id, true);
-        return redirect()->intended('/forum');
-        
-      
+        $user = $_GET['id'];
+        Auth::loginUsingId($user, true);
     }
 }

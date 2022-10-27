@@ -50,9 +50,9 @@ Route::group(['middleware' => ['web']], function () {
 });
 // Route::get('/')
 Route::middleware(['auth', 'verified'])->group(function () {
-
+    Route::get('loginMissionX',[AuthController::class,'loginMissionX']);
     Route::prefix('admin')->as('admin.')->group(function () {
-
+      
         
         Route::prefix('permissions')->as('permissions.')->group(function () {
             Route::get('', [PermisionsController::class, 'index'])->name('index');

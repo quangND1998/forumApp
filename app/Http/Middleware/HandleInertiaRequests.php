@@ -48,6 +48,7 @@ class HandleInertiaRequests extends Middleware
                 'can' =>$user ? collect($roles)->mapWithKeys(function ($item, $key) {
                     return [$item['name_role'] => true];
                 }) : [],
+                'token' =>$user && $request->session()->has('user-'.$user->id)?  $request->session()->get('user-'.$user->id):null,
                 // 'roles' => $request->user() ? $request->user()->getRolesArray() : [],
                 // 'owner' => $request->user() ? User::find($request->user()['created_byId']) : null
             ],
