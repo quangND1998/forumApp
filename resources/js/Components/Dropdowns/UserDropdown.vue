@@ -28,10 +28,19 @@
       }"
     >
       <a
-        v-if="$page.props.auth.user"
-        :href="`http://localhost/fix_missionx2/public/autologin?token=${$page.props.auth.token}`" target="_blank"
+        v-if="$page.props.auth.user && $page.props.auth.token"
+        :href="API_URL+`/autologin?token=${$page.props.auth.token}`" target="_blank"
         class="flex items-center text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
+      
+        <icon name="profile" class="w-4 h-4 mr-2" />Account
+      </a>
+      <a
+        v-else
+        :href="API_URL+'/user'" target="_blank"
+        class="flex items-center text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-blueGray-700"
+      >
+      
         <icon name="profile" class="w-4 h-4 mr-2" />Account
       </a>
       <Link
@@ -71,6 +80,7 @@ export default {
     return {
       dropdownPopoverShow: false,
       image: 'assets/img/team-1-800x800.jpg',
+      API_URL :process.env.MIX_API_URL
     };
   },
   methods: {

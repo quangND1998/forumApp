@@ -72,6 +72,7 @@ class Kernel extends HttpKernel
         'role_user' => \App\Http\Middleware\EnsureUseRole::class,
         'admin_role' => \App\Http\Middleware\AdminRole::class,
         'jwt.verify' => \App\Http\Middleware\VerifyJWTToken::class,
+        'check_jwt' => \App\Http\Middleware\CheckJWTToken::class
         // 'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         // 'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         // 'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,

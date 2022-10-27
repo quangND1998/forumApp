@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $response = Http::post(config('api.API_URL').'/api/v1/login', [
+        $response = Http::post(config('api.MIX_API_URL').'/api/v1/login', [
             'email' => $request->email,
             'password' => $request->password,
         ]);

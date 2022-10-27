@@ -6,15 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 class AuthController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('jwt.verify', ['only' => ['autologin']]);
-    // }
+    public function __construct()
+    {
+        $this->middleware('check_jwt', ['only' => ['autologin']]);
+    }
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -46,7 +47,9 @@ class AuthController extends Controller
     }
 
     public function autologin(Request $request){
-        $user = $_GET['id'];
-        Auth::loginUsingId($user, true);
+        $user = auth()->user();   
+        Auth::loginUsingId($user->id, true);
+
+        return redirect()->intended('/forum');
     }
 }

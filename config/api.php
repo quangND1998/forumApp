@@ -1,4 +1,4 @@
 <?php
 return [
-'API_URL' => env('API_URL')
+'MIX_API_URL' => env('MIX_API_URL')
 ];
