@@ -253,6 +253,7 @@ export default {
     this.listenForDeleteConverstion();
     this.listenForViewConverstion();
     this.listenForSolvedConversation();
+    this.listenForActiveConverstion();
   },
   data() {
     return {
@@ -361,6 +362,21 @@ export default {
             this.conversations.data[index].solved = e.solved;
           }
           // this.conversations.data[index].solved = e.solved
+        }
+      );
+    },
+    listenForActiveConverstion() {
+      window.Echo.channel("active-conversation").listen(
+        "ActiveConversationEvent",
+        e => {
+          if(e.active ==1){
+            this.conversations.data.push(e);
+          }
+          else{
+            let index = this.conversations.data.findIndex(x => x.id == e.id);
+            this.conversations.data.splice(index, 1);
+          }
+        
         }
       );
     },

@@ -9,7 +9,7 @@ class Conversation extends Model
 {
     use HasFactory;
     protected $table = 'conversation';
-    protected $fillable = ['id',    'title',  'slug',  'body', 'solved', 'is_inital',   'body_in_markdown', 'lock_comment',   'chanel_id',    'user_id',    'view',    'created_at',    'updated_at'];
+    protected $fillable = ['id',    'title',  'slug',  'body', 'solved', 'is_inital', 'active',  'body_in_markdown', 'lock_comment',   'chanel_id',    'user_id',    'view',    'created_at',    'updated_at'];
 
     public function user()
     {

@@ -14,7 +14,9 @@ import VueToast from 'vue-toast-notification';
 import VueCompositionAPI from '@vue/composition-api'
 import 'vue-toast-notification/dist/theme-sugar.css';
 import moment from 'moment';
+
 Vue.use(VueToast);
+
 createInertiaApp({
     resolve: name => require(`./Pages/${name}`),
     setup({ el, App, props, plugin }) {
@@ -33,6 +35,7 @@ Vue.mixin({
         route: window.route,
     }
 })
+
 Vue.use(VueCompositionAPI)
 Vue.use(CKEditor);
 Vue.mixin(require('./base'))
@@ -65,11 +68,17 @@ Vue.mixin({
         isBlock() {
             return (this.$page.props.auth.user && this.$page.props.auth.user.type == 'block') ? true : false
         },
+        diffForHumans(value) {
+            if (value) {
+                return moment(String(value)).fromNow()
+            }
+        }
 
     },
 })
 
-
+Vue.config.devtools = true;
+Vue.config.productionTip = true
 
 window.ChatterEvents = new Vue();
 

@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div class="flex flex-w">
+
+    <!-- <notification-dropdown /> -->
+    <NotificationsDatabase />
     <a
       class="text-blueGray-500 block"
       href="#pablo"
@@ -19,6 +22,7 @@
         </span>
       </div>
     </a>
+
     <div
       ref="popoverDropdownRef"
       class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
@@ -67,6 +71,8 @@
 </template>
 
 <script>
+import NotificationDropdown from "@/Components/Dropdowns/NotificationDropdown.vue";
+import NotificationsDatabase from "@/Components/Dropdowns/NotificationsDatabase";
 import { createPopper } from "@popperjs/core";
 import Icon from "@/Components/Icon";
 import { Link } from "@inertiajs/inertia-vue";
@@ -74,7 +80,9 @@ import { Link } from "@inertiajs/inertia-vue";
 export default {
   components: {
     Link,
-    Icon
+    Icon,
+    NotificationDropdown,
+    NotificationsDatabase
   },
   data() {
     return {

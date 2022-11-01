@@ -14,6 +14,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     // use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use Notifiable;
     protected $connection = 'mysql2';
 
     /**
@@ -102,5 +103,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'users.'.$this->id;
     }
 }

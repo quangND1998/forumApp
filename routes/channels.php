@@ -42,6 +42,9 @@ Broadcast::channel('update-conversation.{id}', function ($user) {
 Broadcast::channel('sovled-conversation', function ($user) {
     return true;
 });
+Broadcast::channel('active-conversation', function ($user) {
+    return true;
+});
 Broadcast::channel('active-device', function ($user) {
     return true;
 });
@@ -59,4 +62,7 @@ Broadcast::channel('device-session.{code}', function ($user) {
 
 Broadcast::channel('message-send', function ($user) {
     return true;
+});
+Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
 });

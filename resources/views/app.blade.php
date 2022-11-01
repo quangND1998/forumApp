@@ -7,7 +7,6 @@
     <meta name="locale" content="{{ App::getLocale() }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <base href="{{ asset('') }}">
-    <title>Forum</title>
     
     <link rel="stylesheet" type="text/css" href="backend/css/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="backend/css/font-awesome/6.0.0/css/all.min.css" />
@@ -27,7 +26,7 @@
     @inertia
     <script src="/static/js/plugins/jQuery/jQuery-2.2.0.min.js"></script>
     <script src="./TW-ELEMENTS-PATH/dist/js/index.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
 </body>
 <style>

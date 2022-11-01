@@ -49,6 +49,7 @@ class HandleInertiaRequests extends Middleware
                     return [$item['name_role'] => true];
                 }) : [],
                 'token' =>$user && $request->session()->has('user-'.$user->id)?  $request->session()->get('user-'.$user->id):null,
+
                 // 'roles' => $request->user() ? $request->user()->getRolesArray() : [],
                 // 'owner' => $request->user() ? User::find($request->user()['created_byId']) : null
             ],
@@ -59,6 +60,7 @@ class HandleInertiaRequests extends Middleware
 
                 ];
             },
+            'notifications'=> $user ? $user->unreadNotifications :[]
         ]);
     }
 }

@@ -26,13 +26,50 @@ use App\Http\Controllers\Traits\FileUploadTrait;
 use App\Models\Image;
 use App\Models\Video;
 use Illuminate\Http\Response;
+use App\Events\ActiveConversationEvent;
+use App\Models\User;
+use App\Notifications\NewConversation;
+use Illuminate\Support\Facades\Notification;
+
 class ConversationController extends Controller
 {
     use FileUploadTrait;
     public function __construct()
     {
         $this->middleware('role_user:default', ['only' => ['store','update','edit','create','delete']]);
+        $this->middleware('admin_role', ['only' => ['allQuestion']]);
     }
+
+    public function allQuestion(Request $request){
+        $category = null;
+        $chanels = Chanels::get();
+        $category = $request->input('category');
+        $chanel = Chanels::with('conversations')->where('slug', $category)->first();
+
+        if ($chanel !== null) {
+
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+                $query->where('title', 'LIKE', '%' . $request->term . '%');
+            })->paginate(20)->appends(['term' => $request->term]);
+        } elseif ($chanel == null ) {
+
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+                $query->where('title', 'LIKE', '%' . $request->term . '%');
+            })->paginate(20)->appends(['term' => $request->term]);
+        }
+  
+        $conversations = ConversationResource::collection($conversations);
+
+        return Inertia::render('Forum/Admin/Conversations', compact('chanels', 'conversations', 'category'));
+    }
+
+    public function setActive(Request $request){
+        $conversation = Conversation::find($request->id);
+        $conversation->update(['active' => $request->active]);
+        broadcast(new ActiveConversationEvent($conversation))->toOthers();
+        return back()->with('success', "Successfully");
+    }
+
     public function create(){
         $chanels = Chanels::get();
         return Inertia::render('Question/NewQuestionComponent',compact('chanels'));
@@ -55,6 +92,8 @@ class ConversationController extends Controller
                 'video' =>  'nullable|mimetypes:video/mp4|max:10000'
             ]
         );
+        $user = Auth::user();
+        $users = User::where('id', '!=', auth()->id())->get();
         $conversation= Conversation::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
@@ -91,8 +130,10 @@ class ConversationController extends Controller
         $activty->date = Carbon::createFromFormat('Y-m-d H:i:s', $activty->created_at)->format('Y-m-d');
         $activty->save();
         $conversation->activities()->save($activty);
+       
         dispatch(new ListenUserAcivity($conversation, $activty));
         $conversation->load('user','chanel','all_replies', 'lastReplie.user');
+        Notification::send($users, new NewConversation($conversation));
         broadcast(new NewConversationEvent($conversation))->toOthers();
         return redirect('/myThread')->with('success', 'Create question successfully');
     }

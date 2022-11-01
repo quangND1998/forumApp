@@ -42,6 +42,7 @@ class SovledConversationEvent  implements ShouldBroadcast
                 'id' => $this->conversation->id,
                 'lock_comment' => $this->conversation->lock_comment == 0 ? false : true,
                 'solved' => $this->conversation->solved,
+                'title' => $this->conversation->title
             ];
     }
 }

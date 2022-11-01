@@ -35,6 +35,7 @@ class ConversationResource extends JsonResource
                 'time_ago' => Carbon::parse($this->created_at)->diffForHumans(),
                 'solved' => $this->solved,
                 'sub_body' => Str::words(strip_tags($this->body)),
+                'active' => $this->active,
                 // 'lastReplie' => $this->lastReplie
                 'lastReplie' => new LastReplieResource($this->lastReplie),
                 'images' => $this->images,

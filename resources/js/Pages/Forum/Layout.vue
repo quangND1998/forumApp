@@ -1,6 +1,7 @@
 <template>
     <div :class="isdark =='dark'? 'dark':''"  >
 
+
         <sidebar />
         <div class="relative md:ml-64 bg-gray-100 dark:bg-theme-black bg-height">
             <admin-navbar />
@@ -26,6 +27,7 @@ import Sidebar from "@/Components/Sidebar/Sidebar.vue";
 import HeaderStats from "@/Components/Headers/HeaderStats.vue";
 import FooterAdmin from "@/Components/Footers/FooterAdmin.vue";
 import Notification from "@/Components/Notification";
+import { Link,Head } from "@inertiajs/inertia-vue";
 
 
 export default {
@@ -44,7 +46,8 @@ export default {
         Sidebar,
         HeaderStats,
         FooterAdmin,
-        Notification
+        Notification,
+        Head
       
 
     },

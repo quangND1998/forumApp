@@ -8,7 +8,7 @@ use App\Models\Roles;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\User;
-
+use Illuminate\Http\Response;
 class UserController extends Controller
 {
 
@@ -89,5 +89,22 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
         return redirect()->back()->with('success', "Xóa tài khoản  thành công");
+    }
+    public function notifications(){
+        $user = Auth::user();
+        $user->unreadNotifications;
+        return $user->unreadNotifications;
+    }
+
+    public function markAsRead(){
+        $user = Auth::user();
+        $user->unreadNotifications->markAsRead();
+        return response()->json('successfully', Response::HTTP_OK);
+    }
+
+    public function deleteNotifiaction(){
+        $user = Auth::user();
+        $user->notifications()->delete();
+        return back();
     }
 }

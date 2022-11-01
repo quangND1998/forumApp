@@ -27,6 +27,11 @@ use App\Models\Image;
 use App\Models\Video;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Traits\FileUploadTrait;
+use App\Notifications\LikeReplie;
+use App\Notifications\NewReplieConversation;
+use App\Notifications\NewReplieForReply;
+use Illuminate\Support\Facades\Notification;
+
 class ReplieController extends Controller
 {
     use FileUploadTrait;
@@ -38,10 +43,9 @@ class ReplieController extends Controller
     }
     public function getDetail(Request $request, $name)
     {
-
+     
         $replie_id = $request->input('replyId');
-        $conversation = Conversation::with(['user', 'chanel','lastReplie.user','images','videos'])->withCount('all_replies')->where('slug', $name)->first();
-
+        $conversation = Conversation::with(['user', 'chanel','lastReplie.user','images','videos'])->withCount('all_replies')->where('active',1)->where('slug', $name)->first();
         if($conversation){
             $initalReplies = Replies::with('user','users','replies.users','replies.user','replies.user_reply','replies.images', 'replies.videos','images','videos')->where('is_inital', 1)->where('conversation_id',$conversation->id)->paginate(20);
         }
@@ -77,7 +81,8 @@ class ReplieController extends Controller
     {
 
 
-        $conversation = Conversation::findOrFail($id);
+        $conversation = Conversation::with('all_replies.user', 'user')->where('active',1)->findOrFail($id);
+        
         $this->validate(
             $request,
             [
@@ -86,13 +91,15 @@ class ReplieController extends Controller
                 'video' =>  'nullable|mimetypes:video/mp4|max:10000'
             ]
         );
-
+        
+    
+        /* Tạo một comment */
         $replie = Replies::create([
             'body' => $request->body,
             'user_id' => Auth::user()->id,
             'conversation_id' => $conversation->id
         ]);
-        // dd($replie);
+
 
         $image_path = 'images/';
         $video_path = 'videos/';
@@ -120,7 +127,21 @@ class ReplieController extends Controller
             $replie->save();
         }
         $replie->load('users', 'user', 'user_reply','images','videos');
+        $conversation->load('all_replies.user');
 
+        /* Nếu comment là reReply thì gửi thông báo reply */
+        if($replie->replie_user){
+
+            $user= User::find($replie->replie_user);
+            Notification::send($user, new NewReplieForReply($replie, $conversation));
+        }  /* Ngược lại comment là comment thuần của bài viết  thì gửi thông báo reply on Conversation*/
+        else{
+            $user = $conversation->user;
+            $users=$conversation->all_replies->where('user_id',  '!=' , Auth::user()->id)->pluck('user')->unique();
+            $users[] =$user;
+            Notification::send($users, new NewReplieConversation($replie,$conversation));
+        }
+        
         broadcast(new ReplieCommentEvent($replie, $conversation))->toOthers();;
         $activty = Activities::create([
             'heading' => "Replied to",
@@ -140,8 +161,11 @@ class ReplieController extends Controller
 
     public function likeRelie($id, Request $reuest)
     {
-        $replie = Replies::findOrFail($id);
-        $conversation = Conversation::findOrFail($replie->conversation_id);
+        $replie = Replies::with('user')->findOrFail($id);
+        $conversation = Conversation::where('active',1)->findOrFail($replie->conversation_id);
+        // Notification::route('mail', [
+        //     'quangND620@wru.vn' => 'QuangND98',
+        // ])->notify( new LikeReplie($replie,$conversation));
         if ($replie->users->contains(Auth::user()->id)) {
 
             $replie->users()->detach(Auth::user());
@@ -160,6 +184,12 @@ class ReplieController extends Controller
 
             dispatch(new LikeCommentActivity($conversation, $replie, $activty));
             $replie->users()->attach(Auth::user());
+            if($replie->user_id !== Auth::user()->id){
+                Notification::send($replie->user, new LikeReplie($replie,$conversation));
+            }
+            
+            // $user= User::find($replie->replie_user);
+            // Notification::send($user, new NewReplieForReply($replie, $conversation));
         }
         $replie->load('users', 'user', 'user_reply');
         // return $replie;

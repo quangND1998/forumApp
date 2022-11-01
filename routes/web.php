@@ -51,8 +51,14 @@ Route::group(['middleware' => ['web']], function () {
 // Route::get('/')
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('loginMissionX',[AuthController::class,'loginMissionX']);
+    Route::prefix('notifications')->as('notifications.')->group(function () {
+        Route::get('', [UserController::class, 'notifications'])->name('notifications');
+        Route::get('markAsRead', [UserController::class, 'markAsRead'])->name('markAsRead');
+        Route::delete('deleteNotifiaction', [UserController::class, 'deleteNotifiaction'])->name('deleteNotifiaction');
+    });
     Route::prefix('admin')->as('admin.')->group(function () {
-      
+        Route::get('/conversations', [ConversationController::class, 'allQuestion'])->name('conversations');
+        Route::post('/active-conversation', [ConversationController::class, 'setActive'])->name('conversation.active');
         
         Route::prefix('permissions')->as('permissions.')->group(function () {
             Route::get('', [PermisionsController::class, 'index'])->name('index');
@@ -111,6 +117,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('best_answer', [ReplieController::class, 'bestAnswer'])->name('bestAnswer');
             Route::delete('deleteReplie/{id}',[ReplieController::class,'deleteReplie'])->name('deleteReplie');
         });
+
+       
     });
     Route::prefix('conversation')->as('conversation.')->group(function () {
         Route::get('create', [ConversationController::class, 'create'])->name('create');
