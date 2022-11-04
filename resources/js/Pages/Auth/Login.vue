@@ -8,13 +8,13 @@
       <div class="text-center mb-3">
         <img class="image-logo" src="asset/img/HolomiaExpo.svg" alt />
       </div>
-      <h1 class="text-center">Login</h1>
+      <h1 class="text-center  dark:text-white">Login</h1>
       <div>
         <breeze-label for="email" value="Email" />
         <input
           id="email"
           type="email"
-            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"
+            class="border-gray-300 focus:border-indigo-300  dark:focus:border-slate-600 focus:ring focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full dark:text-white dark:bg-slate-600"
           v-model="form.email"
           required
           autofocus
@@ -28,12 +28,12 @@
           <input
             id="password"
             :type="passwordFieldType"
-             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"
+             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full dark:text-white dark:bg-slate-600"
             v-model="form.password"
             required
             autocomplete="current-password"
           />
-          <span class="span-hidden">
+          <span class="span-hidden  dark:text-white">
             <i
               :class="passwordFieldType =='password'? 'fa fa-eye' :'fa fa-eye-slash'"
               @click="switchVisibility"
@@ -50,7 +50,7 @@
             v-model="form.remember"
             class="h-4 w-4 text-gray-700 border rounded mr-2"
           />
-          <span class="ml-2 text-sm text-gray-600">Remember me</span>
+          <span class="ml-2 text-sm text-gray-600  dark:text-white">Remember me</span>
         </div>
       </div>
 
@@ -59,11 +59,11 @@
           :href="route('register')"
           class="underline text-sm mr-3 text-gray-600 hover:text-gray-900 text-left link ml"
         >Register ?</Link> -->
-        <Link
+        <!-- <Link
           v-if="canResetPassword"
           :href="route('password.request')"
-          class="underline text-sm text-gray-600 hover:text-gray-900"
-        >Forgot your password?</Link>
+          class="underline text-sm text-gray-600 hover:text-gray-900  dark:text-white"
+        >Forgot your password?</Link> -->
 
         <breeze-button
           class="ml-4"

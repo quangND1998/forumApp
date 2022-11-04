@@ -27,6 +27,7 @@ use App\Models\Image;
 use App\Models\Video;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Traits\FileUploadTrait;
+use App\Notifications\BestAnswer;
 use App\Notifications\LikeReplie;
 use App\Notifications\NewReplieConversation;
 use App\Notifications\NewReplieForReply;
@@ -53,6 +54,8 @@ class ReplieController extends Controller
             $erros = "Not found conversation !!";
             return Inertia::render('Erros/401', ['erros' => $erros]);
         }
+
+
         // return $conversation;
         // return $conversation;
         // $conversation = new ConversationResource($conversation);
@@ -79,10 +82,9 @@ class ReplieController extends Controller
     }
     public function store(Request $request, $id)
     {
-
-
         $conversation = Conversation::with('all_replies.user', 'user')->where('active',1)->findOrFail($id);
-        
+     
+     
         $this->validate(
             $request,
             [
@@ -139,7 +141,8 @@ class ReplieController extends Controller
             $user = $conversation->user;
             $users=$conversation->all_replies->where('user_id',  '!=' , Auth::user()->id)->pluck('user')->unique();
             $users[] =$user;
-            Notification::send($users, new NewReplieConversation($replie,$conversation));
+            $data= $users->unique();
+            Notification::send($data, new NewReplieConversation($replie,$conversation));
         }
         
         broadcast(new ReplieCommentEvent($replie, $conversation))->toOthers();;
@@ -268,12 +271,17 @@ class ReplieController extends Controller
 
     public function bestAnswer(Request $request)
     {
-        $best_replie = Replies::with('conversation.all_replies')->with('users', 'user')->find($request->id);
+        $best_replie = Replies::with('conversation.all_replies','users', 'user')->find($request->id);
         foreach($best_replie->conversation->all_replies as $replie){
             $replie->update(['best_answer' =>  0]);
         }
         $best_replie->update(['best_answer' => $request->best_answer]);
-        $best_replie->load('users', 'user', 'user_reply');
+  
+        $best_replie->load('users', 'user', 'user_reply','conversation');
+        if($best_replie->best_answer ==1){
+            Notification::send($best_replie->user, new BestAnswer($best_replie,$best_replie->conversation));
+        }
+       
         broadcast(new BestAnswerEvent($best_replie))->toOthers();
         return back()->with('success', "Successfully");
     }

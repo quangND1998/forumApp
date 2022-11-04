@@ -68,7 +68,7 @@
             </p>
           </Link>
           <li v-if="!newNotifications.length">
-              <span class="place-content-center text-center tex-xs  dark:bg-black dark:text-white">There are no new notifications</span>
+              <span class="place-content-center text-center tex-xs  dark:text-white">There are no new notifications</span>
             </li>
         </div>
         <div class="py-2" v-if="tab === 'old'">
@@ -78,17 +78,17 @@
               :src="notification.data.owner.avatar"
               alt="avatar"
             />
-            <p class="text-gray-700 text-sm mx-2 dark:text-white dark:hover:text-black">
+            <div class="text-gray-700 text-sm mx-2 dark:text-white dark:hover:text-black">
               <span class="font-bold dark:text-black" href="#">{{notification.data.owner.name}}</span> {{notification.data.action}}
               <small class="time pull-right">
                 <i class="fa fa-clock-o"></i>
                 <span>{{ diffForHumans(notification.data.time_ago) }}</span>
               </small>
               <span class="font-bold text-blue-500" href="#">{{notification.data.message}}</span>
-            </p>
+            </div>
           </Link>
           <li v-if="!oldNotifications.length">
-              <span class="place-content-center text-center dark:bg-black dark:text-white">There are no old notifications</span>
+              <span class="place-content-center text-center  dark:text-white">There are no old notifications</span>
             </li>
         </div>
         <li v-if="newNotifications.length && tab === 'new'"  class="place-content-center text-center dark:bg-[#233153] dark:text-white dark:hover:text-blue-500">
@@ -152,7 +152,6 @@
         axios
         .get("/notifications")
         .then(response => {
-          console.log(response.data);
           this.notifications = response.data
         })
         .catch(function(error) {
