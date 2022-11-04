@@ -99,7 +99,7 @@ class ConversationController extends Controller
             'slug' => Str::slug($request->title),
             'body' => $request->body,
             'chanel_id' => $request->chanel_id,
-            // 'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id
         ]);
         // $heading= "Started a new Conversation";
         // $icon= "/images/profiles/started_conversation_icon.svg";

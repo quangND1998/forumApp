@@ -72,7 +72,7 @@ class LikeReplie extends Notification implements ShouldBroadcast
         return new BroadcastMessage(
             [
                'data'=> [
-                    'action'=>  'Like your Reply',
+                    'action'=>  'Like your Reply on the',
                     'message'=> $this->conversation->title,
                     'slug' => $this->conversation->slug,
                     'owner' => new UserResource(Auth::user()),

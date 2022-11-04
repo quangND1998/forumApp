@@ -99,7 +99,7 @@ class NewReplieForReply extends Notification implements ShouldBroadcast
 
     public function toDatabase($notifiable){
         return [
-            'action'=>  'Replied your comment',
+            'action'=>  'Replied your comment on the',
             'message'=> $this->conversation->title,
             'slug' => $this->conversation->slug,
             'owner' => new UserResource($this->replie->user),
