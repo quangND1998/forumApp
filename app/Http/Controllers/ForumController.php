@@ -19,6 +19,7 @@ use App\Http\Resources\ActivitiesResources;
 use App\Models\Replies;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
+
 class ForumController extends Controller
 {
     public function index(Request $request)
@@ -27,6 +28,7 @@ class ForumController extends Controller
 
         $category = null;
         $chanels = Chanels::get();
+
         $category = $request->input('category');
         $popular = $request->input('popular');
         $trending = $request->input('trending');
@@ -36,17 +38,17 @@ class ForumController extends Controller
 
         if ($chanel !== null && $solved !== null) {
 
-            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->where('solved', $solved)->where('active',1)->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->where('solved', $solved)->where('active', 1)->where('chanel_id', $chanel->id)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel == null && $solved !== null) {
 
-            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->where('solved', $solved)->where('active',1)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->where('solved', $solved)->where('active', 1)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel !== null && $solved == null) {
 
-            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->where('chanel_id', $chanel->id)->where('active',1)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
+            $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->where('chanel_id', $chanel->id)->where('active', 1)->orderBy('created_at', 'desc')->where(function ($query) use ($request) {
                 $query->where('title', 'LIKE', '%' . $request->term . '%');
             })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
         } elseif ($chanel == null && $solved == null) {
@@ -54,18 +56,18 @@ class ForumController extends Controller
             $category = 'all';
             if ($popular == '1') {
 
-                $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->orderBy('all_replies_count', 'desc')->orderBy('view', 'desc')->where('active',1)->where(function ($query) use ($request) {
+                $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->orderBy('all_replies_count', 'desc')->orderBy('view', 'desc')->where('active', 1)->where(function ($query) use ($request) {
                     $query->where('title', 'LIKE', '%' . $request->term . '%');
                 })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
             } elseif ($trending == '1') {
 
-                $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->orderBy('all_replies_count', 'desc')->orderBy('view', 'desc')->where('active',1)->where(function ($query) use ($request) {
+                $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->orderBy('all_replies_count', 'desc')->orderBy('view', 'desc')->where('active', 1)->where(function ($query) use ($request) {
                     $query->where('title', 'LIKE', '%' . $request->term . '%');
                 })->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
             } else {
 
 
-                $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->where('active',1)->where(function ($query) use ($request) {
+                $conversations = Conversation::with('user',  'chanel', 'lastReplie.user', 'images', 'videos')->withCount('all_replies')->where('active', 1)->where(function ($query) use ($request) {
                     $query->where('title', 'LIKE', '%' . $request->term . '%');
                 })->paginate(20)->appends(['term' => $request->term, 'answered' => $request->input('answered')]);
             }
@@ -133,14 +135,14 @@ class ForumController extends Controller
         // if($user ==null){
         //     return Inertia::render('Error', ['status' => 404]);
         // }
-        
+
         // $user = User::with(['activities.subject', 'activities.user', 'conversations.user', 'conversations.chanel', 'conversations.images', 'conversations.videos', 'conversations.lastReplie.user', 'replies.images', 'replies.videos', 'conversations.all_replies', 'replies.user', 'replies.user_reply', 'replies.users', 'activities' => function ($query) {
         //     $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
         // }])->where('email', $email)->first();
         $activities = Activities::with('subject')->where('user_id', $user->id)->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->get();
         // return $activities;
         $activities = ActivitiesResources::collection($activities)->sortByDesc('created_at')->groupBy('date');
-       
+
         // $activities= User::with()
 
 
@@ -241,7 +243,7 @@ class ForumController extends Controller
         return $path;
     }
 
-  
+
     public function send()
     {
         return Inertia::render('Index');
