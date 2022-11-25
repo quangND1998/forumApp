@@ -14,6 +14,7 @@ redis.subscribe('deleteConversation_event', function(err, count) {});
 redis.on('message', function(channel, message) {
     message = JSON.parse(message);
     console.log('Message Recieved: ' + message.event);
+    console.log('Message Recieved: ' + message);
     io.emit(channel + ':' + message.event, message.data, send_to_self = false);
     // io.sockets.on("connect", (socket) => {
     //     console.log('connect', socket)

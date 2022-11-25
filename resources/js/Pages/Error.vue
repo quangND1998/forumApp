@@ -27,7 +27,10 @@
           {{ description }}
         </h6>
 
-        <Link href="/forum" class="px-6 py-2 text-sm rounded-md font-semibold text-blue-800 bg-blue-100">Go home</Link>
+        <Link
+          href="/forum"
+          class="px-6 py-2 text-sm rounded-md font-semibold text-blue-800 bg-blue-100"
+        >Go home</Link>
       </div>
     </div>
   </div>
@@ -58,7 +61,8 @@ export default {
         500: "Whoops, something went wrong on our servers.",
         404: "Sorry, the page you are looking for could not be found.",
         403: "Sorry, you are forbidden from accessing this page.",
-        429: "Too many request in serve"
+        429: "Too many request in serve",
+        409: "Hết thời gian sử dụng"
       }[this.status];
     }
   }

@@ -28,10 +28,18 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 // });
 import Echo from 'laravel-echo'
 import socket from 'socket.io-client'
-window.io = require('socket.io-client');
+// window.io = require('socket.io-client');
 window.Echo = new Echo({
-        broadcaster: 'socket.io',
-        host: `${window.location.protocol}//${window.location.hostname}:6003`
+    broadcaster: 'socket.io',
+    host: `${window.location.protocol}//${window.location.hostname}:6003`
 
-    })
-    // window.socketio = socket(`${window.location.protocol}//${window.location.hostname}:6002`);
+})
+
+var connectionOptions = {
+    "force new connection": true,
+    "reconnectionAttempts": "Infinity", //avoid having user reconnect manually in order to prevent dead clients after a server restart
+    "timeout": 10000, //before connect_error and connect_timeout are emitted.
+    "transports": ["websocket"]
+};
+
+window.socketio = socket('http://192.168.1.169:3000', connectionOptions);
